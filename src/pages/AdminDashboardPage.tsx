@@ -470,7 +470,7 @@ export const AdminDashboardPage: React.FC = () => {
 
           {/* Notices Table */}
           <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
-            <h3 className="font-extrabold text-navy-900 text-base">Active Notices List</h3>
+            <h3 className="font-extrabold text-navy-900 text-base">Active Notices List ({notices.length})</h3>
             <div className="space-y-3">
               {notices.map((n) => (
                 <div key={n.id} className="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-4">
@@ -546,6 +546,32 @@ export const AdminDashboardPage: React.FC = () => {
               </div>
             </form>
           </div>
+
+          {/* Events List Data Display */}
+          <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
+            <h3 className="font-extrabold text-navy-900 text-base">Campus Events List ({events.length})</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {events.map((evt) => (
+                <div key={evt.id} className="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-4">
+                  <div className="space-y-1">
+                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${
+                      evt.isUpcoming ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-700'
+                    }`}>
+                      {evt.eventDate}
+                    </span>
+                    <h4 className="font-bold text-navy-900 text-xs mt-1">{evt.title}</h4>
+                    <p className="text-[11px] text-slate-500">{evt.venue}</p>
+                  </div>
+                  <button
+                    onClick={() => setEvents(events.filter(e => e.id !== evt.id))}
+                    className="p-2 rounded-lg text-slate-400 hover:text-red-600 hover:bg-slate-200 transition-colors"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
         </section>
       )}
 
@@ -597,6 +623,34 @@ export const AdminDashboardPage: React.FC = () => {
                 </button>
               </div>
             </form>
+          </div>
+
+          {/* Faculty List Data Display */}
+          <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
+            <h3 className="font-extrabold text-navy-900 text-base">Faculty Directory List ({faculty.length})</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {faculty.map((fac) => (
+                <div key={fac.id} className="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-3">
+                    <img 
+                      src={fac.photoUrl || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=400"} 
+                      alt={fac.name} 
+                      className="w-10 h-10 rounded-full object-cover border" 
+                    />
+                    <div>
+                      <h4 className="font-bold text-navy-900 text-xs">{fac.name}</h4>
+                      <p className="text-[11px] text-maroon-900 font-semibold">{fac.designation} • {fac.subject}</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setFaculty(faculty.filter(f => f.id !== fac.id))}
+                    className="p-2 rounded-lg text-slate-400 hover:text-red-600 hover:bg-slate-200 transition-colors"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
       )}
@@ -651,13 +705,35 @@ export const AdminDashboardPage: React.FC = () => {
               </div>
             </form>
           </div>
+
+          {/* Toppers List Data Display */}
+          <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
+            <h3 className="font-extrabold text-navy-900 text-base">Board Exam Toppers List ({toppers.length})</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {toppers.map((top) => (
+                <div key={top.id} className="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-3">
+                  <div className="space-y-1">
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-100 text-amber-900">{top.rank}</span>
+                    <h4 className="font-bold text-navy-900 text-xs mt-1">{top.studentName}</h4>
+                    <p className="text-[11px] text-emerald-700 font-bold">{top.marksPercentage}% Marks</p>
+                  </div>
+                  <button
+                    onClick={() => setToppers(toppers.filter(t => t.id !== top.id))}
+                    className="p-2 rounded-lg text-slate-400 hover:text-red-600 hover:bg-slate-200 transition-colors"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
         </section>
       )}
 
       {/* TAB CONTENT 5: LEADS */}
       {activeTab === 'leads' && (
         <section className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
-          <h3 className="font-extrabold text-navy-900 text-base">Submitted Student Admission Inquiries</h3>
+          <h3 className="font-extrabold text-navy-900 text-base">Submitted Student Admission Inquiries ({leads.length})</h3>
           
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs border-collapse">
