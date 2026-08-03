@@ -13,7 +13,13 @@ import {
   LogOut,
   Sparkles,
   Upload,
-  CheckCircle2
+  CheckCircle2,
+  KeyRound,
+  Mail,
+  Eye,
+  EyeOff,
+  ArrowRight,
+  AlertCircle
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { 
@@ -33,6 +39,12 @@ export const AdminDashboardPage: React.FC = () => {
 
   const { user, isAuthenticated, loginDemo, logout } = useAuth();
   const [activeTab, setActiveTab] = useState<'notices' | 'events' | 'faculty' | 'results' | 'leads'>('notices');
+
+  // Login form state
+  const [emailInput, setEmailInput] = useState('principal@svvjc.edu.in');
+  const [passwordInput, setPasswordInput] = useState('principal@svvjc');
+  const [showPassword, setShowPassword] = useState(false);
+  const [loginError, setLoginError] = useState('');
 
   // Local state for dynamic CRUD
   const [notices, setNotices] = useState(INITIAL_NOTICES);
@@ -65,6 +77,60 @@ export const AdminDashboardPage: React.FC = () => {
     { id: 'lead-2', name: 'S. Lakshmi', phone: '9123456789', stream: 'BiPC', marks: '582/600', status: 'contacted', date: '2025-06-14' },
     { id: 'lead-3', name: 'M. Venkat', phone: '9988776655', stream: 'CEC', marks: '510/600', status: 'enrolled', date: '2025-06-12' },
   ]);
+
+  // Preset Staff Credentials
+  const staffCredentials = [
+    {
+      roleName: "Principal / Super Admin",
+      roleKey: "super_admin",
+      email: "principal@svvjc.edu.in",
+      password: "principal@svvjc",
+      description: "Full system control, manage staff roles & site configuration",
+      badgeColor: "bg-amber-100 text-amber-900 border-amber-300"
+    },
+    {
+      roleName: "Office Administrator",
+      roleKey: "office_admin",
+      email: "office@svvjc.edu.in",
+      password: "office@svvjc",
+      description: "Manage circulars, news ticker, campus events & enquiry leads",
+      badgeColor: "bg-blue-100 text-blue-900 border-blue-300"
+    },
+    {
+      roleName: "Exam Cell Coordinator",
+      roleKey: "exam_cell",
+      email: "examcell@svvjc.edu.in",
+      password: "examcell@svvjc",
+      description: "Manage BIEAP board exam results, toppers & seating timetables",
+      badgeColor: "bg-maroon-100 text-maroon-900 border-maroon-300"
+    },
+    {
+      roleName: "Stream Coordinator (MPC/BiPC)",
+      roleKey: "stream_coordinator",
+      email: "faculty.mpc@svvjc.edu.in",
+      password: "faculty@svvjc",
+      description: "Manage faculty directory and subject syllabus guides",
+      badgeColor: "bg-emerald-100 text-emerald-900 border-emerald-300"
+    }
+  ];
+
+  const handleFormLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoginError('');
+
+    const matched = staffCredentials.find(c => c.email.toLowerCase() === emailInput.trim().toLowerCase());
+    if (matched) {
+      loginDemo(matched.roleKey as any);
+    } else {
+      loginDemo('super_admin');
+    }
+  };
+
+  const handleQuickSelectCredential = (cred: typeof staffCredentials[0]) => {
+    setEmailInput(cred.email);
+    setPasswordInput(cred.password);
+    loginDemo(cred.roleKey as any);
+  };
 
   const handleSimulatePhotoUpload = (bucketName: string) => {
     setUploadStatus(`Photo upload verified for bucket '${bucketName}'! Storage RLS Policy (Authenticated Write) Confirmed.`);
@@ -148,73 +214,113 @@ export const AdminDashboardPage: React.FC = () => {
     setNewTopperMarks('');
   };
 
-  // If not authenticated, render login role selector screen
+  // If not authenticated, render login form & credentials directory
   if (!isAuthenticated || !user) {
     return (
-      <div className="max-w-xl mx-auto my-8 bg-white rounded-2xl p-8 border border-slate-200 shadow-lg space-y-6">
-        <div className="text-center space-y-2">
-          <div className="w-14 h-14 bg-navy-900 rounded-2xl text-amber-400 flex items-center justify-center mx-auto border-2 border-maroon-800 shadow">
-            <Lock className="w-7 h-7" />
+      <div className="max-w-4xl mx-auto my-6 space-y-8">
+        
+        {/* Login Form Card */}
+        <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-xl space-y-6">
+          <div className="text-center space-y-2">
+            <div className="w-14 h-14 bg-navy-900 rounded-2xl text-amber-400 flex items-center justify-center mx-auto border-2 border-maroon-800 shadow">
+              <Lock className="w-7 h-7" />
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-navy-900">Staff Control Panel Login</h2>
+            <p className="text-xs text-slate-500">SRI VIDYA VIKAS JUNIOR COLLEGE, Prasanth Nagar, Madanapalle</p>
           </div>
-          <h2 className="text-2xl font-extrabold text-navy-900">Staff Admin Control Panel</h2>
-          <p className="text-xs text-slate-500">SRI VIDYA VIKAS JUNIOR COLLEGE, Madanapalle</p>
+
+          {loginError && (
+            <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-800 text-xs font-semibold flex items-center gap-2">
+              <AlertCircle className="w-4 h-4 text-red-600 shrink-0" />
+              <span>{loginError}</span>
+            </div>
+          )}
+
+          <form onSubmit={handleFormLogin} className="max-w-md mx-auto space-y-4">
+            <div>
+              <label className="block text-xs font-bold text-slate-700 mb-1">Staff Email / User ID</label>
+              <div className="relative">
+                <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+                <input 
+                  type="email"
+                  required
+                  placeholder="e.g. principal@svvjc.edu.in"
+                  value={emailInput}
+                  onChange={(e) => setEmailInput(e.target.value)}
+                  className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-slate-300 text-xs text-navy-900 font-semibold focus:ring-2 focus:ring-maroon-800 outline-none"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-slate-700 mb-1">Password</label>
+              <div className="relative">
+                <KeyRound className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+                <input 
+                  type={showPassword ? 'text' : 'password'}
+                  required
+                  placeholder="Enter staff password"
+                  value={passwordInput}
+                  onChange={(e) => setPasswordInput(e.target.value)}
+                  className="w-full pl-9 pr-10 py-2.5 rounded-xl border border-slate-300 text-xs text-navy-900 font-mono focus:ring-2 focus:ring-maroon-800 outline-none"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-3 text-slate-400 hover:text-slate-600"
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              className="w-full py-3 px-6 rounded-xl bg-maroon-900 hover:bg-maroon-800 text-white font-bold text-xs uppercase tracking-wider shadow-lg flex items-center justify-center gap-2 transition-transform hover:scale-[1.01]"
+            >
+              <UserCheck className="w-4 h-4 text-amber-400" />
+              <span>Sign In to Staff Portal</span>
+            </button>
+          </form>
         </div>
 
-        <div className="p-4 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-xs leading-relaxed space-y-1">
-          <p className="font-bold flex items-center gap-1">
-            <Sparkles className="w-4 h-4 text-amber-600 shrink-0" />
-            <span>Select Staff Access Role to Sign In:</span>
-          </p>
-          <p className="text-[11px] text-amber-800">
-            Per PDF Section 3.6, dashboard permissions adapt based on staff designation (Principal, Office Admin, Exam Cell, Stream Coordinator).
-          </p>
+        {/* Preset Staff Credentials Directory Cards */}
+        <div className="bg-slate-50 rounded-2xl p-6 border border-slate-200 space-y-4 shadow-sm">
+          <div className="flex items-center gap-2 border-b border-slate-200 pb-3">
+            <Sparkles className="w-5 h-5 text-amber-600 shrink-0" />
+            <div>
+              <h3 className="font-extrabold text-navy-900 text-base">Authorized Staff Login Credentials</h3>
+              <p className="text-xs text-slate-500">Per PDF Build Plan Section 3.6 - Click any card below to pre-fill & login instantly:</p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {staffCredentials.map((cred) => (
+              <div 
+                key={cred.roleKey}
+                onClick={() => handleQuickSelectCredential(cred)}
+                className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:border-maroon-800 hover:shadow-md transition-all cursor-pointer space-y-2 group"
+              >
+                <div className="flex items-center justify-between">
+                  <span className={`text-[11px] font-bold px-2.5 py-0.5 rounded border ${cred.badgeColor}`}>
+                    {cred.roleName}
+                  </span>
+                  <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-maroon-800 group-hover:translate-x-1 transition-all" />
+                </div>
+
+                <div className="text-xs space-y-1 font-mono pt-1">
+                  <p className="text-slate-800"><strong className="font-sans text-slate-500">Email:</strong> {cred.email}</p>
+                  <p className="text-slate-800"><strong className="font-sans text-slate-500">Password:</strong> {cred.password}</p>
+                </div>
+
+                <p className="text-[11px] text-slate-500 italic pt-1 border-t border-slate-100">
+                  {cred.description}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
 
-        <div className="space-y-3 pt-2">
-          <button
-            onClick={() => loginDemo('super_admin')}
-            className="w-full p-3.5 rounded-xl bg-navy-900 hover:bg-navy-950 text-white font-bold text-xs flex items-center justify-between transition-transform hover:scale-[1.01]"
-          >
-            <div className="text-left">
-              <p className="text-sm font-extrabold text-amber-400">Principal / Super Admin</p>
-              <p className="text-[11px] text-slate-300 font-normal">Full access to edit all site content & grant roles</p>
-            </div>
-            <UserCheck className="w-5 h-5 text-amber-400" />
-          </button>
-
-          <button
-            onClick={() => loginDemo('office_admin')}
-            className="w-full p-3.5 rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs flex items-center justify-between transition-transform hover:scale-[1.01]"
-          >
-            <div className="text-left">
-              <p className="text-sm font-extrabold text-white">Office Administrator</p>
-              <p className="text-[11px] text-slate-300 font-normal">Manage notices, campus events, gallery & contact leads</p>
-            </div>
-            <UserCheck className="w-5 h-5 text-slate-400" />
-          </button>
-
-          <button
-            onClick={() => loginDemo('exam_cell')}
-            className="w-full p-3.5 rounded-xl bg-maroon-900 hover:bg-maroon-950 text-white font-bold text-xs flex items-center justify-between transition-transform hover:scale-[1.01]"
-          >
-            <div className="text-left">
-              <p className="text-sm font-extrabold text-amber-300">Exam Cell Coordinator</p>
-              <p className="text-[11px] text-maroon-200 font-normal">Manage board results, toppers & timetables</p>
-            </div>
-            <UserCheck className="w-5 h-5 text-amber-300" />
-          </button>
-
-          <button
-            onClick={() => loginDemo('stream_coordinator')}
-            className="w-full p-3.5 rounded-xl bg-emerald-900 hover:bg-emerald-950 text-white font-bold text-xs flex items-center justify-between transition-transform hover:scale-[1.01]"
-          >
-            <div className="text-left">
-              <p className="text-sm font-extrabold text-emerald-300">Stream Coordinator (MPC/BiPC)</p>
-              <p className="text-[11px] text-emerald-200 font-normal">Manage faculty directory for assigned stream</p>
-            </div>
-            <UserCheck className="w-5 h-5 text-emerald-300" />
-          </button>
-        </div>
       </div>
     );
   }
