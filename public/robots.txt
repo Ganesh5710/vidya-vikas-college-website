@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /admin
+Disallow: /admin/*
+Disallow: /api/
+Disallow: /*?*query=
+
+Sitemap: https://srividyavikasjc.edu.in/sitemap.xml
