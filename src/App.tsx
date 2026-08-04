@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { LanguageProvider } from './context/LanguageContext';
 import { AuthProvider } from './context/AuthContext';
-import { TopBanner } from './components/layout/TopBanner';
 import { NewsTicker } from './components/layout/NewsTicker';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
@@ -57,8 +56,7 @@ export function App() {
       <LanguageProvider>
         <div className="min-h-screen flex flex-col bg-slate-50">
           
-          {/* Top Banner & News Ticker */}
-          <TopBanner />
+          {/* News Ticker */}
           <NewsTicker />
 
           {/* Sticky Navigation Header */}
