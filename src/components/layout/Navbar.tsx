@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { GraduationCap, Menu, X, ShieldAlert, LogOut, Sparkles } from 'lucide-react';
+import { GraduationCap, Menu, X, ShieldAlert, LogOut, Home, Award, Star } from 'lucide-react';
 import { COLLEGE_DETAILS } from '../../constants/collegeData';
 import { useLanguage } from '../../context/LanguageContext';
 import { useAuth } from '../../context/AuthContext';
@@ -34,120 +34,164 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
   };
 
   return (
-    <header className="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+    <div className="w-full bg-white">
+      
+      {/* 1. GRAND INSTITUTIONAL BRANDING HEADER */}
+      <div className="max-w-7xl mx-auto px-4 py-5 flex flex-wrap items-center justify-between gap-6 border-b border-slate-100">
         
-        {/* College Branding */}
+        {/* Left Emblem Seal */}
         <div 
           onClick={() => handleNavClick('home')}
-          className="flex items-center gap-3 cursor-pointer group"
+          className="flex items-center gap-3 cursor-pointer group shrink-0"
         >
-          <div className="w-11 h-11 rounded-lg bg-navy-900 flex items-center justify-center text-white shadow-md border-2 border-maroon-800 group-hover:scale-105 transition-transform">
-            <GraduationCap className="w-6 h-6 text-amber-400" />
-          </div>
-          <div>
-            <h1 className="text-base sm:text-lg md:text-xl font-extrabold text-navy-900 tracking-tight leading-tight group-hover:text-maroon-900 transition-colors">
-              {COLLEGE_DETAILS.name}
-            </h1>
-            <p className="text-[11px] text-slate-500 font-medium flex items-center gap-1">
-              <span>{COLLEGE_DETAILS.address}</span>
-            </p>
+          <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-navy-950 flex flex-col items-center justify-center text-white shadow-xl border-4 border-maroon-800 group-hover:scale-105 transition-transform p-2 text-center">
+            <GraduationCap className="w-8 h-8 text-amber-400" />
+            <span className="text-[9px] font-extrabold uppercase text-amber-300 tracking-tighter mt-0.5">EST. 2024</span>
           </div>
         </div>
 
-        {/* Desktop Nav Links */}
-        <nav className="hidden lg:flex items-center gap-5 text-xs font-bold text-slate-700">
-          {navItems.map((item) => (
-            <button
-              key={item.id}
-              onClick={() => handleNavClick(item.id)}
-              className={`transition-colors py-1 border-b-2 ${
-                activeTab === item.id
-                  ? 'text-maroon-900 border-maroon-800 font-extrabold'
-                  : 'border-transparent text-slate-600 hover:text-maroon-800'
-              }`}
-            >
-              {item.label}
-            </button>
-          ))}
-        </nav>
+        {/* Center Main College Name & Subheadings (Matching Aditya College format) */}
+        <div 
+          onClick={() => handleNavClick('home')}
+          className="text-center cursor-pointer flex-1 min-w-[280px]"
+        >
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-navy-950 tracking-tight leading-none uppercase font-serif">
+            {COLLEGE_DETAILS.name}
+          </h1>
 
-        {/* Admin Portal / Staff Login Button */}
-        <div className="hidden lg:flex items-center gap-2">
-          {user ? (
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => handleNavClick('admin')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-colors ${
-                  activeTab === 'admin'
-                    ? 'bg-maroon-900 text-white'
-                    : 'bg-navy-900 text-white hover:bg-navy-800'
-                }`}
-              >
-                <ShieldAlert className="w-3.5 h-3.5 text-amber-400" />
-                <span>Admin Dashboard</span>
-              </button>
-              <button
-                onClick={logout}
-                title="Log Out Staff Account"
-                className="p-1.5 rounded-lg text-slate-500 hover:text-red-600 hover:bg-slate-100 transition-colors"
-              >
-                <LogOut className="w-4 h-4" />
-              </button>
-            </div>
-          ) : (
-            <button
-              onClick={() => handleNavClick('admin')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 border transition-all ${
-                activeTab === 'admin'
-                  ? 'bg-maroon-900 text-white border-maroon-900'
-                  : 'bg-slate-100 text-slate-800 border-slate-300 hover:bg-navy-900 hover:text-white hover:border-navy-900'
-              }`}
-            >
-              <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-              <span>Staff Login</span>
-            </button>
-          )}
+          <h2 className="text-sm sm:text-base md:text-lg font-extrabold text-navy-900 tracking-wider uppercase mt-1">
+            MADANAPALLE
+          </h2>
+
+          <h3 className="text-xs sm:text-sm font-extrabold text-maroon-900 tracking-wide uppercase mt-0.5">
+            (BIEAP RECOGNIZED INSTITUTION)
+          </h3>
+
+          <p className="text-[11px] text-slate-500 font-semibold mt-1">
+            Prasanth Nagar, Madanapalle (Near Krishna Reddy Junior College)
+          </p>
         </div>
 
-        {/* Mobile Toggle Button */}
-        <button
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="lg:hidden p-2 rounded-lg text-slate-700 hover:bg-slate-100 transition-colors"
-          aria-label="Toggle navigation menu"
-        >
-          {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
+        {/* Right Seals / Recognition Badges */}
+        <div className="hidden md:flex items-center gap-4 shrink-0">
+          <div className="w-14 h-14 rounded-full bg-amber-500 text-navy-950 flex flex-col items-center justify-center p-2 text-center shadow border-2 border-white">
+            <Star className="w-4 h-4 fill-navy-950" />
+            <span className="text-[10px] font-black leading-tight">5.0 STARS</span>
+            <span className="text-[8px] font-bold">45 REVIEWS</span>
+          </div>
+
+          <div className="w-14 h-14 rounded-full bg-maroon-900 text-white flex flex-col items-center justify-center p-2 text-center shadow border-2 border-white">
+            <Award className="w-5 h-5 text-amber-400" />
+            <span className="text-[9px] font-extrabold uppercase leading-tight text-amber-300">BIEAP</span>
+            <span className="text-[8px] font-bold">A+ GRADE</span>
+          </div>
+        </div>
+
       </div>
 
-      {/* Mobile Drawer Menu */}
-      {mobileMenuOpen && (
-        <div className="lg:hidden bg-white border-t border-slate-200 px-4 py-4 space-y-2 shadow-lg animate-fadeIn">
-          {navItems.map((item) => (
+      {/* 2. STICKY FLOATING NAVIGATION BAR */}
+      <header className="bg-white border-y border-slate-200 sticky top-0 z-50 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 py-2.5 flex items-center justify-between">
+          
+          {/* Left Home Icon + Floating Nav Links */}
+          <nav className="hidden lg:flex items-center gap-4 text-xs font-bold text-slate-800">
             <button
-              key={item.id}
-              onClick={() => handleNavClick(item.id)}
-              className={`block w-full text-left px-3 py-2 rounded-md text-sm font-semibold transition-colors ${
-                activeTab === item.id
-                  ? 'bg-maroon-900 text-white font-bold'
-                  : 'text-slate-700 hover:bg-slate-100'
+              onClick={() => handleNavClick('home')}
+              className={`p-1.5 rounded-lg transition-colors ${
+                activeTab === 'home' ? 'text-maroon-900 bg-maroon-50' : 'text-slate-600 hover:text-maroon-900'
               }`}
+              title="Home Page"
             >
-              {item.label}
+              <Home className="w-4 h-4" />
             </button>
-          ))}
 
-          <div className="pt-2 border-t border-slate-200">
+            {navItems.slice(1).map((item) => (
+              <button
+                key={item.id}
+                onClick={() => handleNavClick(item.id)}
+                className={`transition-colors py-1 uppercase tracking-wider text-[11px] ${
+                  activeTab === item.id
+                    ? 'text-maroon-900 font-black border-b-2 border-maroon-800'
+                    : 'text-slate-700 hover:text-maroon-900'
+                }`}
+              >
+                {item.label}
+              </button>
+            ))}
+          </nav>
+
+          {/* Right Action Button (College Code Pill / Staff Login) */}
+          <div className="hidden lg:flex items-center gap-3">
+            {user ? (
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => handleNavClick('admin')}
+                  className="px-4 py-1.5 rounded-full bg-maroon-900 text-white font-extrabold text-xs shadow flex items-center gap-1.5 hover:bg-maroon-950 transition-transform hover:scale-105"
+                >
+                  <ShieldAlert className="w-3.5 h-3.5 text-amber-400" />
+                  <span>COLLEGE CODE: SVVJC ({user.role})</span>
+                </button>
+
+                <button
+                  onClick={logout}
+                  title="Sign Out Staff"
+                  className="p-1.5 rounded-full text-slate-500 hover:text-red-600 hover:bg-slate-100"
+                >
+                  <LogOut className="w-4 h-4" />
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => handleNavClick('admin')}
+                className="px-5 py-1.5 rounded-full bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 text-white font-black text-xs uppercase tracking-wider shadow transition-transform hover:scale-105 flex items-center gap-1.5"
+              >
+                <span>COLLEGE CODE : SVVJC</span>
+              </button>
+            )}
+          </div>
+
+          {/* Mobile Menu Toggle Button */}
+          <div className="lg:hidden flex items-center justify-between w-full">
+            <span className="font-extrabold text-navy-900 text-xs uppercase tracking-wider">Navigation Menu</span>
             <button
-              onClick={() => handleNavClick('admin')}
-              className="w-full px-3 py-2 rounded-md text-sm font-bold bg-navy-900 text-white flex items-center justify-center gap-2"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2 rounded-lg text-slate-700 hover:bg-slate-100"
             >
-              <ShieldAlert className="w-4 h-4 text-amber-400" />
-              <span>Staff Admin Portal</span>
+              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
+
         </div>
-      )}
-    </header>
+
+        {/* Mobile Navigation Drawer */}
+        {mobileMenuOpen && (
+          <div className="lg:hidden bg-white border-t border-slate-200 px-4 py-4 space-y-2 animate-in slide-in-from-top duration-200">
+            {navItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => handleNavClick(item.id)}
+                className={`w-full text-left px-4 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider ${
+                  activeTab === item.id
+                    ? 'bg-maroon-900 text-white'
+                    : 'text-slate-700 hover:bg-slate-100'
+                }`}
+              >
+                {item.label}
+              </button>
+            ))}
+
+            <div className="pt-2 border-t border-slate-100">
+              <button
+                onClick={() => handleNavClick('admin')}
+                className="w-full py-2.5 rounded-xl bg-orange-600 text-white font-extrabold text-xs uppercase tracking-wider text-center"
+              >
+                COLLEGE CODE : SVVJC (STAFF PORTAL)
+              </button>
+            </div>
+          </div>
+        )}
+      </header>
+
+    </div>
   );
 };

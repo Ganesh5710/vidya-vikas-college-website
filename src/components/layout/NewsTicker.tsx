@@ -1,38 +1,50 @@
 import React from 'react';
-import { Bell, ChevronRight } from 'lucide-react';
 import { INITIAL_NOTICES } from '../../constants/collegeData';
 
 interface NewsTickerProps {
-  notices?: typeof INITIAL_NOTICES;
+  setActiveTab: (tab: string) => void;
 }
 
-export const NewsTicker: React.FC<NewsTickerProps> = ({ notices = INITIAL_NOTICES }) => {
-  const tickerItems = notices.filter(n => n.isTicker);
+export const NewsTicker: React.FC<NewsTickerProps> = ({ setActiveTab }) => {
+  const tickerNotices = INITIAL_NOTICES.filter(n => n.isTicker);
 
   return (
-    <div className="bg-maroon-900 text-white text-xs py-2 px-4 flex items-center gap-3 border-b border-maroon-800 shadow-inner">
-      <div className="flex items-center gap-1.5 font-bold uppercase tracking-wider bg-maroon-950 px-2.5 py-1 rounded text-[11px] shrink-0 border border-maroon-800 shadow-sm">
-        <Bell className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
-        <span>Latest Notices</span>
-      </div>
+    <div className="bg-navy-900 text-white text-xs border-b border-navy-800">
+      <div className="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between gap-4">
+        
+        {/* Left Announcements Strip */}
+        <div className="flex items-center gap-3 min-w-0 flex-1">
+          <span className="font-extrabold text-[11px] text-amber-400 uppercase tracking-wider shrink-0 bg-navy-800 px-2.5 py-0.5 rounded border border-navy-700">
+            LATEST UPDATES ::
+          </span>
 
-      <div className="overflow-hidden whitespace-nowrap flex-1 relative">
-        <div className="inline-block animate-marquee hover:pause flex items-center gap-8">
-          {tickerItems.map((item, idx) => (
-            <span key={item.id || idx} className="inline-flex items-center gap-2 hover:underline cursor-pointer">
-              <span className="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
-              <span className="font-medium text-slate-100">{item.title}</span>
-              <span className="text-[10px] text-maroon-200 bg-maroon-950/60 px-1.5 py-0.5 rounded font-mono">
-                {item.category}
-              </span>
-            </span>
-          ))}
+          <div className="overflow-hidden whitespace-nowrap min-w-0">
+            <div className="inline-block animate-marquee space-x-8 font-medium text-slate-200">
+              {tickerNotices.map((notice) => (
+                <span key={notice.id} className="inline-flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+                  <span>{notice.title}</span>
+                  <span className="text-[10px] font-bold text-amber-300 bg-maroon-900 px-1.5 py-0.5 rounded ml-1">
+                    {notice.category}
+                  </span>
+                </span>
+              ))}
+            </div>
+          </div>
         </div>
-      </div>
 
-      <a href="#notices" className="text-[11px] text-amber-300 hover:text-white font-semibold flex items-center gap-0.5 shrink-0 hover:underline">
-        View All <ChevronRight className="w-3 h-3" />
-      </a>
+        {/* Right Action Button */}
+        <button
+          onClick={() => {
+            setActiveTab('contact');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className="shrink-0 px-4 py-1 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs shadow-sm transition-transform hover:scale-105"
+        >
+          Contact Us
+        </button>
+
+      </div>
     </div>
   );
 };

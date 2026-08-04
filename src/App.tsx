@@ -56,10 +56,10 @@ export function App() {
       <LanguageProvider>
         <div className="min-h-screen flex flex-col bg-slate-50">
           
-          {/* News Ticker */}
-          <NewsTicker />
+          {/* Top Blue Announcements Strip */}
+          <NewsTicker setActiveTab={setActiveTab} />
 
-          {/* Sticky Navigation Header */}
+          {/* Institutional Header & Sticky Navigation Header */}
           <Navbar activeTab={activeTab} setActiveTab={setActiveTab} />
 
           {/* Main Page Container */}
