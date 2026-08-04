@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { GraduationCap, CheckCircle2, AlertCircle, Calendar, Download, CreditCard, Send } from 'lucide-react';
+import { GraduationCap, CheckCircle2, AlertCircle, Calendar, Download, CreditCard, Send, Calculator } from 'lucide-react';
 import { INITIAL_STREAMS, INITIAL_FEE_STRUCTURE } from '../constants/collegeData';
 import { PlaceholderBadge } from '../components/common/PlaceholderBadge';
 import { ReCaptchaBadge } from '../components/common/ReCaptchaBadge';
@@ -24,6 +24,25 @@ export const AdmissionsPage: React.FC = () => {
   const [submitting, setSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+
+  // Fee Calculator State
+  const [calcStream, setCalcStream] = useState('MPC');
+  const [calcScore, setCalcScore] = useState<number>(550);
+  const [needBus, setNeedBus] = useState(true);
+
+  // Fee calculation logic
+  const baseTuition = 28000;
+  const labFee = calcStream === 'BiPC' || calcStream === 'MPC' ? 6000 : 3000;
+  const busFee = needBus ? 8000 : 0;
+
+  const scorePct = (calcScore / 600) * 100;
+  let scholarshipRate = 0;
+  if (scorePct >= 95) scholarshipRate = 0.25;
+  else if (scorePct >= 90) scholarshipRate = 0.15;
+  else if (scorePct >= 80) scholarshipRate = 0.10;
+
+  const scholarshipAmount = baseTuition * scholarshipRate;
+  const netTotal = (baseTuition - scholarshipAmount) + labFee + busFee;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -245,6 +264,103 @@ export const AdmissionsPage: React.FC = () => {
 
         </div>
 
+      </section>
+
+      {/* Interactive Fee & Merit Scholarship Calculator Widget */}
+      <section className="bg-gradient-to-br from-navy-900 to-navy-950 text-white rounded-2xl p-6 sm:p-8 shadow-xl space-y-6 border border-navy-800">
+        <div className="flex items-center justify-between flex-wrap gap-4 border-b border-navy-800 pb-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-amber-500 text-navy-950 flex items-center justify-center font-bold">
+              <Calculator className="w-6 h-6" />
+            </div>
+            <div>
+              <h3 className="text-2xl font-extrabold text-white">Interactive Fee & Scholarship Calculator</h3>
+              <p className="text-xs text-slate-300">Calculate net tuition fee & merit scholarship discount in real-time</p>
+            </div>
+          </div>
+
+          <span className="text-xs font-bold text-amber-400 bg-amber-400/10 px-3 py-1 rounded-full border border-amber-400/30">
+            Merit Scholarship Active (Up to 25% OFF)
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+          
+          {/* Controls */}
+          <div className="space-y-4 md:col-span-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs font-bold text-slate-300 mb-1">Select Stream</label>
+                <select
+                  value={calcStream}
+                  onChange={(e) => setCalcStream(e.target.value)}
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-navy-800 border border-navy-700 text-white text-xs font-bold outline-none"
+                >
+                  <option value="MPC">MPC (Maths, Physics, Chem)</option>
+                  <option value="BiPC">BiPC (Biology, Physics, Chem)</option>
+                  <option value="CEC">CEC (Civics, Econ, Commerce)</option>
+                  <option value="MEC">MEC (Maths, Econ, Commerce)</option>
+                  <option value="HEC">HEC (History, Econ, Civics)</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-300 mb-1">Class 10 Total Marks (out of 600)</label>
+                <input 
+                  type="number"
+                  value={calcScore}
+                  onChange={(e) => setCalcScore(parseFloat(e.target.value) || 0)}
+                  placeholder="550"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-navy-800 border border-navy-700 text-white text-xs font-bold outline-none"
+                />
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3 pt-1">
+              <label className="flex items-center gap-2 text-xs text-slate-300 font-semibold cursor-pointer">
+                <input 
+                  type="checkbox"
+                  checked={needBus}
+                  onChange={(e) => setNeedBus(e.target.checked)}
+                  className="w-4 h-4 rounded text-amber-500 focus:ring-amber-400"
+                />
+                <span>Include College Bus Transport Service (+₹8,000/yr)</span>
+              </label>
+            </div>
+          </div>
+
+          {/* Breakdown Card */}
+          <div className="bg-white/10 backdrop-blur p-5 rounded-2xl border border-white/20 space-y-3">
+            <h4 className="text-xs font-bold text-amber-400 uppercase tracking-wider">Estimated Fee Summary</h4>
+
+            <div className="space-y-1.5 text-xs text-slate-200">
+              <div className="flex justify-between">
+                <span>Base Tuition Fee:</span>
+                <span className="font-mono">₹{baseTuition.toLocaleString()}</span>
+              </div>
+              <div className="flex justify-between text-emerald-400 font-semibold">
+                <span>Merit Discount ({(scholarshipRate*100)}%):</span>
+                <span className="font-mono">-₹{scholarshipAmount.toLocaleString()}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Lab & Computer Fee:</span>
+                <span className="font-mono">₹{labFee.toLocaleString()}</span>
+              </div>
+              {needBus && (
+                <div className="flex justify-between">
+                  <span>Transport Bus Fee:</span>
+                  <span className="font-mono">₹{busFee.toLocaleString()}</span>
+                </div>
+              )}
+            </div>
+
+            <div className="pt-3 border-t border-white/20 flex justify-between items-center">
+              <span className="text-xs font-bold text-white uppercase">Net Payable Annual Fee:</span>
+              <span className="text-xl font-extrabold text-amber-400 font-mono">₹{netTotal.toLocaleString()}</span>
+            </div>
+          </div>
+
+        </div>
       </section>
 
       {/* Fee Structure Table */}

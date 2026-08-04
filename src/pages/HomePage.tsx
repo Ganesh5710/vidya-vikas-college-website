@@ -10,10 +10,14 @@ import {
   Calendar, 
   Bell, 
   CheckCircle,
-  ArrowRight
+  ArrowRight,
+  Calculator,
+  Building2
 } from 'lucide-react';
 import { COLLEGE_DETAILS, INITIAL_STREAMS, INITIAL_NOTICES, INITIAL_EVENTS, INITIAL_CONTACT_INFO } from '../constants/collegeData';
 import { PlaceholderBadge } from '../components/common/PlaceholderBadge';
+import { StreamPredictorModal } from '../components/common/StreamPredictorModal';
+import { VirtualCampusTourModal } from '../components/common/VirtualCampusTourModal';
 import { useSEO } from '../hooks/useSEO';
 
 interface HomePageProps {
@@ -27,6 +31,8 @@ export const HomePage: React.FC<HomePageProps> = ({ setActiveTab }) => {
   });
 
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isPredictorOpen, setIsPredictorOpen] = useState(false);
+  const [isTourOpen, setIsTourOpen] = useState(false);
 
   const heroSlides = [
     {
@@ -95,11 +101,19 @@ export const HomePage: React.FC<HomePageProps> = ({ setActiveTab }) => {
                 </button>
 
                 <button
-                  onClick={() => setActiveTab('streams')}
-                  className="px-6 py-3 rounded-xl bg-white/10 hover:bg-white/20 backdrop-blur text-white border border-white/30 font-bold text-sm flex items-center gap-2 transition-colors"
+                  onClick={() => setIsPredictorOpen(true)}
+                  className="px-5 py-3 rounded-xl bg-amber-500 hover:bg-amber-600 text-navy-950 font-extrabold text-sm shadow flex items-center gap-2 transition-transform hover:scale-105"
                 >
-                  <span>Explore Streams (MPC, BiPC...)</span>
-                  <ChevronRight className="w-4 h-4 text-amber-400" />
+                  <Calculator className="w-4 h-4" />
+                  <span>Class 10 Stream Predictor</span>
+                </button>
+
+                <button
+                  onClick={() => setIsTourOpen(true)}
+                  className="px-5 py-3 rounded-xl bg-white/10 hover:bg-white/20 backdrop-blur text-white border border-white/30 font-bold text-sm flex items-center gap-2 transition-colors"
+                >
+                  <Building2 className="w-4 h-4 text-amber-400" />
+                  <span>360° Virtual Tour</span>
                 </button>
               </div>
             </div>
@@ -136,12 +150,22 @@ export const HomePage: React.FC<HomePageProps> = ({ setActiveTab }) => {
           </div>
         </div>
 
-        <button
-          onClick={() => setActiveTab('admissions')}
-          className="px-5 py-2.5 rounded-lg bg-navy-900 hover:bg-navy-950 text-white font-bold text-xs uppercase tracking-wider shadow transition-transform hover:scale-105"
-        >
-          Submit Online Application
-        </button>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => setIsPredictorOpen(true)}
+            className="px-4 py-2 rounded-lg bg-white/90 hover:bg-white text-navy-950 font-bold text-xs shadow transition-transform hover:scale-105 flex items-center gap-1.5"
+          >
+            <Calculator className="w-4 h-4 text-maroon-900" />
+            <span>Check My Stream Eligibility</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('admissions')}
+            className="px-5 py-2 rounded-lg bg-navy-900 hover:bg-navy-950 text-white font-bold text-xs uppercase tracking-wider shadow transition-transform hover:scale-105"
+          >
+            Submit Online Application
+          </button>
+        </div>
       </section>
 
       {/* 3. QUICK STATS HIGHLIGHTS */}
@@ -337,6 +361,18 @@ export const HomePage: React.FC<HomePageProps> = ({ setActiveTab }) => {
         </div>
 
       </section>
+
+      {/* Modals */}
+      <StreamPredictorModal 
+        isOpen={isPredictorOpen}
+        onClose={() => setIsPredictorOpen(false)}
+        onSelectStream={setActiveTab}
+      />
+
+      <VirtualCampusTourModal 
+        isOpen={isTourOpen}
+        onClose={() => setIsTourOpen(false)}
+      />
 
     </div>
   );

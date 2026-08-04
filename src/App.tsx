@@ -5,6 +5,7 @@ import { TopBanner } from './components/layout/TopBanner';
 import { NewsTicker } from './components/layout/NewsTicker';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
+import { WhatsAppFAB } from './components/layout/WhatsAppFAB';
 
 // Pages
 import { HomePage } from './pages/HomePage';
@@ -67,6 +68,9 @@ export function App() {
           <main className="flex-1 max-w-7xl w-full mx-auto px-4 py-8">
             {renderActivePage()}
           </main>
+
+          {/* Floating WhatsApp Action Button */}
+          <WhatsAppFAB />
 
           {/* Footer */}
           <Footer setActiveTab={setActiveTab} />
