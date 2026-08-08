@@ -20,15 +20,25 @@ export const NewsTicker: React.FC<NewsTickerProps> = ({ setActiveTab }) => {
 
           <div className="overflow-hidden whitespace-nowrap min-w-0">
             <div className="inline-block animate-marquee space-x-8 font-medium text-slate-200">
-              {tickerNotices.map((notice) => (
-                <span key={notice.id} className="inline-flex items-center gap-2">
+              {tickerNotices.length > 0 ? (
+                tickerNotices.map((notice) => (
+                  <span key={notice.id} className="inline-flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+                    <span>{notice.title}</span>
+                    <span className="text-[10px] font-bold text-amber-300 bg-maroon-900 px-1.5 py-0.5 rounded ml-1">
+                      {notice.category}
+                    </span>
+                  </span>
+                ))
+              ) : (
+                <span className="inline-flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
-                  <span>{notice.title}</span>
+                  <span>Admissions Open for Academic Year 2025-2026 (MPC, BiPC, CEC, MEC, HEC) • SRI VIDYA VIKAS JUNIOR COLLEGE, Prasanth Nagar, Madanapalle</span>
                   <span className="text-[10px] font-bold text-amber-300 bg-maroon-900 px-1.5 py-0.5 rounded ml-1">
-                    {notice.category}
+                    Admissions
                   </span>
                 </span>
-              ))}
+              )}
             </div>
           </div>
         </div>
