@@ -1,12 +1,13 @@
 import React from 'react';
-import { INITIAL_NOTICES } from '../../constants/collegeData';
+import { useData } from '../../context/DataContext';
 
 interface NewsTickerProps {
   setActiveTab: (tab: string) => void;
 }
 
 export const NewsTicker: React.FC<NewsTickerProps> = ({ setActiveTab }) => {
-  const tickerNotices = INITIAL_NOTICES.filter(n => n.isTicker);
+  const { notices } = useData();
+  const tickerNotices = notices.filter(n => n.isTicker);
 
   return (
     <div className="bg-navy-900 text-white text-xs border-b border-navy-800">

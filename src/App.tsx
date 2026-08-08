@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { LanguageProvider } from './context/LanguageContext';
 import { AuthProvider } from './context/AuthContext';
+import { DataProvider } from './context/DataContext';
 import { NewsTicker } from './components/layout/NewsTicker';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
@@ -54,26 +55,28 @@ export function App() {
   return (
     <AuthProvider>
       <LanguageProvider>
-        <div className="min-h-screen flex flex-col bg-slate-50">
-          
-          {/* Top Blue Announcements Strip */}
-          <NewsTicker setActiveTab={setActiveTab} />
+        <DataProvider>
+          <div className="min-h-screen flex flex-col bg-slate-50">
+            
+            {/* Top Blue Announcements Strip */}
+            <NewsTicker setActiveTab={setActiveTab} />
 
-          {/* Institutional Header & Sticky Navigation Header */}
-          <Navbar activeTab={activeTab} setActiveTab={setActiveTab} />
+            {/* Institutional Header & Sticky Navigation Header */}
+            <Navbar activeTab={activeTab} setActiveTab={setActiveTab} />
 
-          {/* Main Page Container */}
-          <main className="flex-1 max-w-7xl w-full mx-auto px-4 py-8">
-            {renderActivePage()}
-          </main>
+            {/* Main Page Container */}
+            <main className="flex-1 max-w-7xl w-full mx-auto px-4 py-8">
+              {renderActivePage()}
+            </main>
 
-          {/* Floating WhatsApp Action Button */}
-          <WhatsAppFAB />
+            {/* Floating WhatsApp Action Button */}
+            <WhatsAppFAB />
 
-          {/* Footer */}
-          <Footer setActiveTab={setActiveTab} />
+            {/* Footer */}
+            <Footer setActiveTab={setActiveTab} />
 
-        </div>
+          </div>
+        </DataProvider>
       </LanguageProvider>
     </AuthProvider>
   );

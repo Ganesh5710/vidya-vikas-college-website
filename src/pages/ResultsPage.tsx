@@ -1,6 +1,7 @@
 import React from 'react';
 import { Award, Trophy, CheckCircle } from 'lucide-react';
-import { INITIAL_STREAM_SUMMARY, INITIAL_TOPPERS } from '../constants/collegeData';
+import { INITIAL_STREAM_SUMMARY } from '../constants/collegeData';
+import { useData } from '../context/DataContext';
 import { PlaceholderBadge } from '../components/common/PlaceholderBadge';
 import { EmptyState } from '../components/common/EmptyState';
 import { useSEO } from '../hooks/useSEO';
@@ -10,6 +11,8 @@ export const ResultsPage: React.FC = () => {
     title: "Board Exam Results & Top Rankers | SVVJC Madanapalle",
     description: "Check intermediate board exam pass percentages and top student rankers at SRI VIDYA VIKAS JUNIOR COLLEGE, Prasanth Nagar, Madanapalle."
   });
+
+  const { toppers } = useData();
 
   return (
     <div className="space-y-10">
@@ -59,19 +62,19 @@ export const ResultsPage: React.FC = () => {
             <h3 className="text-2xl font-extrabold text-navy-900">College Top Rankers</h3>
             <p className="text-xs text-slate-500">Board Exam High Scorers & Competitive Exam Qualifiers</p>
           </div>
-          <PlaceholderBadge checklistRef="Section 4 - Pass Percentage & Topper List" note="Topper List Flagged for Principal's Office Sign-off" />
+          <PlaceholderBadge checklistRef="Section 4 - Pass Percentage & Topper List" note="Topper List Sign-off Active" />
         </div>
 
-        {INITIAL_TOPPERS.length === 0 ? (
+        {toppers.length === 0 ? (
           <EmptyState 
-            title="Toppers List Pending Official Approval"
-            description="The verified list of board exam toppers and competitive exam rankers is currently undergoing sign-off by the Principal's Office."
-            checklistRef="Section 4 - Pass Percentage & Topper List (last 2-3 yrs)"
+            title="No Topper Records Added Yet"
+            description="Board exam toppers posted via the Staff Control Panel will instantly appear here."
+            checklistRef="Section 4 - Pass Percentage & Topper List"
             responsibleStaff="Exam Cell & Principal's Office"
           />
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {INITIAL_TOPPERS.map((topper) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {toppers.map((topper) => (
               <div key={topper.id} className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4 hover:shadow-md transition-shadow">
                 <div className="relative">
                   <img 
@@ -98,10 +101,6 @@ export const ResultsPage: React.FC = () => {
                     <span>Competitive Exam Ranker</span>
                   </div>
                 )}
-
-                <div className="pt-2 border-t border-slate-100">
-                  <PlaceholderBadge checklistRef={topper.checklistRef} note={topper.note} />
-                </div>
               </div>
             ))}
           </div>

@@ -22,12 +22,7 @@ import {
   X
 } from 'lucide-react';
 import { useAuth, type UserRole } from '../context/AuthContext';
-import { 
-  INITIAL_NOTICES, 
-  INITIAL_EVENTS, 
-  INITIAL_FACULTY, 
-  INITIAL_TOPPERS 
-} from '../constants/collegeData';
+import { useData } from '../context/DataContext';
 import { EmptyState } from '../components/common/EmptyState';
 import { useSEO } from '../hooks/useSEO';
 
@@ -39,6 +34,14 @@ export const AdminDashboardPage: React.FC = () => {
   });
 
   const { user, isAuthenticated, loginDemo, logout } = useAuth();
+  const { 
+    notices, addNotice, deleteNotice,
+    events, addEvent, deleteEvent,
+    faculty, addFaculty, deleteFaculty,
+    toppers, addTopper, deleteTopper,
+    leads, updateLeadStatus
+  } = useData();
+
   const [activeTab, setActiveTab] = useState<'notices' | 'events' | 'faculty' | 'results' | 'leads'>('notices');
 
   // Login form state
@@ -46,12 +49,6 @@ export const AdminDashboardPage: React.FC = () => {
   const [passwordInput, setPasswordInput] = useState('principal@svvjc');
   const [showPassword, setShowPassword] = useState(false);
   const [loginError, setLoginError] = useState('');
-
-  // Local state for dynamic CRUD
-  const [notices, setNotices] = useState(INITIAL_NOTICES);
-  const [events, setEvents] = useState(INITIAL_EVENTS);
-  const [faculty, setFaculty] = useState(INITIAL_FACULTY);
-  const [toppers, setToppers] = useState(INITIAL_TOPPERS);
 
   // Form states
   const [newNoticeTitle, setNewNoticeTitle] = useState('');
@@ -73,21 +70,10 @@ export const AdminDashboardPage: React.FC = () => {
   // Topper form + photo state
   const [newTopperName, setNewTopperName] = useState('');
   const [newTopperMarks, setNewTopperMarks] = useState('');
-  const [newTopperRank, setNewTopperRank] = useState('College Ranker');
+  const [newTopperRank, setNewTopperRank] = useState('College 1st Rank');
   const [topperPhotoPreview, setTopperPhotoPreview] = useState<string>('');
 
   const [uploadStatus, setUploadStatus] = useState('');
-
-  // Submitted Leads state
-  const [leads, setLeads] = useState<Array<{
-    id: string;
-    name: string;
-    phone: string;
-    stream: string;
-    marks: string;
-    status: string;
-    date: string;
-  }>>([]);
 
   // File selection helper
   const handleFileSelect = (
@@ -162,7 +148,7 @@ export const AdminDashboardPage: React.FC = () => {
     e.preventDefault();
     if (!newNoticeTitle) return;
 
-    const noticeObj = {
+    addNotice({
       id: `not-${Date.now()}`,
       title: newNoticeTitle,
       category: newNoticeCategory,
@@ -170,18 +156,17 @@ export const AdminDashboardPage: React.FC = () => {
       pdfUrl: '#',
       isTicker: newNoticeTicker,
       isArchived: false,
-    };
+    });
 
-    setNotices([noticeObj, ...notices]);
     setNewNoticeTitle('');
-    alert('Circular / Notice added successfully!');
+    alert('Circular / Notice published live across the site!');
   };
 
   const handleAddEvent = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newEventTitle) return;
 
-    const eventObj = {
+    addEvent({
       id: `evt-${Date.now()}`,
       title: newEventTitle,
       eventDate: newEventDate || new Date().toISOString().split('T')[0],
@@ -191,19 +176,18 @@ export const AdminDashboardPage: React.FC = () => {
       description: 'Campus event organized by Sri Vidya Vikas Junior College.',
       posterUrl: eventPhotoPreview || 'https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&q=80&w=800',
       isUpcoming: true,
-    };
+    });
 
-    setEvents([eventObj, ...events]);
     setNewEventTitle('');
     setEventPhotoPreview('');
-    alert('Campus event added successfully!');
+    alert('Campus event posted live across all pages!');
   };
 
   const handleAddFaculty = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newFacultyName) return;
 
-    const facObj = {
+    addFaculty({
       id: `fac-${Date.now()}`,
       name: newFacultyName,
       designation: newFacultyDesignation,
@@ -213,19 +197,18 @@ export const AdminDashboardPage: React.FC = () => {
       experienceYears: 10,
       email: `${newFacultyName.toLowerCase().replace(/\s+/g, '.')}@svvjc.edu.in`,
       photoUrl: facultyPhotoPreview || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=400',
-    };
+    });
 
-    setFaculty([facObj, ...faculty]);
     setNewFacultyName('');
     setFacultyPhotoPreview('');
-    alert(`Faculty profile for '${newFacultyName}' added successfully!`);
+    alert(`Faculty profile for '${newFacultyName}' added live!`);
   };
 
   const handleAddTopper = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newTopperName) return;
 
-    const topObj = {
+    addTopper({
       id: `top-${Date.now()}`,
       academicYear: '2024-2025',
       studentName: newTopperName,
@@ -235,13 +218,12 @@ export const AdminDashboardPage: React.FC = () => {
       photoUrl: topperPhotoPreview || 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=400',
       isCompetitiveQualifier: true,
       examName: 'AP EAMCET / NEET Qualified',
-    };
+    });
 
-    setToppers([topObj, ...toppers]);
     setNewTopperName('');
     setNewTopperMarks('');
     setTopperPhotoPreview('');
-    alert('Topper record posted successfully!');
+    alert(`Topper record for '${newTopperName}' with photo posted live on Results & Toppers page!`);
   };
 
   // If Not Authenticated, Show Login Form + Staff Quick Credential Fill Cards
@@ -534,7 +516,7 @@ export const AdminDashboardPage: React.FC = () => {
                       <p className="font-bold text-navy-900 text-xs mt-1">{n.title}</p>
                     </div>
                     <button
-                      onClick={() => setNotices(notices.filter(item => item.id !== n.id))}
+                      onClick={() => deleteNotice(n.id)}
                       className="p-1.5 text-slate-400 hover:text-red-600 rounded"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -646,7 +628,7 @@ export const AdminDashboardPage: React.FC = () => {
                       </div>
                     </div>
                     <button
-                      onClick={() => setEvents(events.filter(e => e.id !== evt.id))}
+                      onClick={() => deleteEvent(evt.id)}
                       className="p-2 rounded-lg text-slate-400 hover:text-red-600 hover:bg-slate-200 transition-colors shrink-0"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -756,7 +738,7 @@ export const AdminDashboardPage: React.FC = () => {
                       </div>
                     </div>
                     <button
-                      onClick={() => setFaculty(faculty.filter(f => f.id !== fac.id))}
+                      onClick={() => deleteFaculty(fac.id)}
                       className="p-2 rounded-lg text-slate-400 hover:text-red-600 hover:bg-slate-200 transition-colors shrink-0"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -864,7 +846,7 @@ export const AdminDashboardPage: React.FC = () => {
                       </div>
                     </div>
                     <button
-                      onClick={() => setToppers(toppers.filter(t => t.id !== top.id))}
+                      onClick={() => deleteTopper(top.id)}
                       className="p-2 rounded-lg text-slate-400 hover:text-red-600 hover:bg-slate-200 transition-colors shrink-0"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -914,9 +896,7 @@ export const AdminDashboardPage: React.FC = () => {
                       </td>
                       <td className="p-3">
                         <button
-                          onClick={() => {
-                            setLeads(leads.map(l => l.id === lead.id ? { ...l, status: 'contacted' } : l));
-                          }}
+                          onClick={() => updateLeadStatus(lead.id, 'contacted')}
                           className="px-2.5 py-1 rounded bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold text-[10px]"
                         >
                           Mark Contacted
