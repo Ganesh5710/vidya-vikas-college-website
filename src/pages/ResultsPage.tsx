@@ -1,7 +1,7 @@
-import React from 'react';
-import { Award, Trophy, CheckCircle } from 'lucide-react';
+import React, { useState } from 'react';
+import { Award, Trophy, CheckCircle, Maximize2, X } from 'lucide-react';
 import { INITIAL_STREAM_SUMMARY } from '../constants/collegeData';
-import { useData } from '../context/DataContext';
+import { useData, type TopperItem } from '../context/DataContext';
 import { PlaceholderBadge } from '../components/common/PlaceholderBadge';
 import { EmptyState } from '../components/common/EmptyState';
 import { useSEO } from '../hooks/useSEO';
@@ -13,6 +13,27 @@ export const ResultsPage: React.FC = () => {
   });
 
   const { toppers } = useData();
+  const [selectedPhoto, setSelectedPhoto] = useState<{ url: string; title: string } | null>(null);
+
+  // Smart score formatting function (Fixes 464% bug)
+  const formatTopperScore = (marks: any) => {
+    if (!marks && marks !== 0) return '';
+    const strVal = String(marks).trim();
+    
+    if (strVal.includes('/') || strVal.includes('%')) {
+      return strVal;
+    }
+    
+    const numVal = parseFloat(strVal);
+    if (!isNaN(numVal)) {
+      if (numVal <= 100) {
+        return `${numVal}%`;
+      } else {
+        return `${numVal} Marks`;
+      }
+    }
+    return strVal;
+  };
 
   return (
     <div className="space-y-10">
@@ -74,38 +95,79 @@ export const ResultsPage: React.FC = () => {
           />
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            {toppers.map((topper) => (
-              <div key={topper.id} className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4 hover:shadow-md transition-shadow">
-                <div className="relative">
+            {toppers.map((topper: TopperItem) => (
+              <div key={topper.id} className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm space-y-4 hover:shadow-md transition-shadow flex flex-col justify-between">
+                
+                {/* Poster Container with Full Image object-contain Fit */}
+                <div className="relative w-full h-[380px] sm:h-[440px] rounded-xl overflow-hidden bg-slate-950 flex items-center justify-center p-1 group border border-slate-200">
                   <img 
                     src={topper.photoUrl || "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=400"} 
                     alt={topper.studentName}
-                    className="w-full h-48 rounded-xl object-cover border"
+                    className="w-full h-full object-contain rounded-lg group-hover:scale-[1.02] transition-transform duration-300"
                   />
-                  <div className="absolute top-3 right-3 bg-amber-500 text-navy-950 font-extrabold text-xs px-2.5 py-1 rounded shadow">
-                    {topper.marksPercentage}%
+
+                  {/* Score Tag (Fixed 464% bug) */}
+                  <div className="absolute top-3 right-3 bg-amber-500 text-navy-950 font-black text-xs px-3 py-1 rounded-full shadow border border-amber-300">
+                    {formatTopperScore(topper.marksPercentage)}
                   </div>
+
+                  {/* Fullscreen Expand Icon Button */}
+                  <button
+                    onClick={() => setSelectedPhoto({ url: topper.photoUrl, title: topper.studentName })}
+                    className="absolute bottom-3 right-3 p-2 rounded-lg bg-navy-900/80 hover:bg-navy-900 text-white backdrop-blur shadow transition-all flex items-center gap-1 text-[11px] font-bold"
+                    title="Click to view full high-res poster"
+                  >
+                    <Maximize2 className="w-3.5 h-3.5 text-amber-400" />
+                    <span>View Full Poster</span>
+                  </button>
                 </div>
 
-                <div className="space-y-1">
-                  <span className="text-xs font-bold px-2 py-0.5 rounded bg-maroon-100 text-maroon-900">
+                <div className="space-y-1.5 pt-1">
+                  <span className="text-xs font-extrabold px-2.5 py-0.5 rounded-full bg-maroon-100 text-maroon-900 border border-maroon-200">
                     {topper.rank}
                   </span>
-                  <h4 className="font-extrabold text-navy-900 text-base pt-1">{topper.studentName}</h4>
-                  <p className="text-xs text-slate-600 font-medium">{topper.examName}</p>
+                  <h4 className="font-extrabold text-navy-900 text-lg pt-1">{topper.studentName}</h4>
+                  <p className="text-xs text-slate-600 font-semibold">{topper.examName}</p>
                 </div>
 
                 {topper.isCompetitiveQualifier && (
-                  <div className="p-2.5 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs font-semibold flex items-center gap-1.5">
+                  <div className="p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs font-semibold flex items-center gap-2">
                     <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0" />
-                    <span>Competitive Exam Ranker</span>
+                    <span>Competitive Exam Qualifier</span>
                   </div>
                 )}
+
               </div>
             ))}
           </div>
         )}
       </section>
+
+      {/* FULLSCREEN LIGHTBOX MODAL FOR POSTERS */}
+      {selectedPhoto && (
+        <div className="fixed inset-0 z-50 bg-navy-950/90 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in">
+          <div className="relative max-w-4xl w-full max-h-[90vh] flex flex-col items-center">
+            
+            <button
+              onClick={() => setSelectedPhoto(null)}
+              className="absolute -top-12 right-0 p-2 text-white hover:text-amber-400 font-bold flex items-center gap-1 text-xs"
+            >
+              <X className="w-6 h-6" />
+              <span>Close</span>
+            </button>
+
+            <img 
+              src={selectedPhoto.url} 
+              alt={selectedPhoto.title}
+              className="max-h-[80vh] w-auto object-contain rounded-2xl border-2 border-white/20 shadow-2xl"
+            />
+
+            <p className="text-white text-sm font-bold mt-3 text-center">
+              {selectedPhoto.title} — Official Poster
+            </p>
+          </div>
+        </div>
+      )}
 
     </div>
   );

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Calendar } from 'lucide-react';
+import { Calendar, Maximize2, X } from 'lucide-react';
 import { INITIAL_GALLERY_ALBUMS, INITIAL_GALLERY_PHOTOS } from '../constants/collegeData';
 import { useData } from '../context/DataContext';
 import { PlaceholderBadge } from '../components/common/PlaceholderBadge';
@@ -14,6 +14,7 @@ export const EventsPage: React.FC = () => {
 
   const { events } = useData();
   const [activeAlbumId, setActiveAlbumId] = useState<string>(INITIAL_GALLERY_ALBUMS[0]?.id || 'alb-1');
+  const [selectedPhoto, setSelectedPhoto] = useState<{ url: string; title: string } | null>(null);
 
   const activeAlbum = INITIAL_GALLERY_ALBUMS.find(a => a.id === activeAlbumId) || INITIAL_GALLERY_ALBUMS[0];
   const albumPhotos = INITIAL_GALLERY_PHOTOS.filter(p => p.albumId === activeAlbumId);
@@ -49,26 +50,41 @@ export const EventsPage: React.FC = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {events.map((evt) => (
-              <div key={evt.id} className="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm space-y-3 hover:shadow-md transition-shadow">
-                {evt.posterUrl && (
-                  <img 
-                    src={evt.posterUrl} 
-                    alt={evt.title} 
-                    className="w-full h-44 object-cover border-b"
-                  />
-                )}
-                <div className="p-5 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded ${
-                      evt.isUpcoming ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-700'
-                    }`}>
-                      {evt.isUpcoming ? 'Upcoming Event' : 'Past Event'}
-                    </span>
-                    <span className="text-xs text-slate-400 font-mono">{evt.eventDate}</span>
+              <div key={evt.id} className="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm space-y-3 hover:shadow-md transition-shadow flex flex-col justify-between">
+                <div>
+                  {evt.posterUrl && (
+                    <div 
+                      onClick={() => setSelectedPhoto({ url: evt.posterUrl, title: evt.title })}
+                      className="relative w-full h-64 sm:h-72 bg-slate-950 flex items-center justify-center p-1 border-b cursor-pointer group"
+                    >
+                      <img 
+                        src={evt.posterUrl} 
+                        alt={evt.title} 
+                        className="w-full h-full object-contain rounded group-hover:scale-105 transition-transform duration-300"
+                      />
+                      <div className="absolute bottom-2 right-2 p-1.5 rounded bg-navy-900/80 text-white text-[10px] font-bold flex items-center gap-1">
+                        <Maximize2 className="w-3 h-3 text-amber-400" />
+                        <span>Zoom</span>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="p-5 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded ${
+                        evt.isUpcoming ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-700'
+                      }`}>
+                        {evt.isUpcoming ? 'Upcoming Event' : 'Past Event'}
+                      </span>
+                      <span className="text-xs text-slate-400 font-mono">{evt.eventDate}</span>
+                    </div>
+                    <h4 className="font-bold text-navy-900 text-base">{evt.title}</h4>
+                    <p className="text-xs text-slate-600 leading-relaxed">{evt.description}</p>
                   </div>
-                  <h4 className="font-bold text-navy-900 text-base">{evt.title}</h4>
-                  <p className="text-xs text-slate-600 leading-relaxed">{evt.description}</p>
-                  <p className="text-[11px] text-slate-500 font-medium pt-1 border-t border-slate-100">Venue: {evt.venue}</p>
+                </div>
+
+                <div className="px-5 pb-5 pt-2 border-t border-slate-100 text-[11px] text-slate-500 font-medium">
+                  Venue: {evt.venue}
                 </div>
               </div>
             ))}
@@ -119,7 +135,11 @@ export const EventsPage: React.FC = () => {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {albumPhotos.map((photo) => (
-              <div key={photo.id} className="relative rounded-xl overflow-hidden border border-slate-200 shadow-sm group">
+              <div 
+                key={photo.id} 
+                onClick={() => setSelectedPhoto({ url: photo.imageUrl, title: 'Campus Photo' })}
+                className="relative rounded-xl overflow-hidden border border-slate-200 shadow-sm group cursor-pointer"
+              >
                 <img 
                   src={photo.imageUrl || "https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&q=80&w=600"} 
                   alt="Campus Event Photo"
@@ -130,6 +150,27 @@ export const EventsPage: React.FC = () => {
           </div>
         )}
       </section>
+
+      {/* LIGHTBOX MODAL */}
+      {selectedPhoto && (
+        <div className="fixed inset-0 z-50 bg-navy-950/90 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in">
+          <div className="relative max-w-4xl w-full max-h-[90vh] flex flex-col items-center">
+            <button
+              onClick={() => setSelectedPhoto(null)}
+              className="absolute -top-12 right-0 p-2 text-white hover:text-amber-400 font-bold flex items-center gap-1 text-xs"
+            >
+              <X className="w-6 h-6" />
+              <span>Close</span>
+            </button>
+            <img 
+              src={selectedPhoto.url} 
+              alt={selectedPhoto.title}
+              className="max-h-[80vh] w-auto object-contain rounded-2xl border-2 border-white/20 shadow-2xl"
+            />
+            <p className="text-white text-sm font-bold mt-3 text-center">{selectedPhoto.title}</p>
+          </div>
+        </div>
+      )}
 
     </div>
   );
