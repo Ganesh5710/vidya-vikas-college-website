@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { GraduationCap, Menu, X, ShieldAlert, LogOut, Home, Award, Star } from 'lucide-react';
+import { Menu, X, ShieldAlert, LogOut, Home, Award, Star } from 'lucide-react';
 import { COLLEGE_DETAILS } from '../../constants/collegeData';
 import { useLanguage } from '../../context/LanguageContext';
 import { useAuth } from '../../context/AuthContext';
@@ -36,21 +36,22 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
   return (
     <div className="w-full bg-white">
       
-      {/* 1. GRAND INSTITUTIONAL BRANDING HEADER */}
+      {/* 1. GRAND INSTITUTIONAL BRANDING HEADER WITH OFFICIAL LOGO */}
       <div className="max-w-7xl mx-auto px-4 py-5 flex flex-wrap items-center justify-between gap-6 border-b border-slate-100">
         
-        {/* Left Emblem Seal */}
+        {/* Left Official Logo Image */}
         <div 
           onClick={() => handleNavClick('home')}
           className="flex items-center gap-3 cursor-pointer group shrink-0"
         >
-          <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-navy-950 flex flex-col items-center justify-center text-white shadow-xl border-4 border-maroon-800 group-hover:scale-105 transition-transform p-2 text-center">
-            <GraduationCap className="w-8 h-8 text-amber-400" />
-            <span className="text-[9px] font-extrabold uppercase text-amber-300 tracking-tighter mt-0.5">EST. 2024</span>
-          </div>
+          <img 
+            src={COLLEGE_DETAILS.logoUrl} 
+            alt={`${COLLEGE_DETAILS.name} Official Logo`}
+            className="w-16 h-16 sm:w-20 sm:h-20 object-contain rounded-full border-2 border-slate-200 shadow-lg group-hover:scale-105 transition-transform bg-white"
+          />
         </div>
 
-        {/* Center Main College Name & Subheadings (Matching Aditya College format) */}
+        {/* Center Main College Name & Subheadings */}
         <div 
           onClick={() => handleNavClick('home')}
           className="text-center cursor-pointer flex-1 min-w-[280px]"
@@ -67,8 +68,12 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
             (BIEAP RECOGNIZED INSTITUTION)
           </h3>
 
-          <p className="text-[11px] text-slate-500 font-semibold mt-1">
-            Prasanth Nagar, Madanapalle (Near Krishna Reddy Junior College)
+          <p className="text-xs text-blue-700 italic font-semibold mt-1">
+            "{COLLEGE_DETAILS.tagline}"
+          </p>
+
+          <p className="text-[11px] text-slate-500 font-medium mt-0.5">
+            {COLLEGE_DETAILS.address}
           </p>
         </div>
 
@@ -152,7 +157,10 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
 
           {/* Mobile Menu Toggle Button */}
           <div className="lg:hidden flex items-center justify-between w-full">
-            <span className="font-extrabold text-navy-900 text-xs uppercase tracking-wider">Navigation Menu</span>
+            <div className="flex items-center gap-2">
+              <img src={COLLEGE_DETAILS.logoUrl} alt="Logo" className="w-8 h-8 object-contain rounded-full" />
+              <span className="font-extrabold text-navy-900 text-xs uppercase tracking-wider">SVVJC MADANAPALLE</span>
+            </div>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-2 rounded-lg text-slate-700 hover:bg-slate-100"

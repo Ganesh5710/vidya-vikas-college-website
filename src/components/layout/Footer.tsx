@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin, Phone, Mail, Star, ExternalLink, GraduationCap, ShieldCheck } from 'lucide-react';
+import { MapPin, Phone, Mail, Star, ExternalLink, ShieldCheck } from 'lucide-react';
 import { COLLEGE_DETAILS } from '../../constants/collegeData';
 
 interface FooterProps {
@@ -11,20 +11,22 @@ export const Footer: React.FC<FooterProps> = ({ setActiveTab }) => {
     <footer className="bg-navy-950 text-slate-300 border-t border-navy-800">
       <div className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         
-        {/* Col 1: Branding & Info */}
+        {/* Col 1: Official Logo Branding & Info */}
         <div className="space-y-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-maroon-900 flex items-center justify-center text-white border border-amber-400/30">
-              <GraduationCap className="w-5 h-5 text-amber-400" />
-            </div>
+            <img 
+              src={COLLEGE_DETAILS.logoUrl} 
+              alt={`${COLLEGE_DETAILS.name} Official Logo`}
+              className="w-12 h-12 object-contain bg-white rounded-full p-0.5 border border-slate-300 shadow"
+            />
             <div>
-              <h3 className="font-extrabold text-white text-base">{COLLEGE_DETAILS.name}</h3>
-              <p className="text-xs text-slate-400">Prasanth Nagar, Madanapalle</p>
+              <h3 className="font-extrabold text-white text-base leading-tight">{COLLEGE_DETAILS.name}</h3>
+              <p className="text-xs text-amber-400 font-semibold italic">"{COLLEGE_DETAILS.tagline}"</p>
             </div>
           </div>
 
           <p className="text-xs text-slate-400 leading-relaxed">
-            Established November 2024. Providing top-tier Intermediate education (MPC, BiPC, CEC, MEC, HEC) along with intensive EAMCET, NEET, and JEE Main orientation.
+            Established November 2024 in Prasanth Nagar, Madanapalle. Providing top-tier Intermediate education (MPC, BiPC, CEC, MEC, HEC) along with intensive EAMCET, NEET, and JEE Main orientation.
           </p>
 
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded bg-amber-950/60 border border-amber-500/30 text-amber-400 text-xs font-bold">
@@ -59,12 +61,13 @@ export const Footer: React.FC<FooterProps> = ({ setActiveTab }) => {
           </ul>
         </div>
 
-        {/* Col 4: Campus Address & Location */}
+        {/* Col 4: Campus Address & Google Map */}
         <div className="space-y-3">
           <h4 className="text-white font-bold text-sm border-b border-navy-800 pb-2">Campus Address</h4>
+          
           <div className="space-y-2 text-xs text-slate-400">
             <p className="flex items-start gap-2">
-              <MapPin className="w-4 h-4 text-maroon-400 shrink-0 mt-0.5" />
+              <MapPin className="w-4 h-4 text-maroon-500 shrink-0 mt-0.5" />
               <span>{COLLEGE_DETAILS.address}</span>
             </p>
             <p className="flex items-center gap-2">
@@ -77,26 +80,31 @@ export const Footer: React.FC<FooterProps> = ({ setActiveTab }) => {
             </p>
           </div>
 
-          <a 
-            href={COLLEGE_DETAILS.googleMapsUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-navy-900 hover:bg-navy-800 border border-slate-700 text-slate-200 text-xs font-semibold transition-colors mt-2"
-          >
-            <span>Open Google Maps</span>
-            <ExternalLink className="w-3.5 h-3.5 text-amber-400" />
-          </a>
+          <div className="pt-2">
+            <a 
+              href={COLLEGE_DETAILS.googleMapsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded bg-navy-900 hover:bg-navy-800 text-amber-400 text-xs font-bold border border-navy-700 transition-colors"
+            >
+              <ExternalLink className="w-3.5 h-3.5" />
+              <span>Open Location in Google Maps</span>
+            </a>
+          </div>
         </div>
+
       </div>
 
-      {/* Sub-footer */}
-      <div className="bg-navy-900 py-4 px-4 border-t border-navy-800 text-center text-slate-500 text-xs flex flex-wrap justify-between items-center max-w-7xl mx-auto gap-2">
-        <div className="flex items-center gap-2 text-slate-400">
-          <ShieldCheck className="w-4 h-4 text-emerald-400" />
-          <span>Recognized by Board of Intermediate Education, AP (BIEAP)</span>
-        </div>
-        <div>
-          © 2024-2026 {COLLEGE_DETAILS.name}, Madanapalle. All rights reserved.
+      {/* Bottom Copyright Strip */}
+      <div className="bg-navy-950 border-t border-navy-900 py-4 text-center text-xs text-slate-500">
+        <div className="max-w-7xl mx-auto px-4 flex flex-wrap items-center justify-between gap-2">
+          <p>© {new Date().getFullYear()} {COLLEGE_DETAILS.name}. All Rights Reserved.</p>
+          <div className="flex items-center gap-4 text-[11px]">
+            <span className="flex items-center gap-1 text-emerald-400">
+              <ShieldCheck className="w-3.5 h-3.5" />
+              {COLLEGE_DETAILS.boardAffiliation}
+            </span>
+          </div>
         </div>
       </div>
     </footer>
