@@ -17,7 +17,9 @@ import {
   Eye,
   EyeOff,
   ArrowRight,
-  AlertCircle
+  AlertCircle,
+  Image as ImageIcon,
+  X
 } from 'lucide-react';
 import { useAuth, type UserRole } from '../context/AuthContext';
 import { 
@@ -45,7 +47,7 @@ export const AdminDashboardPage: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loginError, setLoginError] = useState('');
 
-  // Local state for dynamic CRUD (Starting completely empty for custom user data entry)
+  // Local state for dynamic CRUD
   const [notices, setNotices] = useState(INITIAL_NOTICES);
   const [events, setEvents] = useState(INITIAL_EVENTS);
   const [faculty, setFaculty] = useState(INITIAL_FACULTY);
@@ -56,21 +58,27 @@ export const AdminDashboardPage: React.FC = () => {
   const [newNoticeCategory, setNewNoticeCategory] = useState<'Academic' | 'Administrative' | 'Exam' | 'Holiday'>('Administrative');
   const [newNoticeTicker, setNewNoticeTicker] = useState(true);
 
+  // Event form + photo state
   const [newEventTitle, setNewEventTitle] = useState('');
   const [newEventDate, setNewEventDate] = useState('');
   const [newEventVenue, setNewEventVenue] = useState('College Campus, Prasanth Nagar');
+  const [eventPhotoPreview, setEventPhotoPreview] = useState<string>('');
 
+  // Faculty form + photo state
   const [newFacultyName, setNewFacultyName] = useState('');
   const [newFacultySubject, setNewFacultySubject] = useState('Physics');
   const [newFacultyDesignation, setNewFacultyDesignation] = useState('Lecturer');
+  const [facultyPhotoPreview, setFacultyPhotoPreview] = useState<string>('');
 
+  // Topper form + photo state
   const [newTopperName, setNewTopperName] = useState('');
   const [newTopperMarks, setNewTopperMarks] = useState('');
   const [newTopperRank, setNewTopperRank] = useState('College Ranker');
+  const [topperPhotoPreview, setTopperPhotoPreview] = useState<string>('');
 
   const [uploadStatus, setUploadStatus] = useState('');
 
-  // Submitted Leads state (Starting empty as requested)
+  // Submitted Leads state
   const [leads, setLeads] = useState<Array<{
     id: string;
     name: string;
@@ -80,6 +88,24 @@ export const AdminDashboardPage: React.FC = () => {
     status: string;
     date: string;
   }>>([]);
+
+  // File selection helper
+  const handleFileSelect = (
+    e: React.ChangeEvent<HTMLInputElement>, 
+    setPreview: (url: string) => void,
+    bucketName: string
+  ) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const resultUrl = reader.result as string;
+        setPreview(resultUrl);
+        setUploadStatus(`Photo '${file.name}' selected & prepared for '${bucketName}' bucket!`);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   // Preset Staff Credentials
   const staffCredentials = [
@@ -132,13 +158,6 @@ export const AdminDashboardPage: React.FC = () => {
     }
   };
 
-  const handleSimulatePhotoUpload = (bucketName: string) => {
-    setUploadStatus(`Photo upload simulation initiated for bucket '${bucketName}'...`);
-    setTimeout(() => {
-      setUploadStatus(`File uploaded successfully to Supabase storage bucket '${bucketName}'! (Public URL generated)`);
-    }, 1200);
-  };
-
   const handleAddNotice = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newNoticeTitle) return;
@@ -170,12 +189,13 @@ export const AdminDashboardPage: React.FC = () => {
       venue: newEventVenue,
       guestDetails: 'Chief Guest / Management Desk',
       description: 'Campus event organized by Sri Vidya Vikas Junior College.',
-      posterUrl: 'https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&q=80&w=800',
+      posterUrl: eventPhotoPreview || 'https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&q=80&w=800',
       isUpcoming: true,
     };
 
     setEvents([eventObj, ...events]);
     setNewEventTitle('');
+    setEventPhotoPreview('');
     alert('Campus event added successfully!');
   };
 
@@ -192,12 +212,13 @@ export const AdminDashboardPage: React.FC = () => {
       qualification: 'M.Sc, B.Ed',
       experienceYears: 10,
       email: `${newFacultyName.toLowerCase().replace(/\s+/g, '.')}@svvjc.edu.in`,
-      photoUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=400',
+      photoUrl: facultyPhotoPreview || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=400',
     };
 
     setFaculty([facObj, ...faculty]);
     setNewFacultyName('');
-    alert('Faculty profile added successfully!');
+    setFacultyPhotoPreview('');
+    alert(`Faculty profile for '${newFacultyName}' added successfully!`);
   };
 
   const handleAddTopper = (e: React.FormEvent) => {
@@ -211,7 +232,7 @@ export const AdminDashboardPage: React.FC = () => {
       marksPercentage: parseFloat(newTopperMarks) || 95.0,
       rank: newTopperRank,
       streamId: 'mpc',
-      photoUrl: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=400',
+      photoUrl: topperPhotoPreview || 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=400',
       isCompetitiveQualifier: true,
       examName: 'AP EAMCET / NEET Qualified',
     };
@@ -219,6 +240,7 @@ export const AdminDashboardPage: React.FC = () => {
     setToppers([topObj, ...toppers]);
     setNewTopperName('');
     setNewTopperMarks('');
+    setTopperPhotoPreview('');
     alert('Topper record posted successfully!');
   };
 
@@ -377,9 +399,14 @@ export const AdminDashboardPage: React.FC = () => {
 
       {/* Upload status message */}
       {uploadStatus && (
-        <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-900 text-xs font-semibold flex items-center gap-2">
-          <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
-          <span>{uploadStatus}</span>
+        <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-900 text-xs font-semibold flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
+            <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
+            <span>{uploadStatus}</span>
+          </div>
+          <button onClick={() => setUploadStatus('')} className="text-emerald-700 hover:text-emerald-900">
+            <X className="w-4 h-4" />
+          </button>
         </div>
       )}
 
@@ -528,45 +555,65 @@ export const AdminDashboardPage: React.FC = () => {
           <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
             <h3 className="font-extrabold text-navy-900 text-lg flex items-center gap-2">
               <Plus className="w-5 h-5 text-maroon-800" />
-              Add Campus Event & Poster Upload
+              Add Campus Event & Upload Poster Picture
             </h3>
 
-            <form onSubmit={handleAddEvent} className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <input 
-                type="text"
-                required
-                placeholder="Event Title (e.g. Science Fair 2025)"
-                value={newEventTitle}
-                onChange={(e) => setNewEventTitle(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs"
-              />
-              <input 
-                type="date"
-                required
-                value={newEventDate}
-                onChange={(e) => setNewEventDate(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs"
-              />
-              <input 
-                type="text"
-                placeholder="Venue"
-                value={newEventVenue}
-                onChange={(e) => setNewEventVenue(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs"
-              />
+            <form onSubmit={handleAddEvent} className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <input 
+                  type="text"
+                  required
+                  placeholder="Event Title (e.g. Science Fair 2025)"
+                  value={newEventTitle}
+                  onChange={(e) => setNewEventTitle(e.target.value)}
+                  className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs"
+                />
+                <input 
+                  type="date"
+                  required
+                  value={newEventDate}
+                  onChange={(e) => setNewEventDate(e.target.value)}
+                  className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs"
+                />
+                <input 
+                  type="text"
+                  placeholder="Venue (e.g. Auditorium)"
+                  value={newEventVenue}
+                  onChange={(e) => setNewEventVenue(e.target.value)}
+                  className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs"
+                />
+              </div>
 
-              <div className="sm:col-span-3 flex justify-between items-center pt-2">
-                <button
-                  type="button"
-                  onClick={() => handleSimulatePhotoUpload('gallery')}
-                  className="px-3.5 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs flex items-center gap-1.5 border border-slate-300"
-                >
-                  <Upload className="w-4 h-4 text-blue-600" />
-                  <span>Test Photo Upload to 'gallery' Bucket</span>
-                </button>
+              {/* REAL PHOTO FILE UPLOADER WITH PREVIEW */}
+              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
+                <label className="block text-xs font-bold text-slate-700">Upload Event Poster Picture (JPG / PNG):</label>
+                <div className="flex flex-wrap items-center gap-4">
+                  <label className="px-4 py-2.5 rounded-xl bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 font-bold text-xs flex items-center gap-2 cursor-pointer shadow-sm">
+                    <Upload className="w-4 h-4 text-blue-600" />
+                    <span>Choose Photo File from PC</span>
+                    <input 
+                      type="file" 
+                      accept="image/*"
+                      onChange={(e) => handleFileSelect(e, setEventPhotoPreview, 'gallery')}
+                      className="hidden"
+                    />
+                  </label>
 
-                <button type="submit" className="px-5 py-2 rounded-lg bg-navy-900 text-white font-bold text-xs">
-                  Save Event
+                  {eventPhotoPreview && (
+                    <div className="flex items-center gap-3 bg-white p-2 rounded-xl border border-slate-200">
+                      <img src={eventPhotoPreview} alt="Preview" className="w-12 h-12 object-cover rounded-lg border" />
+                      <span className="text-xs text-emerald-600 font-bold">Photo Attached!</span>
+                      <button type="button" onClick={() => setEventPhotoPreview('')} className="text-slate-400 hover:text-red-600 p-1">
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex justify-end pt-2">
+                <button type="submit" className="px-6 py-2.5 rounded-xl bg-navy-900 hover:bg-navy-950 text-white font-bold text-xs shadow-md">
+                  Save Campus Event
                 </button>
               </div>
             </form>
@@ -580,18 +627,27 @@ export const AdminDashboardPage: React.FC = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {events.map((evt) => (
                   <div key={evt.id} className="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-4">
-                    <div className="space-y-1">
-                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${
-                        evt.isUpcoming ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-700'
-                      }`}>
-                        {evt.eventDate}
-                      </span>
-                      <h4 className="font-bold text-navy-900 text-xs mt-1">{evt.title}</h4>
-                      <p className="text-[11px] text-slate-500">{evt.venue}</p>
+                    <div className="flex items-center gap-3">
+                      {evt.posterUrl ? (
+                        <img src={evt.posterUrl} alt={evt.title} className="w-14 h-14 rounded-lg object-cover border border-slate-300 shrink-0" />
+                      ) : (
+                        <div className="w-14 h-14 rounded-lg bg-slate-200 text-slate-500 flex items-center justify-center font-bold text-xs shrink-0">
+                          <ImageIcon className="w-6 h-6" />
+                        </div>
+                      )}
+                      <div className="space-y-0.5">
+                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${
+                          evt.isUpcoming ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-700'
+                        }`}>
+                          {evt.eventDate}
+                        </span>
+                        <h4 className="font-bold text-navy-900 text-xs mt-1">{evt.title}</h4>
+                        <p className="text-[11px] text-slate-500">{evt.venue}</p>
+                      </div>
                     </div>
                     <button
                       onClick={() => setEvents(events.filter(e => e.id !== evt.id))}
-                      className="p-2 rounded-lg text-slate-400 hover:text-red-600 hover:bg-slate-200 transition-colors"
+                      className="p-2 rounded-lg text-slate-400 hover:text-red-600 hover:bg-slate-200 transition-colors shrink-0"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -611,45 +667,67 @@ export const AdminDashboardPage: React.FC = () => {
           <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
             <h3 className="font-extrabold text-navy-900 text-lg flex items-center gap-2">
               <Plus className="w-5 h-5 text-maroon-800" />
-              Add Faculty Profile
+              Add Faculty Profile & Upload Photo
             </h3>
 
-            <form onSubmit={handleAddFaculty} className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <input 
-                type="text"
-                required
-                placeholder="Faculty Name (e.g. Dr. Ramesh)"
-                value={newFacultyName}
-                onChange={(e) => setNewFacultyName(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs"
-              />
-              <input 
-                type="text"
-                placeholder="Subject (e.g. Physics)"
-                value={newFacultySubject}
-                onChange={(e) => setNewFacultySubject(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs"
-              />
-              <input 
-                type="text"
-                placeholder="Designation"
-                value={newFacultyDesignation}
-                onChange={(e) => setNewFacultyDesignation(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs"
-              />
+            <form onSubmit={handleAddFaculty} className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <input 
+                  type="text"
+                  required
+                  placeholder="Faculty Name (e.g. Dr. Ramesh)"
+                  value={newFacultyName}
+                  onChange={(e) => setNewFacultyName(e.target.value)}
+                  className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs"
+                />
+                <input 
+                  type="text"
+                  placeholder="Subject (e.g. Physics)"
+                  value={newFacultySubject}
+                  onChange={(e) => setNewFacultySubject(e.target.value)}
+                  className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs"
+                />
+                <input 
+                  type="text"
+                  placeholder="Designation (e.g. Senior Lecturer)"
+                  value={newFacultyDesignation}
+                  onChange={(e) => setNewFacultyDesignation(e.target.value)}
+                  className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs"
+                />
+              </div>
 
-              <div className="sm:col-span-3 flex justify-between items-center pt-2">
-                <button
-                  type="button"
-                  onClick={() => handleSimulatePhotoUpload('faculty-photos')}
-                  className="px-3.5 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs flex items-center gap-1.5 border border-slate-300"
-                >
-                  <Upload className="w-4 h-4 text-emerald-600" />
-                  <span>Test Photo Upload to 'faculty-photos' Bucket</span>
-                </button>
+              {/* REAL PHOTO FILE UPLOADER WITH PREVIEW */}
+              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
+                <label className="block text-xs font-bold text-slate-700">Upload Faculty Profile Photo (JPG / PNG):</label>
+                <div className="flex flex-wrap items-center gap-4">
+                  <label className="px-4 py-2.5 rounded-xl bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 font-bold text-xs flex items-center gap-2 cursor-pointer shadow-sm">
+                    <Upload className="w-4 h-4 text-emerald-600" />
+                    <span>Choose Photo File from PC</span>
+                    <input 
+                      type="file" 
+                      accept="image/*"
+                      onChange={(e) => handleFileSelect(e, setFacultyPhotoPreview, 'faculty-photos')}
+                      className="hidden"
+                    />
+                  </label>
 
-                <button type="submit" className="px-5 py-2 rounded-lg bg-navy-900 text-white font-bold text-xs">
-                  Add Faculty
+                  {facultyPhotoPreview ? (
+                    <div className="flex items-center gap-3 bg-white p-2 rounded-xl border border-slate-200">
+                      <img src={facultyPhotoPreview} alt="Preview" className="w-12 h-12 object-cover rounded-full border" />
+                      <span className="text-xs text-emerald-600 font-bold">Faculty Photo Attached!</span>
+                      <button type="button" onClick={() => setFacultyPhotoPreview('')} className="text-slate-400 hover:text-red-600 p-1">
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                  ) : (
+                    <span className="text-xs text-slate-400 italic">No photo attached (Default portrait will be used)</span>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex justify-end pt-2">
+                <button type="submit" className="px-6 py-2.5 rounded-xl bg-navy-900 hover:bg-navy-950 text-white font-bold text-xs shadow-md">
+                  Add Faculty Profile
                 </button>
               </div>
             </form>
@@ -663,14 +741,23 @@ export const AdminDashboardPage: React.FC = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {faculty.map((fac) => (
                   <div key={fac.id} className="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-3">
-                    <div className="space-y-1">
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-100 text-blue-900">{fac.subject}</span>
-                      <h4 className="font-bold text-navy-900 text-xs mt-1">{fac.name}</h4>
-                      <p className="text-[11px] text-slate-500">{fac.designation}</p>
+                    <div className="flex items-center gap-3">
+                      {fac.photoUrl ? (
+                        <img src={fac.photoUrl} alt={fac.name} className="w-12 h-12 rounded-full object-cover border border-slate-300 shrink-0" />
+                      ) : (
+                        <div className="w-12 h-12 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center font-bold text-xs shrink-0">
+                          {fac.name.charAt(0)}
+                        </div>
+                      )}
+                      <div className="space-y-0.5">
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-100 text-blue-900">{fac.subject}</span>
+                        <h4 className="font-bold text-navy-900 text-xs mt-1">{fac.name}</h4>
+                        <p className="text-[11px] text-slate-500">{fac.designation}</p>
+                      </div>
                     </div>
                     <button
                       onClick={() => setFaculty(faculty.filter(f => f.id !== fac.id))}
-                      className="p-2 rounded-lg text-slate-400 hover:text-red-600 hover:bg-slate-200 transition-colors"
+                      className="p-2 rounded-lg text-slate-400 hover:text-red-600 hover:bg-slate-200 transition-colors shrink-0"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -690,44 +777,64 @@ export const AdminDashboardPage: React.FC = () => {
           <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
             <h3 className="font-extrabold text-navy-900 text-lg flex items-center gap-2">
               <Plus className="w-5 h-5 text-maroon-800" />
-              Post Board Exam Topper Record
+              Post Board Exam Topper Record & Upload Photo
             </h3>
 
-            <form onSubmit={handleAddTopper} className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <input 
-                type="text"
-                required
-                placeholder="Student Name"
-                value={newTopperName}
-                onChange={(e) => setNewTopperName(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs"
-              />
-              <input 
-                type="text"
-                placeholder="Marks % (e.g. 98.2)"
-                value={newTopperMarks}
-                onChange={(e) => setNewTopperMarks(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs"
-              />
-              <input 
-                type="text"
-                placeholder="Rank (e.g. College 1st Rank)"
-                value={newTopperRank}
-                onChange={(e) => setNewTopperRank(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs"
-              />
+            <form onSubmit={handleAddTopper} className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <input 
+                  type="text"
+                  required
+                  placeholder="Student Name"
+                  value={newTopperName}
+                  onChange={(e) => setNewTopperName(e.target.value)}
+                  className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs"
+                />
+                <input 
+                  type="text"
+                  placeholder="Marks % (e.g. 98.2)"
+                  value={newTopperMarks}
+                  onChange={(e) => setNewTopperMarks(e.target.value)}
+                  className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs"
+                />
+                <input 
+                  type="text"
+                  placeholder="Rank (e.g. College 1st Rank)"
+                  value={newTopperRank}
+                  onChange={(e) => setNewTopperRank(e.target.value)}
+                  className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs"
+                />
+              </div>
 
-              <div className="sm:col-span-3 flex justify-between items-center pt-2">
-                <button
-                  type="button"
-                  onClick={() => handleSimulatePhotoUpload('topper-photos')}
-                  className="px-3.5 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs flex items-center gap-1.5 border border-slate-300"
-                >
-                  <Upload className="w-4 h-4 text-amber-600" />
-                  <span>Test Photo Upload to 'topper-photos' Bucket</span>
-                </button>
+              {/* REAL PHOTO FILE UPLOADER WITH PREVIEW */}
+              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
+                <label className="block text-xs font-bold text-slate-700">Upload Student Topper Photo (JPG / PNG):</label>
+                <div className="flex flex-wrap items-center gap-4">
+                  <label className="px-4 py-2.5 rounded-xl bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 font-bold text-xs flex items-center gap-2 cursor-pointer shadow-sm">
+                    <Upload className="w-4 h-4 text-amber-600" />
+                    <span>Choose Student Photo from PC</span>
+                    <input 
+                      type="file" 
+                      accept="image/*"
+                      onChange={(e) => handleFileSelect(e, setTopperPhotoPreview, 'topper-photos')}
+                      className="hidden"
+                    />
+                  </label>
 
-                <button type="submit" className="px-5 py-2 rounded-lg bg-maroon-900 text-white font-bold text-xs">
+                  {topperPhotoPreview && (
+                    <div className="flex items-center gap-3 bg-white p-2 rounded-xl border border-slate-200">
+                      <img src={topperPhotoPreview} alt="Preview" className="w-12 h-12 object-cover rounded-full border" />
+                      <span className="text-xs text-emerald-600 font-bold">Topper Photo Attached!</span>
+                      <button type="button" onClick={() => setTopperPhotoPreview('')} className="text-slate-400 hover:text-red-600 p-1">
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex justify-end pt-2">
+                <button type="submit" className="px-6 py-2.5 rounded-xl bg-maroon-900 hover:bg-maroon-800 text-white font-bold text-xs shadow-md">
                   Post Topper Record
                 </button>
               </div>
@@ -742,14 +849,23 @@ export const AdminDashboardPage: React.FC = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {toppers.map((top) => (
                   <div key={top.id} className="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-3">
-                    <div className="space-y-1">
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-100 text-amber-900">{top.rank}</span>
-                      <h4 className="font-bold text-navy-900 text-xs mt-1">{top.studentName}</h4>
-                      <p className="text-[11px] text-emerald-700 font-bold">{top.marksPercentage}% Marks</p>
+                    <div className="flex items-center gap-3">
+                      {top.photoUrl ? (
+                        <img src={top.photoUrl} alt={top.studentName} className="w-12 h-12 rounded-full object-cover border border-slate-300 shrink-0" />
+                      ) : (
+                        <div className="w-12 h-12 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center font-bold text-xs shrink-0">
+                          {top.studentName.charAt(0)}
+                        </div>
+                      )}
+                      <div className="space-y-0.5">
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-100 text-amber-900">{top.rank}</span>
+                        <h4 className="font-bold text-navy-900 text-xs mt-1">{top.studentName}</h4>
+                        <p className="text-[11px] text-emerald-700 font-bold">{top.marksPercentage}% Marks</p>
+                      </div>
                     </div>
                     <button
                       onClick={() => setToppers(toppers.filter(t => t.id !== top.id))}
-                      className="p-2 rounded-lg text-slate-400 hover:text-red-600 hover:bg-slate-200 transition-colors"
+                      className="p-2 rounded-lg text-slate-400 hover:text-red-600 hover:bg-slate-200 transition-colors shrink-0"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
