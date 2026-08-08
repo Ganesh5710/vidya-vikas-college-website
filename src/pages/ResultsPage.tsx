@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Award, Trophy, CheckCircle, Maximize2, X } from 'lucide-react';
+import { Award, Trophy, Maximize2, X } from 'lucide-react';
 import { INITIAL_STREAM_SUMMARY } from '../constants/collegeData';
 import { useData, type TopperItem } from '../context/DataContext';
 import { PlaceholderBadge } from '../components/common/PlaceholderBadge';
@@ -15,7 +15,7 @@ export const ResultsPage: React.FC = () => {
   const { toppers } = useData();
   const [selectedPhoto, setSelectedPhoto] = useState<{ url: string; title: string } | null>(null);
 
-  // Smart score formatting function (Fixes 464% bug)
+  // Smart score formatting function
   const formatTopperScore = (marks: any) => {
     if (!marks && marks !== 0) return '';
     const strVal = String(marks).trim();
@@ -106,7 +106,7 @@ export const ResultsPage: React.FC = () => {
                     className="w-full h-full object-contain rounded-lg group-hover:scale-[1.02] transition-transform duration-300"
                   />
 
-                  {/* Score Tag (Fixed 464% bug) */}
+                  {/* Score Tag */}
                   <div className="absolute top-3 right-3 bg-amber-500 text-navy-950 font-black text-xs px-3 py-1 rounded-full shadow border border-amber-300">
                     {formatTopperScore(topper.marksPercentage)}
                   </div>
@@ -127,15 +127,7 @@ export const ResultsPage: React.FC = () => {
                     {topper.rank}
                   </span>
                   <h4 className="font-extrabold text-navy-900 text-lg pt-1">{topper.studentName}</h4>
-                  <p className="text-xs text-slate-600 font-semibold">{topper.examName}</p>
                 </div>
-
-                {topper.isCompetitiveQualifier && (
-                  <div className="p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs font-semibold flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0" />
-                    <span>Competitive Exam Qualifier</span>
-                  </div>
-                )}
 
               </div>
             ))}
