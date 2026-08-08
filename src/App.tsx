@@ -15,7 +15,6 @@ import { AdmissionsPage } from './pages/AdmissionsPage';
 import { FacilitiesPage } from './pages/FacilitiesPage';
 import { ResultsPage } from './pages/ResultsPage';
 import { EventsPage } from './pages/EventsPage';
-import { StudentCornerPage } from './pages/StudentCornerPage';
 import { ContactPage } from './pages/ContactPage';
 import { AdminDashboardPage } from './pages/AdminDashboardPage';
 
@@ -40,8 +39,6 @@ export function App() {
         return <ResultsPage />;
       case 'events':
         return <EventsPage />;
-      case 'studentCorner':
-        return <StudentCornerPage />;
       case 'contact':
         return <ContactPage />;
       case 'admin':

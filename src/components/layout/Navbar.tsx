@@ -22,8 +22,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
     { id: 'admissions', label: t('nav.admissions') },
     { id: 'facilities', label: t('nav.facilities') },
     { id: 'results', label: t('nav.results') },
-    { id: 'events', label: t('nav.events') },
-    { id: 'studentCorner', label: t('nav.studentCorner') },
+    { id: 'events', label: 'EVENTS' },
     { id: 'contact', label: t('nav.contact') },
   ];
 
@@ -118,7 +117,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
               <button
                 key={item.id}
                 onClick={() => handleNavClick(item.id)}
-                className={`px-3 py-1.5 rounded-xl transition-all uppercase tracking-wider text-[11px] font-extrabold ${
+                className={`px-3.5 py-1.5 rounded-xl transition-all uppercase tracking-wider text-[11px] font-extrabold ${
                   activeTab === item.id
                     ? 'bg-maroon-900 text-white shadow-sm'
                     : 'text-slate-700 hover:bg-slate-100 hover:text-maroon-900'

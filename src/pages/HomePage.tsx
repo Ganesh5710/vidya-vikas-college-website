@@ -332,7 +332,7 @@ export const HomePage: React.FC<HomePageProps> = ({ setActiveTab }) => {
               <Bell className="w-5 h-5 text-maroon-800" />
               <h3 className="font-bold text-navy-900 text-lg">Circulars & Notices</h3>
             </div>
-            <button onClick={() => setActiveTab('studentCorner')} className="text-xs font-bold text-maroon-800 hover:underline">
+            <button onClick={() => setActiveTab('events')} className="text-xs font-bold text-maroon-800 hover:underline">
               View All
             </button>
           </div>
