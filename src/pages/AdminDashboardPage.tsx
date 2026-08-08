@@ -59,6 +59,8 @@ export const AdminDashboardPage: React.FC = () => {
   const [newEventTitle, setNewEventTitle] = useState('');
   const [newEventDate, setNewEventDate] = useState('');
   const [newEventVenue, setNewEventVenue] = useState('College Campus, Prasanth Nagar');
+  const [newEventDescription, setNewEventDescription] = useState('');
+  const [newEventIsUpcoming, setNewEventIsUpcoming] = useState(true);
   const [eventPhotoPreview, setEventPhotoPreview] = useState<string>('');
 
   // Faculty form + photo state
@@ -173,14 +175,16 @@ export const AdminDashboardPage: React.FC = () => {
       eventTime: '10:00 AM - 4:00 PM',
       venue: newEventVenue,
       guestDetails: 'Chief Guest / Management Desk',
-      description: 'Campus event organized by Sri Vidya Vikas Junior College.',
-      posterUrl: eventPhotoPreview || 'https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&q=80&w=800',
-      isUpcoming: true,
+      description: newEventDescription || 'Campus event organized by Sri Vidya Vikas Junior College.',
+      posterUrl: eventPhotoPreview || '',
+      isUpcoming: newEventIsUpcoming,
     });
 
     setNewEventTitle('');
+    setNewEventDate('');
+    setNewEventDescription('');
     setEventPhotoPreview('');
-    alert('Campus event posted live across all pages!');
+    alert(`Campus event '${newEventTitle}' (${newEventIsUpcoming ? 'Upcoming Event' : 'Completed Event'}) posted live!`);
   };
 
   const handleAddFaculty = (e: React.FormEvent) => {
@@ -541,30 +545,46 @@ export const AdminDashboardPage: React.FC = () => {
             </h3>
 
             <form onSubmit={handleAddEvent} className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <input 
                   type="text"
                   required
-                  placeholder="Event Title (e.g. Science Fair 2025)"
+                  placeholder="Event Title (e.g. Annual Day 2025)"
                   value={newEventTitle}
                   onChange={(e) => setNewEventTitle(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs"
+                  className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs focus:ring-2 focus:ring-maroon-800 outline-none"
                 />
                 <input 
                   type="date"
                   required
                   value={newEventDate}
                   onChange={(e) => setNewEventDate(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs"
+                  className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs focus:ring-2 focus:ring-maroon-800 outline-none"
                 />
                 <input 
                   type="text"
-                  placeholder="Venue (e.g. Auditorium)"
+                  placeholder="Venue (e.g. College Campus, Prasanth Nagar)"
                   value={newEventVenue}
                   onChange={(e) => setNewEventVenue(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs"
+                  className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs focus:ring-2 focus:ring-maroon-800 outline-none"
                 />
+                <select
+                  value={newEventIsUpcoming ? 'upcoming' : 'completed'}
+                  onChange={(e) => setNewEventIsUpcoming(e.target.value === 'upcoming')}
+                  className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs bg-white focus:ring-2 focus:ring-maroon-800 outline-none font-bold"
+                >
+                  <option value="upcoming">Upcoming Event</option>
+                  <option value="completed">Completed / Past Event</option>
+                </select>
               </div>
+
+              <input 
+                type="text"
+                placeholder="Event Description (e.g. Cultural celebrations and student performance event)"
+                value={newEventDescription}
+                onChange={(e) => setNewEventDescription(e.target.value)}
+                className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs focus:ring-2 focus:ring-maroon-800 outline-none"
+              />
 
               {/* REAL PHOTO FILE UPLOADER WITH PREVIEW */}
               <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
