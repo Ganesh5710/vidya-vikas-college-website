@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Menu, X, ShieldAlert, LogOut, Home, Award, Star } from 'lucide-react';
+import { Menu, X, ShieldAlert, LogOut, Home, Award } from 'lucide-react';
 import { COLLEGE_DETAILS } from '../../constants/collegeData';
 import { useLanguage } from '../../context/LanguageContext';
 import { useAuth } from '../../context/AuthContext';
@@ -37,9 +37,9 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
     <div className="w-full bg-white">
       
       {/* 1. GRAND INSTITUTIONAL BRANDING HEADER WITH OFFICIAL LOGO */}
-      <div className="max-w-7xl mx-auto px-4 py-5 flex flex-wrap items-center justify-between gap-6 border-b border-slate-100">
+      <div className="max-w-7xl mx-auto px-4 py-6 flex flex-wrap items-center justify-between gap-6 border-b border-slate-100">
         
-        {/* Left Official Logo Image */}
+        {/* Left Official Logo Image - Made Significantly Bigger */}
         <div 
           onClick={() => handleNavClick('home')}
           className="flex items-center gap-3 cursor-pointer group shrink-0"
@@ -47,7 +47,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
           <img 
             src={COLLEGE_DETAILS.logoUrl} 
             alt={`${COLLEGE_DETAILS.name} Official Logo`}
-            className="w-16 h-16 sm:w-20 sm:h-20 object-contain rounded-full border-2 border-slate-200 shadow-lg group-hover:scale-105 transition-transform bg-white"
+            className="w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36 object-contain rounded-full border-4 border-slate-100 shadow-xl group-hover:scale-105 transition-transform bg-white p-1"
           />
         </div>
 
@@ -68,27 +68,21 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
             (BIEAP RECOGNIZED INSTITUTION)
           </h3>
 
-          <p className="text-xs text-blue-700 italic font-semibold mt-1">
+          <p className="text-xs sm:text-sm text-blue-700 italic font-bold mt-1">
             "{COLLEGE_DETAILS.tagline}"
           </p>
 
-          <p className="text-[11px] text-slate-500 font-medium mt-0.5">
+          <p className="text-[11px] sm:text-xs text-slate-500 font-medium mt-0.5">
             {COLLEGE_DETAILS.address}
           </p>
         </div>
 
-        {/* Right Seals / Recognition Badges */}
-        <div className="hidden md:flex items-center gap-4 shrink-0">
-          <div className="w-14 h-14 rounded-full bg-amber-500 text-navy-950 flex flex-col items-center justify-center p-2 text-center shadow border-2 border-white">
-            <Star className="w-4 h-4 fill-navy-950" />
-            <span className="text-[10px] font-black leading-tight">5.0 STARS</span>
-            <span className="text-[8px] font-bold">45 REVIEWS</span>
-          </div>
-
-          <div className="w-14 h-14 rounded-full bg-maroon-900 text-white flex flex-col items-center justify-center p-2 text-center shadow border-2 border-white">
-            <Award className="w-5 h-5 text-amber-400" />
-            <span className="text-[9px] font-extrabold uppercase leading-tight text-amber-300">BIEAP</span>
-            <span className="text-[8px] font-bold">A+ GRADE</span>
+        {/* Right Seal - Prominent Big BIEAP A+ GRADE Seal */}
+        <div className="hidden md:flex items-center shrink-0">
+          <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-full bg-maroon-900 text-white flex flex-col items-center justify-center p-3 text-center shadow-xl border-4 border-amber-400 transition-transform hover:scale-105">
+            <Award className="w-8 h-8 sm:w-10 sm:h-10 text-amber-400 mb-0.5" />
+            <span className="text-xs sm:text-sm font-black uppercase tracking-wider text-amber-300 leading-tight">BIEAP</span>
+            <span className="text-[10px] sm:text-xs font-black tracking-widest text-white">A+ GRADE</span>
           </div>
         </div>
 
@@ -158,7 +152,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
           {/* Mobile Menu Toggle Button */}
           <div className="lg:hidden flex items-center justify-between w-full">
             <div className="flex items-center gap-2">
-              <img src={COLLEGE_DETAILS.logoUrl} alt="Logo" className="w-8 h-8 object-contain rounded-full" />
+              <img src={COLLEGE_DETAILS.logoUrl} alt="Logo" className="w-9 h-9 object-contain rounded-full" />
               <span className="font-extrabold text-navy-900 text-xs uppercase tracking-wider">SVVJC MADANAPALLE</span>
             </div>
             <button
