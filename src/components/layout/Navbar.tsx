@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Menu, X, ShieldAlert, LogOut, Home, Award } from 'lucide-react';
+import { Menu, X, ShieldAlert, LogOut, Home, Award, Lock } from 'lucide-react';
 import { COLLEGE_DETAILS } from '../../constants/collegeData';
 import { useLanguage } from '../../context/LanguageContext';
 import { useAuth } from '../../context/AuthContext';
@@ -39,7 +39,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
       {/* 1. GRAND INSTITUTIONAL BRANDING HEADER WITH OFFICIAL LOGO */}
       <div className="max-w-7xl mx-auto px-4 py-6 flex flex-wrap items-center justify-between gap-6 border-b border-slate-100">
         
-        {/* Left Official Logo Image - Made Significantly Bigger */}
+        {/* Left Official Logo Image */}
         <div 
           onClick={() => handleNavClick('home')}
           className="flex items-center gap-3 cursor-pointer group shrink-0"
@@ -119,7 +119,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
             ))}
           </nav>
 
-          {/* Right Action Button (College Code Pill / Staff Login) */}
+          {/* Right Action Button (STAFF LOGIN) */}
           <div className="hidden lg:flex items-center gap-3">
             {user ? (
               <div className="flex items-center gap-2">
@@ -128,7 +128,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
                   className="px-4 py-1.5 rounded-full bg-maroon-900 text-white font-extrabold text-xs shadow flex items-center gap-1.5 hover:bg-maroon-950 transition-transform hover:scale-105"
                 >
                   <ShieldAlert className="w-3.5 h-3.5 text-amber-400" />
-                  <span>COLLEGE CODE: SVVJC ({user.role})</span>
+                  <span>DASHBOARD ({user.role})</span>
                 </button>
 
                 <button
@@ -142,9 +142,10 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
             ) : (
               <button
                 onClick={() => handleNavClick('admin')}
-                className="px-5 py-1.5 rounded-full bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 text-white font-black text-xs uppercase tracking-wider shadow transition-transform hover:scale-105 flex items-center gap-1.5"
+                className="px-6 py-2 rounded-full bg-maroon-900 hover:bg-maroon-950 text-white font-black text-xs uppercase tracking-widest shadow-md transition-transform hover:scale-105 flex items-center gap-2 border border-maroon-800"
               >
-                <span>COLLEGE CODE : SVVJC</span>
+                <Lock className="w-3.5 h-3.5 text-amber-400" />
+                <span>LOGIN</span>
               </button>
             )}
           </div>
@@ -185,9 +186,10 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
             <div className="pt-2 border-t border-slate-100">
               <button
                 onClick={() => handleNavClick('admin')}
-                className="w-full py-2.5 rounded-xl bg-orange-600 text-white font-extrabold text-xs uppercase tracking-wider text-center"
+                className="w-full py-2.5 rounded-xl bg-maroon-900 text-white font-extrabold text-xs uppercase tracking-wider text-center flex items-center justify-center gap-2 shadow"
               >
-                COLLEGE CODE : SVVJC (STAFF PORTAL)
+                <Lock className="w-4 h-4 text-amber-400" />
+                <span>STAFF LOGIN</span>
               </button>
             </div>
           </div>

@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { LanguageProvider } from './context/LanguageContext';
 import { AuthProvider } from './context/AuthContext';
 import { DataProvider } from './context/DataContext';
-import { NewsTicker } from './components/layout/NewsTicker';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 import { WhatsAppFAB } from './components/layout/WhatsAppFAB';
@@ -57,9 +56,6 @@ export function App() {
       <LanguageProvider>
         <DataProvider>
           <div className="min-h-screen flex flex-col bg-slate-50">
-            
-            {/* Top Blue Announcements Strip */}
-            <NewsTicker setActiveTab={setActiveTab} />
 
             {/* Institutional Header & Sticky Navigation Header */}
             <Navbar activeTab={activeTab} setActiveTab={setActiveTab} />
