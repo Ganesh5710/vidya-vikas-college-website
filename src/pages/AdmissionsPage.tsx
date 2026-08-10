@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { GraduationCap, CheckCircle2, AlertCircle, Calendar, Download, CreditCard, Send } from 'lucide-react';
+import { GraduationCap, CheckCircle2, AlertCircle, Calendar, Download, Send } from 'lucide-react';
 import { INITIAL_STREAMS } from '../constants/collegeData';
-import { PlaceholderBadge } from '../components/common/PlaceholderBadge';
 import { ReCaptchaBadge } from '../components/common/ReCaptchaBadge';
 import { useSEO } from '../hooks/useSEO';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
@@ -232,17 +231,6 @@ export const AdmissionsPage: React.FC = () => {
                 <span>Download Official Application Form PDF</span>
               </a>
             </div>
-          </div>
-
-          <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-3">
-            <div className="flex items-center gap-2">
-              <CreditCard className="w-5 h-5 text-emerald-600" />
-              <h4 className="font-bold text-navy-900 text-base">Fee Payment Gateway Info</h4>
-            </div>
-            <p className="text-xs text-slate-600 leading-relaxed">
-              Online fee payment gateway integration (UPI / Razorpay / NetBanking) is supported. Official account details confirmed by Accounts Office.
-            </p>
-            <PlaceholderBadge checklistRef="Section 4 - Bank Details for Payment Gateway" note="Bank Account Details Pending Sign-off" />
           </div>
 
         </div>
