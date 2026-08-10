@@ -12,7 +12,8 @@ import {
   BookOpen,
   Sparkles,
   Calculator,
-  Compass
+  Compass,
+  Download
 } from 'lucide-react';
 import { INITIAL_STREAMS } from '../constants/collegeData';
 import { useData } from '../context/DataContext';
@@ -184,18 +185,21 @@ export const HomePage: React.FC<HomePageProps> = ({ setActiveTab }) => {
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
-          <button
-            onClick={() => setIsPredictorOpen(true)}
-            className="px-4 py-2 rounded-lg bg-white/90 hover:bg-white text-navy-950 font-bold text-xs shadow transition-transform hover:scale-105 flex items-center gap-1.5"
+        <div className="flex flex-wrap items-center gap-3">
+          <a
+            href="/SVVJC_Application_Form.pdf"
+            download="SVVJC_Application_Form.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-4 py-2 rounded-lg bg-navy-900 hover:bg-navy-950 text-white font-bold text-xs shadow transition-transform hover:scale-105 flex items-center gap-1.5"
           >
-            <Calculator className="w-4 h-4 text-maroon-900" />
-            <span>Check My Stream Eligibility</span>
-          </button>
+            <Download className="w-4 h-4 text-amber-400" />
+            <span>Download Application Form PDF</span>
+          </a>
 
           <button
             onClick={() => setActiveTab('admissions')}
-            className="px-5 py-2 rounded-lg bg-navy-900 hover:bg-navy-950 text-white font-bold text-xs uppercase tracking-wider shadow transition-transform hover:scale-105"
+            className="px-5 py-2 rounded-lg bg-maroon-900 hover:bg-maroon-950 text-white font-bold text-xs uppercase tracking-wider shadow transition-transform hover:scale-105"
           >
             Submit Online Application
           </button>

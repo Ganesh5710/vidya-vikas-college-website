@@ -222,12 +222,14 @@ export const AdmissionsPage: React.FC = () => {
 
             <div className="pt-2 border-t border-slate-100">
               <a 
-                href="#"
-                onClick={(e) => { e.preventDefault(); alert("Application form PDF download will open."); }}
-                className="w-full py-2.5 px-4 rounded-lg bg-navy-900 text-white text-xs font-bold flex items-center justify-center gap-2 hover:bg-navy-950 transition-colors"
+                href="/SVVJC_Application_Form.pdf"
+                download="SVVJC_Application_Form.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-2.5 px-4 rounded-lg bg-navy-900 text-white text-xs font-bold flex items-center justify-center gap-2 hover:bg-navy-950 transition-colors shadow-md"
               >
                 <Download className="w-4 h-4 text-amber-400" />
-                <span>Download Application PDF</span>
+                <span>Download Official Application Form PDF</span>
               </a>
             </div>
           </div>
