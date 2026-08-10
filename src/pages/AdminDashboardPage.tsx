@@ -41,7 +41,7 @@ export const AdminDashboardPage: React.FC = () => {
     faculty, addFaculty, deleteFaculty,
     toppers, addTopper, deleteTopper,
     leads, updateLeadStatus,
-    facilities, heroSlides, updateFacilityPhoto, updateHeroSlidePhoto
+    facilities, heroSlides, addFacility, deleteFacility, updateFacilityPhoto, updateHeroSlidePhoto
   } = useData();
 
   const [activeTab, setActiveTab] = useState<'notices' | 'events' | 'faculty' | 'results' | 'leads' | 'campus_photos'>('notices');
@@ -76,6 +76,12 @@ export const AdminDashboardPage: React.FC = () => {
   const [newTopperMarks, setNewTopperMarks] = useState('');
   const [newTopperRank, setNewTopperRank] = useState('College 1st Rank');
   const [topperPhotoPreview, setTopperPhotoPreview] = useState<string>('');
+
+  // Custom Facility form + photo state
+  const [newFacilityTitle, setNewFacilityTitle] = useState('');
+  const [newFacilityCategory, setNewFacilityCategory] = useState('Laboratory');
+  const [newFacilityDescription, setNewFacilityDescription] = useState('');
+  const [customFacilityPhotoPreview, setCustomFacilityPhotoPreview] = useState<string>('');
 
   const [uploadStatus, setUploadStatus] = useState('');
 
@@ -230,6 +236,26 @@ export const AdminDashboardPage: React.FC = () => {
     setNewTopperMarks('');
     setTopperPhotoPreview('');
     alert(`Topper record for '${newTopperName}' with photo posted live on Results & Toppers page!`);
+  };
+
+  const handleAddCustomFacility = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newFacilityTitle) return;
+
+    addFacility({
+      id: `fac-${Date.now()}`,
+      title: newFacilityTitle,
+      category: newFacilityCategory,
+      description: newFacilityDescription || 'Sri Vidya Vikas Junior College campus infrastructure facility.',
+      photoUrl: customFacilityPhotoPreview || '',
+    });
+
+    setNewFacilityTitle('');
+    setNewFacilityCategory('Laboratory');
+    setNewFacilityDescription('');
+    setCustomFacilityPhotoPreview('');
+    setUploadStatus(`Custom facility '${newFacilityTitle}' added to campus infrastructure!`);
+    alert(`Custom facility '${newFacilityTitle}' added to campus infrastructure & live on Facilities page!`);
   };
 
   // If Not Authenticated, Show Login Form + Staff Quick Credential Fill Cards
@@ -953,6 +979,80 @@ export const AdminDashboardPage: React.FC = () => {
       {/* TAB CONTENT 6: CAMPUS PHOTOS & FACILITIES */}
       {activeTab === 'campus_photos' && (
         <section className="space-y-8">
+          
+          {/* ADD CUSTOM CAMPUS FACILITY FORM */}
+          <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
+            <h3 className="font-extrabold text-navy-900 text-lg flex items-center gap-2">
+              <Plus className="w-5 h-5 text-maroon-800" />
+              Add Custom Campus Facility / Infrastructure & Upload Photo
+            </h3>
+
+            <form onSubmit={handleAddCustomFacility} className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <input 
+                  type="text"
+                  required
+                  placeholder="Facility Name (e.g. Computer Lab, Auditorium)"
+                  value={newFacilityTitle}
+                  onChange={(e) => setNewFacilityTitle(e.target.value)}
+                  className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs focus:ring-2 focus:ring-maroon-800 outline-none"
+                />
+                <select
+                  value={newFacilityCategory}
+                  onChange={(e) => setNewFacilityCategory(e.target.value)}
+                  className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs bg-white focus:ring-2 focus:ring-maroon-800 outline-none font-bold"
+                >
+                  <option value="Laboratory">Laboratory</option>
+                  <option value="Classroom">Classroom / Digital Room</option>
+                  <option value="Infrastructure">Campus Infrastructure</option>
+                  <option value="Library">Library</option>
+                  <option value="Sports">Sports Amenities</option>
+                  <option value="Transport">Transport Service</option>
+                </select>
+                <input 
+                  type="text"
+                  placeholder="Short Description (e.g. 50 high-speed systems)"
+                  value={newFacilityDescription}
+                  onChange={(e) => setNewFacilityDescription(e.target.value)}
+                  className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs focus:ring-2 focus:ring-maroon-800 outline-none"
+                />
+              </div>
+
+              {/* PHOTO FILE UPLOADER */}
+              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
+                <label className="block text-xs font-bold text-slate-700">Upload Facility Photo Picture (JPG / PNG):</label>
+                <div className="flex flex-wrap items-center gap-4">
+                  <label className="px-4 py-2.5 rounded-xl bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 font-bold text-xs flex items-center gap-2 cursor-pointer shadow-sm">
+                    <Upload className="w-4 h-4 text-blue-600" />
+                    <span>Choose Photo File from PC</span>
+                    <input 
+                      type="file" 
+                      accept="image/*"
+                      onChange={(e) => handleFileSelect(e, setCustomFacilityPhotoPreview, 'gallery')}
+                      className="hidden"
+                    />
+                  </label>
+
+                  {customFacilityPhotoPreview && (
+                    <div className="flex items-center gap-3 bg-white p-2 rounded-xl border border-slate-200">
+                      <img src={customFacilityPhotoPreview} alt="Preview" className="w-12 h-12 object-cover rounded-lg border" />
+                      <span className="text-xs text-emerald-600 font-bold">Photo Attached!</span>
+                      <button type="button" onClick={() => setCustomFacilityPhotoPreview('')} className="text-slate-400 hover:text-red-600 p-1">
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex justify-end pt-2">
+                <button type="submit" className="px-6 py-2.5 rounded-xl bg-navy-900 hover:bg-navy-950 text-white font-bold text-xs shadow-md">
+                  Save Custom Campus Facility
+                </button>
+              </div>
+            </form>
+          </div>
+
           {/* 1. HOME HERO BANNER SLIDES */}
           <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
             <div className="border-b border-slate-100 pb-3">
@@ -1005,44 +1105,60 @@ export const AdminDashboardPage: React.FC = () => {
             <div className="border-b border-slate-100 pb-3">
               <h3 className="font-extrabold text-navy-900 text-lg flex items-center gap-2">
                 <Building2 className="w-5 h-5 text-maroon-800" />
-                Campus Labs, Library & Facility Photos
+                Campus Labs, Library & Facility Photos ({facilities.length})
               </h3>
-              <p className="text-xs text-slate-500">Upload official pictures from PC for Physics Lab, Chemistry Lab, Biology Lab, Library, Bus & Sports</p>
+              <p className="text-xs text-slate-500">Upload official pictures or add custom campus facility cards</p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {facilities.map((fac) => (
-                <div key={fac.id} className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
-                  <div className="h-40 rounded-lg bg-slate-900 overflow-hidden relative flex items-center justify-center border">
-                    {fac.photoUrl ? (
-                      <img src={fac.photoUrl} alt={fac.title} className="w-full h-full object-cover" />
-                    ) : (
-                      <div className="text-center p-3 text-slate-400">
-                        <ImageIcon className="w-8 h-8 mx-auto text-amber-400 mb-1" />
-                        <p className="text-[10px] font-bold">No Custom Photo Attached</p>
-                      </div>
-                    )}
+                <div key={fac.id} className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3 flex flex-col justify-between">
+                  <div className="space-y-3">
+                    <div className="h-40 rounded-lg bg-slate-900 overflow-hidden relative flex items-center justify-center border">
+                      {fac.photoUrl ? (
+                        <img src={fac.photoUrl} alt={fac.title} className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="text-center p-3 text-slate-400">
+                          <ImageIcon className="w-8 h-8 mx-auto text-amber-400 mb-1" />
+                          <p className="text-[10px] font-bold">No Custom Photo Attached</p>
+                        </div>
+                      )}
+                    </div>
+
+                    <div>
+                      <span className="text-[10px] font-bold text-navy-900 uppercase bg-slate-200 px-2 py-0.5 rounded">{fac.category}</span>
+                      <h4 className="font-extrabold text-navy-900 text-xs mt-1">{fac.title}</h4>
+                      <p className="text-[11px] text-slate-500 line-clamp-2 mt-0.5">{fac.description}</p>
+                    </div>
                   </div>
 
-                  <div>
-                    <span className="text-[10px] font-bold text-navy-900 uppercase bg-slate-200 px-2 py-0.5 rounded">{fac.category}</span>
-                    <h4 className="font-extrabold text-navy-900 text-xs mt-1">{fac.title}</h4>
-                    <p className="text-[11px] text-slate-500 line-clamp-2 mt-0.5">{fac.description}</p>
-                  </div>
+                  <div className="flex items-center gap-2 pt-2 border-t border-slate-200">
+                    <label className="flex-1 py-2 rounded-xl bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 font-bold text-xs flex items-center justify-center gap-2 cursor-pointer shadow-sm">
+                      <Upload className="w-4 h-4 text-blue-600" />
+                      <span>{fac.photoUrl ? 'Change Photo' : 'Upload Photo'}</span>
+                      <input 
+                        type="file" 
+                        accept="image/*"
+                        onChange={(e) => handleFileSelect(e, (url) => {
+                          updateFacilityPhoto(fac.id, url);
+                          setUploadStatus(`Facility photo updated for '${fac.title}'!`);
+                        }, 'gallery')}
+                        className="hidden"
+                      />
+                    </label>
 
-                  <label className="w-full py-2 rounded-xl bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 font-bold text-xs flex items-center justify-center gap-2 cursor-pointer shadow-sm">
-                    <Upload className="w-4 h-4 text-blue-600" />
-                    <span>{fac.photoUrl ? 'Change Facility Photo' : 'Upload Facility Photo'}</span>
-                    <input 
-                      type="file" 
-                      accept="image/*"
-                      onChange={(e) => handleFileSelect(e, (url) => {
-                        updateFacilityPhoto(fac.id, url);
-                        setUploadStatus(`Facility photo updated for '${fac.title}'!`);
-                      }, 'gallery')}
-                      className="hidden"
-                    />
-                  </label>
+                    <button 
+                      onClick={() => {
+                        if (confirm(`Delete '${fac.title}' facility card?`)) {
+                          deleteFacility(fac.id);
+                        }
+                      }}
+                      className="p-2 rounded-xl bg-white hover:bg-red-50 text-slate-400 hover:text-red-600 border border-slate-300 transition-colors"
+                      title="Delete Facility"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>

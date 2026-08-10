@@ -173,6 +173,8 @@ interface DataContextType {
   deleteTopper: (id: string) => void;
   addLead: (lead: LeadItem) => void;
   updateLeadStatus: (id: string, status: string) => void;
+  addFacility: (facility: FacilityItem) => void;
+  deleteFacility: (id: string) => void;
   updateFacilityPhoto: (id: string, photoUrl: string) => void;
   updateHeroSlidePhoto: (id: string, photoUrl: string) => void;
 }
@@ -300,6 +302,9 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setLeads(prev => prev.map(l => l.id === id ? { ...l, status } : l));
   };
 
+  const addFacility = (item: FacilityItem) => setFacilities(prev => [item, ...prev]);
+  const deleteFacility = (id: string) => setFacilities(prev => prev.filter(item => item.id !== id));
+
   const updateFacilityPhoto = (id: string, photoUrl: string) => {
     setFacilities(prev => prev.map(item => item.id === id ? { ...item, photoUrl } : item));
   };
@@ -327,6 +332,8 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       deleteTopper,
       addLead,
       updateLeadStatus,
+      addFacility,
+      deleteFacility,
       updateFacilityPhoto,
       updateHeroSlidePhoto
     }}>
