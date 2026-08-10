@@ -19,6 +19,7 @@ import {
   ArrowRight,
   AlertCircle,
   Image as ImageIcon,
+  Building2,
   X
 } from 'lucide-react';
 import { useAuth, type UserRole } from '../context/AuthContext';
@@ -39,10 +40,11 @@ export const AdminDashboardPage: React.FC = () => {
     events, addEvent, deleteEvent,
     faculty, addFaculty, deleteFaculty,
     toppers, addTopper, deleteTopper,
-    leads, updateLeadStatus
+    leads, updateLeadStatus,
+    facilities, heroSlides, updateFacilityPhoto, updateHeroSlidePhoto
   } = useData();
 
-  const [activeTab, setActiveTab] = useState<'notices' | 'events' | 'faculty' | 'results' | 'leads'>('notices');
+  const [activeTab, setActiveTab] = useState<'notices' | 'events' | 'faculty' | 'results' | 'leads' | 'campus_photos'>('notices');
 
   // Login form state
   const [emailInput, setEmailInput] = useState('principal@svvjc.edu.in');
@@ -456,6 +458,18 @@ export const AdminDashboardPage: React.FC = () => {
         >
           <Inbox className="w-4 h-4" />
           <span>Admissions & Enquiry Leads ({leads.length})</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('campus_photos')}
+          className={`px-4 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 shrink-0 transition-all ${
+            activeTab === 'campus_photos'
+              ? 'bg-maroon-900 text-white shadow-md'
+              : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
+          }`}
+        >
+          <ImageIcon className="w-4 h-4" />
+          <span>Campus Photos & Facilities</span>
         </button>
       </div>
 
@@ -933,6 +947,106 @@ export const AdminDashboardPage: React.FC = () => {
               description="New student inquiry submissions from the online Admissions form will appear here in real-time." 
             />
           )}
+        </section>
+      )}
+
+      {/* TAB CONTENT 6: CAMPUS PHOTOS & FACILITIES */}
+      {activeTab === 'campus_photos' && (
+        <section className="space-y-8">
+          {/* 1. HOME HERO BANNER SLIDES */}
+          <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
+            <div className="border-b border-slate-100 pb-3">
+              <h3 className="font-extrabold text-navy-900 text-lg flex items-center gap-2">
+                <Upload className="w-5 h-5 text-maroon-800" />
+                Home Page Hero Banner Photos
+              </h3>
+              <p className="text-xs text-slate-500">Upload your real college photo for each main slide on the home page hero carousel</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {heroSlides.map((slide) => (
+                <div key={slide.id} className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
+                  <div className="h-40 rounded-lg bg-navy-950 overflow-hidden relative flex items-center justify-center border">
+                    {slide.photoUrl ? (
+                      <img src={slide.photoUrl} alt={slide.title} className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="text-center p-3 text-slate-400">
+                        <ImageIcon className="w-8 h-8 mx-auto text-amber-400 mb-1" />
+                        <p className="text-[10px] font-bold">No Custom Photo Attached</p>
+                      </div>
+                    )}
+                  </div>
+
+                  <div>
+                    <span className="text-[10px] font-bold text-maroon-800 uppercase">{slide.tag}</span>
+                    <h4 className="font-extrabold text-navy-900 text-xs line-clamp-1">{slide.title}</h4>
+                  </div>
+
+                  <label className="w-full py-2 rounded-xl bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 font-bold text-xs flex items-center justify-center gap-2 cursor-pointer shadow-sm">
+                    <Upload className="w-4 h-4 text-blue-600" />
+                    <span>{slide.photoUrl ? 'Change Banner Photo' : 'Upload Banner Photo'}</span>
+                    <input 
+                      type="file" 
+                      accept="image/*"
+                      onChange={(e) => handleFileSelect(e, (url) => {
+                        updateHeroSlidePhoto(slide.id, url);
+                        setUploadStatus(`Home banner photo updated for '${slide.title}'!`);
+                      }, 'gallery')}
+                      className="hidden"
+                    />
+                  </label>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* 2. CAMPUS FACILITIES & LAB PHOTOS */}
+          <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
+            <div className="border-b border-slate-100 pb-3">
+              <h3 className="font-extrabold text-navy-900 text-lg flex items-center gap-2">
+                <Building2 className="w-5 h-5 text-maroon-800" />
+                Campus Labs, Library & Facility Photos
+              </h3>
+              <p className="text-xs text-slate-500">Upload official pictures from PC for Physics Lab, Chemistry Lab, Biology Lab, Library, Bus & Sports</p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {facilities.map((fac) => (
+                <div key={fac.id} className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
+                  <div className="h-40 rounded-lg bg-slate-900 overflow-hidden relative flex items-center justify-center border">
+                    {fac.photoUrl ? (
+                      <img src={fac.photoUrl} alt={fac.title} className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="text-center p-3 text-slate-400">
+                        <ImageIcon className="w-8 h-8 mx-auto text-amber-400 mb-1" />
+                        <p className="text-[10px] font-bold">No Custom Photo Attached</p>
+                      </div>
+                    )}
+                  </div>
+
+                  <div>
+                    <span className="text-[10px] font-bold text-navy-900 uppercase bg-slate-200 px-2 py-0.5 rounded">{fac.category}</span>
+                    <h4 className="font-extrabold text-navy-900 text-xs mt-1">{fac.title}</h4>
+                    <p className="text-[11px] text-slate-500 line-clamp-2 mt-0.5">{fac.description}</p>
+                  </div>
+
+                  <label className="w-full py-2 rounded-xl bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 font-bold text-xs flex items-center justify-center gap-2 cursor-pointer shadow-sm">
+                    <Upload className="w-4 h-4 text-blue-600" />
+                    <span>{fac.photoUrl ? 'Change Facility Photo' : 'Upload Facility Photo'}</span>
+                    <input 
+                      type="file" 
+                      accept="image/*"
+                      onChange={(e) => handleFileSelect(e, (url) => {
+                        updateFacilityPhoto(fac.id, url);
+                        setUploadStatus(`Facility photo updated for '${fac.title}'!`);
+                      }, 'gallery')}
+                      className="hidden"
+                    />
+                  </label>
+                </div>
+              ))}
+            </div>
+          </div>
         </section>
       )}
 

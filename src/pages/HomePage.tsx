@@ -31,38 +31,7 @@ export const HomePage: React.FC<HomePageProps> = ({ setActiveTab }) => {
     description: "Welcome to SRI VIDYA VIKAS JUNIOR COLLEGE, Prasanth Nagar, Madanapalle. Offering MPC, BiPC, CEC, MEC, HEC intermediate education and EAMCET, NEET, JEE coaching."
   });
 
-  const { notices, events } = useData();
-
-  // Hero carousel slides
-  const heroSlides = [
-    {
-      id: 1,
-      tag: "BIEAP CURRICULUM + COMPETITIVE EXAMS",
-      title: "Special EAMCET, NEET & JEE Main Orientation",
-      subtitle: "Dedicated Coaching for Top Engineering & Medical Entrance Exams",
-      image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=1600",
-      ctaText: "Apply for Admission 2025",
-      ctaTab: "admissions"
-    },
-    {
-      id: 2,
-      tag: "EXPERT FACULTY & DISCIPLINED CAMPUS",
-      title: "Building Strong Academic Foundations Since Nov 2024",
-      subtitle: "State-of-the-Art Science Labs & Computer Facilities in Prasanth Nagar",
-      image: "https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&q=80&w=1600",
-      ctaText: "Explore Facilities",
-      ctaTab: "facilities"
-    },
-    {
-      id: 3,
-      tag: "INTERMEDIATE STREAMS: MPC • BiPC • CEC • MEC • HEC",
-      title: "Comprehensive BIEAP Board Preparation",
-      subtitle: "Regular Mock Tests, Personal Mentoring & 100% Concept Clarity",
-      image: "https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&q=80&w=1600",
-      ctaText: "View Streams Offered",
-      ctaTab: "streams"
-    }
-  ];
+  const { notices, events, heroSlides } = useData();
 
   const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -84,14 +53,23 @@ export const HomePage: React.FC<HomePageProps> = ({ setActiveTab }) => {
       {/* 1. HERO SLIDER SECTION */}
       <section className="relative rounded-3xl overflow-hidden shadow-2xl bg-navy-950 min-h-[460px] sm:min-h-[520px] flex items-center">
         
-        {/* Background Image Carousel */}
+        {/* Background Image Carousel (Real Photo or Institutional Gradient) */}
         <div className="absolute inset-0 z-0">
-          <img 
-            src={heroSlides[currentSlide].image} 
-            alt={heroSlides[currentSlide].title}
-            className="w-full h-full object-cover opacity-35 transition-opacity duration-700"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-navy-950 via-navy-950/80 to-transparent"></div>
+          {heroSlides[currentSlide]?.photoUrl ? (
+            <img 
+              src={heroSlides[currentSlide].photoUrl} 
+              alt={heroSlides[currentSlide].title}
+              className="w-full h-full object-cover opacity-45 transition-opacity duration-700"
+            />
+          ) : (
+            <div className="w-full h-full bg-gradient-to-br from-navy-950 via-maroon-950/90 to-navy-900 flex items-center justify-center">
+              <div className="text-center p-8 opacity-20">
+                <GraduationCap className="w-32 h-32 text-amber-400 mx-auto" />
+                <p className="text-xs text-amber-400 font-bold uppercase tracking-widest mt-2">SRI VIDYA VIKAS JUNIOR COLLEGE</p>
+              </div>
+            </div>
+          )}
+          <div className="absolute inset-0 bg-gradient-to-r from-navy-950 via-navy-950/85 to-transparent"></div>
         </div>
 
         {/* Hero Content Overlay */}

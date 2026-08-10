@@ -62,12 +62,107 @@ export interface LeadItem {
   date: string;
 }
 
+export interface FacilityItem {
+  id: string;
+  title: string;
+  category: string;
+  description: string;
+  photoUrl: string;
+}
+
+export interface HeroSlideItem {
+  id: string;
+  tag: string;
+  title: string;
+  subtitle: string;
+  photoUrl: string;
+  ctaText: string;
+  ctaTab: string;
+}
+
+const DEFAULT_FACILITIES: FacilityItem[] = [
+  {
+    id: "lab-physics",
+    title: "Physics & Optics Laboratory",
+    category: "Laboratory",
+    description: "Equipped with dark room for optical experiments, potentiometers, vernier calipers, and modern electronics kits for BIEAP syllabus.",
+    photoUrl: ""
+  },
+  {
+    id: "lab-chem",
+    title: "Chemistry & Qualitative Analysis Lab",
+    category: "Laboratory",
+    description: "Full fume hood safety systems, titration benches, reagent racks, and glass apparatus for organic and inorganic practicals.",
+    photoUrl: ""
+  },
+  {
+    id: "lab-bio",
+    title: "Botany & Zoology Biology Lab",
+    category: "Laboratory",
+    description: "High-magnification compound microscopes, preserved plant/animal specimens, anatomical models, and slide preparation setups.",
+    photoUrl: ""
+  },
+  {
+    id: "lib-central",
+    title: "Central Library & Digital Reading Room",
+    category: "Library",
+    description: "Quiet study room with reference books for Intermediate Board, EAMCET, NEET, and JEE Main prep, plus digital catalog access.",
+    photoUrl: ""
+  },
+  {
+    id: "transport",
+    title: "College Bus & Transport Routes",
+    category: "Transport",
+    description: "Safe, fleet-managed college buses connecting Prasanth Nagar with major surrounding areas in Madanapalle.",
+    photoUrl: ""
+  },
+  {
+    id: "sports",
+    title: "Sports Grounds & Athletics",
+    category: "Sports",
+    description: "Outdoor volleyball, shuttle badminton courts, table tennis, chess, and annual sports week competitions.",
+    photoUrl: ""
+  }
+];
+
+const DEFAULT_HERO_SLIDES: HeroSlideItem[] = [
+  {
+    id: "slide-1",
+    tag: "BIEAP CURRICULUM + COMPETITIVE EXAMS",
+    title: "Special EAMCET, NEET & JEE Main Orientation",
+    subtitle: "Dedicated Coaching for Top Engineering & Medical Entrance Exams",
+    photoUrl: "",
+    ctaText: "Apply for Admission 2025",
+    ctaTab: "admissions"
+  },
+  {
+    id: "slide-2",
+    tag: "EXPERT FACULTY & DISCIPLINED CAMPUS",
+    title: "Building Strong Academic Foundations",
+    subtitle: "Science Labs & Computer Facilities in Prasanth Nagar, Madanapalle",
+    photoUrl: "",
+    ctaText: "Explore Facilities",
+    ctaTab: "facilities"
+  },
+  {
+    id: "slide-3",
+    tag: "INTERMEDIATE STREAMS: MPC • BiPC • CEC • MEC • HEC",
+    title: "Comprehensive BIEAP Board Preparation",
+    subtitle: "Regular Mock Tests, Personal Mentoring & 100% Concept Clarity",
+    photoUrl: "",
+    ctaText: "View Streams Offered",
+    ctaTab: "streams"
+  }
+];
+
 interface DataContextType {
   notices: NoticeItem[];
   events: EventItem[];
   faculty: FacultyItem[];
   toppers: TopperItem[];
   leads: LeadItem[];
+  facilities: FacilityItem[];
+  heroSlides: HeroSlideItem[];
   addNotice: (notice: NoticeItem) => void;
   deleteNotice: (id: string) => void;
   addEvent: (event: EventItem) => void;
@@ -78,6 +173,8 @@ interface DataContextType {
   deleteTopper: (id: string) => void;
   addLead: (lead: LeadItem) => void;
   updateLeadStatus: (id: string, status: string) => void;
+  updateFacilityPhoto: (id: string, photoUrl: string) => void;
+  updateHeroSlidePhoto: (id: string, photoUrl: string) => void;
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
@@ -88,10 +185,11 @@ const STORAGE_KEYS = {
   FACULTY: 'svvjc_faculty_data_v1',
   TOPPERS: 'svvjc_toppers_data_v1',
   LEADS: 'svvjc_leads_data_v1',
+  FACILITIES: 'svvjc_facilities_data_v1',
+  HERO_SLIDES: 'svvjc_hero_slides_data_v1',
 };
 
 export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // Initialize state from LocalStorage if available, fallback to constants
   const [notices, setNotices] = useState<NoticeItem[]>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEYS.NOTICES);
@@ -137,36 +235,52 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   });
 
-  // Sync to LocalStorage whenever state updates
-  useEffect(() => {
+  const [facilities, setFacilities] = useState<FacilityItem[]>(() => {
     try {
-      localStorage.setItem(STORAGE_KEYS.NOTICES, JSON.stringify(notices));
-    } catch (e) { console.error('LocalStorage sync error', e); }
+      const saved = localStorage.getItem(STORAGE_KEYS.FACILITIES);
+      return saved ? JSON.parse(saved) : DEFAULT_FACILITIES;
+    } catch {
+      return DEFAULT_FACILITIES;
+    }
+  });
+
+  const [heroSlides, setHeroSlides] = useState<HeroSlideItem[]>(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.HERO_SLIDES);
+      return saved ? JSON.parse(saved) : DEFAULT_HERO_SLIDES;
+    } catch {
+      return DEFAULT_HERO_SLIDES;
+    }
+  });
+
+  // Sync to LocalStorage
+  useEffect(() => {
+    try { localStorage.setItem(STORAGE_KEYS.NOTICES, JSON.stringify(notices)); } catch {}
   }, [notices]);
 
   useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEYS.EVENTS, JSON.stringify(events));
-    } catch (e) { console.error('LocalStorage sync error', e); }
+    try { localStorage.setItem(STORAGE_KEYS.EVENTS, JSON.stringify(events)); } catch {}
   }, [events]);
 
   useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEYS.FACULTY, JSON.stringify(faculty));
-    } catch (e) { console.error('LocalStorage sync error', e); }
+    try { localStorage.setItem(STORAGE_KEYS.FACULTY, JSON.stringify(faculty)); } catch {}
   }, [faculty]);
 
   useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEYS.TOPPERS, JSON.stringify(toppers));
-    } catch (e) { console.error('LocalStorage sync error', e); }
+    try { localStorage.setItem(STORAGE_KEYS.TOPPERS, JSON.stringify(toppers)); } catch {}
   }, [toppers]);
 
   useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEYS.LEADS, JSON.stringify(leads));
-    } catch (e) { console.error('LocalStorage sync error', e); }
+    try { localStorage.setItem(STORAGE_KEYS.LEADS, JSON.stringify(leads)); } catch {}
   }, [leads]);
+
+  useEffect(() => {
+    try { localStorage.setItem(STORAGE_KEYS.FACILITIES, JSON.stringify(facilities)); } catch {}
+  }, [facilities]);
+
+  useEffect(() => {
+    try { localStorage.setItem(STORAGE_KEYS.HERO_SLIDES, JSON.stringify(heroSlides)); } catch {}
+  }, [heroSlides]);
 
   // Actions
   const addNotice = (notice: NoticeItem) => setNotices(prev => [notice, ...prev]);
@@ -186,6 +300,14 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setLeads(prev => prev.map(l => l.id === id ? { ...l, status } : l));
   };
 
+  const updateFacilityPhoto = (id: string, photoUrl: string) => {
+    setFacilities(prev => prev.map(item => item.id === id ? { ...item, photoUrl } : item));
+  };
+
+  const updateHeroSlidePhoto = (id: string, photoUrl: string) => {
+    setHeroSlides(prev => prev.map(item => item.id === id ? { ...item, photoUrl } : item));
+  };
+
   return (
     <DataContext.Provider value={{
       notices,
@@ -193,6 +315,8 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       faculty,
       toppers,
       leads,
+      facilities,
+      heroSlides,
       addNotice,
       deleteNotice,
       addEvent,
@@ -203,6 +327,8 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       deleteTopper,
       addLead,
       updateLeadStatus,
+      updateFacilityPhoto,
+      updateHeroSlidePhoto
     }}>
       {children}
     </DataContext.Provider>
