@@ -48,8 +48,9 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
             className="flex items-center shrink-0 cursor-pointer group"
           >
             <img 
-              src={COLLEGE_DETAILS.logoUrl} 
+              src={COLLEGE_DETAILS.logoUrl || '/logo.jpg'} 
               alt={`${COLLEGE_DETAILS.name} Official Logo`}
+              onError={(e) => { (e.target as HTMLImageElement).src = '/logo.jpg'; }}
               className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 object-contain group-hover:scale-105 transition-transform"
             />
           </div>

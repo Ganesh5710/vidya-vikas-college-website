@@ -15,8 +15,9 @@ export const Footer: React.FC<FooterProps> = ({ setActiveTab }) => {
         <div className="space-y-4">
           <div className="flex items-center gap-3">
             <img 
-              src={COLLEGE_DETAILS.logoUrl} 
+              src={COLLEGE_DETAILS.logoUrl || '/logo.jpg'} 
               alt={`${COLLEGE_DETAILS.name} Official Logo`}
+              onError={(e) => { (e.target as HTMLImageElement).src = '/logo.jpg'; }}
               className="w-12 h-12 object-contain bg-white rounded-full p-0.5 border border-slate-300 shadow"
             />
             <div>

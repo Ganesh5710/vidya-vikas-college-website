@@ -20,7 +20,7 @@ export const COLLEGE_DETAILS = {
   landmark: "Prasanth Nagar, Madanapalle (Near Krishna Reddy Junior College)",
   district: "Annamayya / Chittoor Dist, Andhra Pradesh",
   workingHours: "Monday to Saturday: 8:30 AM - 5:30 PM",
-  logoUrl: "/svvjc-logo.jpg",
+  logoUrl: "/logo.jpg",
   rating: 4.8,
   reviewCount: "250+",
   googleMapsUrl: "https://maps.google.com/?q=Sri+Vidya+Vikas+Junior+College+Prasanth+Nagar+Madanapalle"
