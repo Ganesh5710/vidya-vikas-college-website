@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Users, Mail, Briefcase, GraduationCap, Filter } from 'lucide-react';
 import { useData } from '../context/DataContext';
-import { PlaceholderBadge } from '../components/common/PlaceholderBadge';
 import { EmptyState } from '../components/common/EmptyState';
 import { useSEO } from '../hooks/useSEO';
 
@@ -61,8 +60,6 @@ export const FacultyPage: React.FC = () => {
         <EmptyState 
           title="No Faculty Records Added Yet"
           description="Faculty profiles posted via the Staff Control Panel will instantly appear here."
-          checklistRef="Section 4 - Faculty Details Spreadsheet"
-          responsibleStaff="Department Heads & Principal's Office"
         />
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -101,10 +98,6 @@ export const FacultyPage: React.FC = () => {
                     <span>{member.email}</span>
                   </p>
                 </div>
-              </div>
-
-              <div className="pt-2">
-                <PlaceholderBadge checklistRef="Section 4 - Faculty Details Spreadsheet" note="Faculty Details Confirmed" />
               </div>
             </div>
           ))}

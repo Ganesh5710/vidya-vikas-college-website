@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Award, Trophy, Maximize2, X } from 'lucide-react';
 import { INITIAL_STREAM_SUMMARY } from '../constants/collegeData';
 import { useData, type TopperItem } from '../context/DataContext';
-import { PlaceholderBadge } from '../components/common/PlaceholderBadge';
 import { EmptyState } from '../components/common/EmptyState';
 import { useSEO } from '../hooks/useSEO';
 
@@ -83,15 +82,12 @@ export const ResultsPage: React.FC = () => {
             <h3 className="text-2xl font-extrabold text-navy-900">College Top Rankers</h3>
             <p className="text-xs text-slate-500">Board Exam High Scorers & Competitive Exam Qualifiers</p>
           </div>
-          <PlaceholderBadge checklistRef="Section 4 - Pass Percentage & Topper List" note="Topper List Sign-off Active" />
         </div>
 
         {toppers.length === 0 ? (
           <EmptyState 
             title="No Topper Records Added Yet"
             description="Board exam toppers posted via the Staff Control Panel will instantly appear here."
-            checklistRef="Section 4 - Pass Percentage & Topper List"
-            responsibleStaff="Exam Cell & Principal's Office"
           />
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">

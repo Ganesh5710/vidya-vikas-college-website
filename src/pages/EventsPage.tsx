@@ -54,8 +54,6 @@ export const EventsPage: React.FC = () => {
           <EmptyState 
             title="No Campus Events Listed Yet"
             description="Upcoming campus events and celebrations posted via the Staff Control Panel will instantly appear here."
-            checklistRef="Section 4 - Campus Events"
-            responsibleStaff="Office Administrator & Cultural Committee"
           />
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -138,8 +136,6 @@ export const EventsPage: React.FC = () => {
           <EmptyState 
             title="Official Album Photos Coming Soon"
             description={`Staff can upload high-resolution photos for '${activeAlbum.title}' via the Staff Control Panel.`}
-            checklistRef="Section 4 - Campus Photo Albums"
-            responsibleStaff="Cultural Committee & Office Staff"
           />
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

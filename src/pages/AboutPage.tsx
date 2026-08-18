@@ -1,7 +1,6 @@
 import React from 'react';
 import { Building2, Target, History, ShieldCheck, Users } from 'lucide-react';
 import { COLLEGE_DETAILS } from '../constants/collegeData';
-import { PlaceholderBadge } from '../components/common/PlaceholderBadge';
 import { useSEO } from '../hooks/useSEO';
 
 export const AboutPage: React.FC = () => {
@@ -100,7 +99,6 @@ export const AboutPage: React.FC = () => {
               <p className="text-xs text-slate-500">Board of Intermediate Education, Andhra Pradesh (BIEAP)</p>
             </div>
           </div>
-          <PlaceholderBadge checklistRef="Section 4 - Management Committee Members" note="Committee Details Flagged for Finalization" />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">

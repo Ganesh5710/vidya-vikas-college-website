@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { MapPin, Phone, Mail, Clock, Send, ExternalLink, CheckCircle2, Building2 } from 'lucide-react';
 import { COLLEGE_DETAILS, INITIAL_CONTACT_INFO } from '../constants/collegeData';
-import { PlaceholderBadge } from '../components/common/PlaceholderBadge';
 import { ReCaptchaBadge } from '../components/common/ReCaptchaBadge';
 import { useSEO } from '../hooks/useSEO';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
@@ -213,10 +212,6 @@ export const ContactPage: React.FC = () => {
                   <span>{INITIAL_CONTACT_INFO.phoneAdmissions}</span>
                 </p>
               </div>
-            </div>
-
-            <div className="pt-2 border-t border-slate-100">
-              <PlaceholderBadge checklistRef={INITIAL_CONTACT_INFO.checklistRef} note={INITIAL_CONTACT_INFO.note} />
             </div>
           </div>
 

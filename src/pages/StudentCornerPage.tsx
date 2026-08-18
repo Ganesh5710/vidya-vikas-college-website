@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { BookOpen, Calendar, Download, ExternalLink, FileText, Search, ShieldAlert, Sparkles, CheckCircle2, XCircle, Clock, Award } from 'lucide-react';
 import { INITIAL_STUDY_MATERIALS } from '../constants/collegeData';
-import { PlaceholderBadge } from '../components/common/PlaceholderBadge';
 import { useSEO } from '../hooks/useSEO';
 
 export const StudentCornerPage: React.FC = () => {
@@ -334,7 +333,6 @@ export const StudentCornerPage: React.FC = () => {
                 className="pl-9 pr-4 py-2 rounded-lg border border-slate-300 text-xs focus:ring-2 focus:ring-maroon-800 outline-none w-56"
               />
             </div>
-            <PlaceholderBadge checklistRef="Section 4 - Model / Previous Question Papers" note="Folder of PDFs Flagged for Upload" />
           </div>
         </div>
 

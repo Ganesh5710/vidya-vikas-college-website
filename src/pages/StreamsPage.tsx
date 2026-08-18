@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { BookOpen, CheckCircle, Clock, GraduationCap, ArrowRight } from 'lucide-react';
 import { INITIAL_STREAMS } from '../constants/collegeData';
-import { PlaceholderBadge } from '../components/common/PlaceholderBadge';
 import { useSEO } from '../hooks/useSEO';
 
 interface StreamsPageProps {
@@ -62,7 +61,6 @@ export const StreamsPage: React.FC<StreamsPageProps> = ({ setActiveTab }) => {
             <h3 className="text-2xl font-extrabold text-navy-900 mt-2">{activeStream.fullName}</h3>
             <p className="text-xs text-slate-500 mt-1">BIEAP 2-Year Intermediate Course</p>
           </div>
-          <PlaceholderBadge checklistRef={activeStream.checklistRef} note={activeStream.note} />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
