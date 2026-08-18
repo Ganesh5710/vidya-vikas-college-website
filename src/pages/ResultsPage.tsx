@@ -94,23 +94,33 @@ export const ResultsPage: React.FC = () => {
             {toppers.map((topper: TopperItem) => (
               <div key={topper.id} className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm space-y-4 hover:shadow-md transition-shadow flex flex-col justify-between">
                 
-                {/* Poster Container with Full Image object-contain Fit */}
-                <div className="relative w-full h-[380px] sm:h-[440px] rounded-xl overflow-hidden bg-slate-950 flex items-center justify-center p-1 group border border-slate-200">
+                {/* Poster Container with Ambient Blurred Backdrop */}
+                <div className="relative w-full h-[380px] sm:h-[440px] rounded-xl overflow-hidden bg-slate-100 flex items-center justify-center p-1 group border border-slate-200 shadow-inner">
+                  {/* Ambient Blurred Image Backdrop */}
+                  {topper.photoUrl && (
+                    <img 
+                      src={topper.photoUrl} 
+                      alt="" 
+                      className="absolute inset-0 w-full h-full object-cover filter blur-2xl scale-125 opacity-50 select-none pointer-events-none"
+                    />
+                  )}
+
+                  {/* Main Crisp Poster Image */}
                   <img 
                     src={topper.photoUrl || "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=400"} 
                     alt={topper.studentName}
-                    className="w-full h-full object-contain rounded-lg group-hover:scale-[1.02] transition-transform duration-300"
+                    className="relative z-10 w-full h-full object-contain rounded-lg group-hover:scale-[1.02] transition-transform duration-300 drop-shadow-md"
                   />
 
                   {/* Score Tag */}
-                  <div className="absolute top-3 right-3 bg-amber-500 text-navy-950 font-black text-xs px-3 py-1 rounded-full shadow border border-amber-300">
+                  <div className="absolute top-3 right-3 z-20 bg-amber-500 text-navy-950 font-black text-xs px-3 py-1 rounded-full shadow border border-amber-300">
                     {formatTopperScore(topper.marksPercentage)}
                   </div>
 
                   {/* Fullscreen Expand Icon Button */}
                   <button
                     onClick={() => setSelectedPhoto({ url: topper.photoUrl, title: topper.studentName })}
-                    className="absolute bottom-3 right-3 p-2 rounded-lg bg-navy-900/80 hover:bg-navy-900 text-white backdrop-blur shadow transition-all flex items-center gap-1 text-[11px] font-bold"
+                    className="absolute bottom-3 right-3 z-20 p-2 rounded-lg bg-navy-900/80 hover:bg-navy-900 text-white backdrop-blur shadow transition-all flex items-center gap-1 text-[11px] font-bold"
                     title="Click to view full high-res poster"
                   >
                     <Maximize2 className="w-3.5 h-3.5 text-amber-400" />

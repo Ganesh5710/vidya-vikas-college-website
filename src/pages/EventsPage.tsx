@@ -63,14 +63,19 @@ export const EventsPage: React.FC = () => {
                   {evt.posterUrl && (
                     <div 
                       onClick={() => setSelectedPhoto({ url: evt.posterUrl, title: evt.title })}
-                      className="relative w-full h-64 sm:h-72 bg-slate-950 flex items-center justify-center p-1 border-b cursor-pointer group"
+                      className="relative w-full h-64 sm:h-72 bg-slate-100 flex items-center justify-center p-1 border-b cursor-pointer group overflow-hidden"
                     >
                       <img 
                         src={evt.posterUrl} 
-                        alt={evt.title} 
-                        className="w-full h-full object-contain rounded group-hover:scale-105 transition-transform duration-300"
+                        alt="" 
+                        className="absolute inset-0 w-full h-full object-cover filter blur-2xl scale-125 opacity-50 select-none pointer-events-none"
                       />
-                      <div className="absolute bottom-2 right-2 p-1.5 rounded bg-navy-900/80 text-white text-[10px] font-bold flex items-center gap-1">
+                      <img 
+                        src={evt.posterUrl} 
+                        alt={evt.title} 
+                        className="relative z-10 w-full h-full object-contain rounded group-hover:scale-105 transition-transform duration-300 drop-shadow-md"
+                      />
+                      <div className="absolute bottom-2 right-2 z-20 p-1.5 rounded bg-navy-900/80 text-white text-[10px] font-bold flex items-center gap-1 shadow">
                         <Maximize2 className="w-3 h-3 text-amber-400" />
                         <span>Zoom</span>
                       </div>
@@ -143,15 +148,20 @@ export const EventsPage: React.FC = () => {
               <div 
                 key={photo.id} 
                 onClick={() => setSelectedPhoto({ url: photo.imageUrl, title: photo.caption || activeAlbum.title })}
-                className="relative rounded-2xl overflow-hidden border border-slate-200 shadow-sm group cursor-pointer bg-slate-950 flex flex-col items-center"
+                className="relative rounded-2xl overflow-hidden border border-slate-200 shadow-sm group cursor-pointer bg-slate-100 flex flex-col items-center justify-center"
               >
                 <img 
                   src={photo.imageUrl} 
+                  alt="" 
+                  className="absolute inset-0 w-full h-full object-cover filter blur-2xl scale-125 opacity-50 select-none pointer-events-none"
+                />
+                <img 
+                  src={photo.imageUrl} 
                   alt={photo.caption || "Campus Event Photo"}
-                  className="w-full h-64 object-contain group-hover:scale-105 transition-transform duration-300"
+                  className="relative z-10 w-full h-64 object-contain group-hover:scale-105 transition-transform duration-300 drop-shadow-md"
                 />
                 {photo.caption && (
-                  <div className="w-full p-2.5 bg-navy-900 text-white text-[11px] font-semibold text-center border-t border-navy-800">
+                  <div className="relative z-20 w-full p-2.5 bg-navy-900 text-white text-[11px] font-semibold text-center border-t border-navy-800">
                     {photo.caption}
                   </div>
                 )}
