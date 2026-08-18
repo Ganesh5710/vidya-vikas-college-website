@@ -36,10 +36,20 @@
   --color-gold-700: #b45309;
 }
 
-body {
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+  scroll-behavior: smooth;
   background-color: #f8fafc;
   color: #0f172a;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  overflow-x: hidden;
+  width: 100%;
 }
 
 /* Custom Utility Classes */
