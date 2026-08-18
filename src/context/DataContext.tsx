@@ -80,6 +80,19 @@ export interface HeroSlideItem {
   ctaTab: string;
 }
 
+export interface GalleryPhotoItem {
+  id: string;
+  albumId: string;
+  imageUrl: string;
+  caption: string;
+}
+
+export const DEFAULT_ALBUMS = [
+  { id: 'alb-sports', title: 'Annual Sports Week & Prize Distribution', category: 'Sports', eventYear: '2024-2025', description: 'Volleyball tournaments, athletics, shuttle badminton, and sports trophy distributions.' },
+  { id: 'alb-science', title: 'Science Exhibition & Practical Workshops', category: 'Academic', eventYear: '2024-2025', description: 'Student working models, optical experiments, chemical titration demonstrations, and bio exhibits.' },
+  { id: 'alb-farewell', title: 'Farewell & Orientation Ceremonies', category: 'Cultural', eventYear: '2024-2025', description: 'Freshers orientation program, cultural performances, and senior class farewell celebrations.' }
+];
+
 const DEFAULT_FACILITIES: FacilityItem[] = [
   {
     id: "lab-physics",
@@ -163,6 +176,7 @@ interface DataContextType {
   leads: LeadItem[];
   facilities: FacilityItem[];
   heroSlides: HeroSlideItem[];
+  galleryPhotos: GalleryPhotoItem[];
   addNotice: (notice: NoticeItem) => void;
   deleteNotice: (id: string) => void;
   addEvent: (event: EventItem) => void;
@@ -177,6 +191,8 @@ interface DataContextType {
   deleteFacility: (id: string) => void;
   updateFacilityPhoto: (id: string, photoUrl: string) => void;
   updateHeroSlidePhoto: (id: string, photoUrl: string) => void;
+  addGalleryPhoto: (photo: GalleryPhotoItem) => void;
+  deleteGalleryPhoto: (id: string) => void;
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
@@ -189,6 +205,7 @@ const STORAGE_KEYS = {
   LEADS: 'svvjc_leads_data_v1',
   FACILITIES: 'svvjc_facilities_data_v1',
   HERO_SLIDES: 'svvjc_hero_slides_data_v1',
+  GALLERY_PHOTOS: 'svvjc_gallery_photos_data_v1',
 };
 
 export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -255,6 +272,15 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   });
 
+  const [galleryPhotos, setGalleryPhotos] = useState<GalleryPhotoItem[]>(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.GALLERY_PHOTOS);
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+
   // Sync to LocalStorage
   useEffect(() => {
     try { localStorage.setItem(STORAGE_KEYS.NOTICES, JSON.stringify(notices)); } catch {}
@@ -283,6 +309,10 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     try { localStorage.setItem(STORAGE_KEYS.HERO_SLIDES, JSON.stringify(heroSlides)); } catch {}
   }, [heroSlides]);
+
+  useEffect(() => {
+    try { localStorage.setItem(STORAGE_KEYS.GALLERY_PHOTOS, JSON.stringify(galleryPhotos)); } catch {}
+  }, [galleryPhotos]);
 
   // Actions
   const addNotice = (notice: NoticeItem) => setNotices(prev => [notice, ...prev]);
@@ -313,6 +343,9 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setHeroSlides(prev => prev.map(item => item.id === id ? { ...item, photoUrl } : item));
   };
 
+  const addGalleryPhoto = (photo: GalleryPhotoItem) => setGalleryPhotos(prev => [photo, ...prev]);
+  const deleteGalleryPhoto = (id: string) => setGalleryPhotos(prev => prev.filter(p => p.id !== id));
+
   return (
     <DataContext.Provider value={{
       notices,
@@ -322,6 +355,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       leads,
       facilities,
       heroSlides,
+      galleryPhotos,
       addNotice,
       deleteNotice,
       addEvent,
@@ -335,7 +369,9 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       addFacility,
       deleteFacility,
       updateFacilityPhoto,
-      updateHeroSlidePhoto
+      updateHeroSlidePhoto,
+      addGalleryPhoto,
+      deleteGalleryPhoto
     }}>
       {children}
     </DataContext.Provider>

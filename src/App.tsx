@@ -4,7 +4,7 @@ import { AuthProvider } from './context/AuthContext';
 import { DataProvider } from './context/DataContext';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
-import { WhatsAppFAB } from './components/layout/WhatsAppFAB';
+import { MobileQuickActionsFAB } from './components/layout/MobileQuickActionsFAB';
 
 // Pages
 import { HomePage } from './pages/HomePage';
@@ -62,8 +62,8 @@ export function App() {
               {renderActivePage()}
             </main>
 
-            {/* Floating WhatsApp Action Button */}
-            <WhatsAppFAB />
+            {/* Mobile & Desktop Quick Actions FABs */}
+            <MobileQuickActionsFAB />
 
             {/* Footer */}
             <Footer setActiveTab={setActiveTab} />

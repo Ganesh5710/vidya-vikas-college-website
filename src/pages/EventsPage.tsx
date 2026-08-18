@@ -1,23 +1,30 @@
 import React, { useState } from 'react';
-import { Calendar, Maximize2, X } from 'lucide-react';
-import { INITIAL_GALLERY_ALBUMS, INITIAL_GALLERY_PHOTOS } from '../constants/collegeData';
-import { useData } from '../context/DataContext';
-import { PlaceholderBadge } from '../components/common/PlaceholderBadge';
+import { Calendar, Maximize2, X, Trophy, Microscope, GraduationCap, Image as ImageIcon } from 'lucide-react';
+import { useData, DEFAULT_ALBUMS, type GalleryPhotoItem } from '../context/DataContext';
 import { EmptyState } from '../components/common/EmptyState';
 import { useSEO } from '../hooks/useSEO';
 
 export const EventsPage: React.FC = () => {
   useSEO({
-    title: "Campus Events & Gallery | SRI VIDYA VIKAS JUNIOR COLLEGE",
-    description: "Explore photo & video galleries of annual day celebrations, science expos, and sports events at SRI VIDYA VIKAS JUNIOR COLLEGE, Prasanth Nagar, Madanapalle."
+    title: "Campus Events & Photo Gallery | SRI VIDYA VIKAS JUNIOR COLLEGE",
+    description: "Explore photo galleries of annual day celebrations, science expos, sports week, and orientation ceremonies at SRI VIDYA VIKAS JUNIOR COLLEGE, Prasanth Nagar, Madanapalle."
   });
 
-  const { events } = useData();
-  const [activeAlbumId, setActiveAlbumId] = useState<string>(INITIAL_GALLERY_ALBUMS[0]?.id || 'alb-1');
+  const { events, galleryPhotos } = useData();
+  const [activeAlbumId, setActiveAlbumId] = useState<string>('alb-sports');
   const [selectedPhoto, setSelectedPhoto] = useState<{ url: string; title: string } | null>(null);
 
-  const activeAlbum = INITIAL_GALLERY_ALBUMS.find(a => a.id === activeAlbumId) || INITIAL_GALLERY_ALBUMS[0];
-  const albumPhotos = INITIAL_GALLERY_PHOTOS.filter(p => p.albumId === activeAlbumId);
+  const activeAlbum = DEFAULT_ALBUMS.find(a => a.id === activeAlbumId) || DEFAULT_ALBUMS[0];
+  const albumPhotos = galleryPhotos.filter(p => p.albumId === activeAlbumId);
+
+  const getAlbumIcon = (id: string) => {
+    switch (id) {
+      case 'alb-sports': return <Trophy className="w-4 h-4 text-amber-500" />;
+      case 'alb-science': return <Microscope className="w-4 h-4 text-blue-500" />;
+      case 'alb-farewell': return <GraduationCap className="w-4 h-4 text-emerald-500" />;
+      default: return <ImageIcon className="w-4 h-4 text-maroon-800" />;
+    }
+  };
 
   return (
     <div className="space-y-10">
@@ -29,16 +36,19 @@ export const EventsPage: React.FC = () => {
           <span>CAMPUS LIFE & PHOTO GALLERY</span>
         </div>
         <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
-          Events, Celebrations & Gallery
+          Events, Celebrations & Photo Albums
         </h2>
         <p className="text-slate-300 text-sm max-w-3xl">
-          Visual highlights of annual day celebrations, science expos, sports competitions, and student club activities at SRI VIDYA VIKAS JUNIOR COLLEGE.
+          Visual highlights of annual sports week, science expos, farewell orientation ceremonies, and campus celebrations at SRI VIDYA VIKAS JUNIOR COLLEGE.
         </p>
       </section>
 
       {/* Events Schedule Grid */}
       <section className="space-y-4">
-        <h3 className="text-xl font-bold text-navy-900">College Events Schedule</h3>
+        <h3 className="text-xl font-extrabold text-navy-900 flex items-center gap-2">
+          <Calendar className="w-5 h-5 text-maroon-800" />
+          <span>Campus Events Schedule</span>
+        </h3>
 
         {events.length === 0 ? (
           <EmptyState 
@@ -92,59 +102,63 @@ export const EventsPage: React.FC = () => {
         )}
       </section>
 
-      {/* Album Selector Tabs */}
+      {/* Album Selector Categories */}
       <div className="space-y-4">
-        <div className="flex items-center justify-between flex-wrap gap-2">
-          <h3 className="text-xl font-bold text-navy-900">Photo Albums</h3>
-          <PlaceholderBadge checklistRef="Section 4 - Campus Photos" note="Album Photos Flagged for Update" />
-        </div>
+        <h3 className="text-xl font-extrabold text-navy-900">Official College Photo Albums</h3>
 
-        {INITIAL_GALLERY_ALBUMS.length > 0 && (
-          <div className="flex items-center gap-3 overflow-x-auto pb-2 border-b border-slate-200">
-            {INITIAL_GALLERY_ALBUMS.map((alb) => (
-              <button
-                key={alb.id}
-                onClick={() => setActiveAlbumId(alb.id)}
-                className={`px-5 py-2.5 rounded-xl font-bold text-sm transition-all whitespace-nowrap ${
-                  activeAlbumId === alb.id
-                    ? 'bg-maroon-900 text-white shadow-md'
-                    : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
-                }`}
-              >
-                {alb.title} ({alb.eventYear})
-              </button>
-            ))}
-          </div>
-        )}
+        <div className="flex items-center gap-3 overflow-x-auto pb-2 border-b border-slate-200">
+          {DEFAULT_ALBUMS.map((alb) => (
+            <button
+              key={alb.id}
+              onClick={() => setActiveAlbumId(alb.id)}
+              className={`px-5 py-3 rounded-2xl font-bold text-xs flex items-center gap-2 transition-all whitespace-nowrap shadow-sm ${
+                activeAlbumId === alb.id
+                  ? 'bg-navy-900 text-white shadow-md ring-2 ring-amber-400'
+                  : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
+              }`}
+            >
+              {getAlbumIcon(alb.id)}
+              <span>{alb.title}</span>
+            </button>
+          ))}
+        </div>
       </div>
 
-      {/* Active Album Grid or Empty State */}
+      {/* Active Album Grid */}
       <section className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
         <div>
-          <h3 className="text-2xl font-extrabold text-navy-900">{activeAlbum ? activeAlbum.title : 'Photo Album'}</h3>
-          <p className="text-xs text-slate-500 mt-1">{activeAlbum ? activeAlbum.description : 'High-resolution campus photos'}</p>
+          <h3 className="text-2xl font-extrabold text-navy-900 flex items-center gap-2">
+            {getAlbumIcon(activeAlbum.id)}
+            <span>{activeAlbum.title}</span>
+          </h3>
+          <p className="text-xs text-slate-500 mt-1">{activeAlbum.description}</p>
         </div>
 
         {albumPhotos.length === 0 ? (
           <EmptyState 
-            title="High-Resolution Photos Coming Soon"
-            description="Per Section 4 Content Checklist, 5-8 high-resolution campus and event photos are currently being curated by the Admin Office."
-            checklistRef="Section 4 - Campus Photos"
-            responsibleStaff="Admin Office"
+            title="Official Album Photos Coming Soon"
+            description={`Staff can upload high-resolution photos for '${activeAlbum.title}' via the Staff Control Panel.`}
+            checklistRef="Section 4 - Campus Photo Albums"
+            responsibleStaff="Cultural Committee & Office Staff"
           />
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {albumPhotos.map((photo) => (
+            {albumPhotos.map((photo: GalleryPhotoItem) => (
               <div 
                 key={photo.id} 
-                onClick={() => setSelectedPhoto({ url: photo.imageUrl, title: 'Campus Photo' })}
-                className="relative rounded-xl overflow-hidden border border-slate-200 shadow-sm group cursor-pointer"
+                onClick={() => setSelectedPhoto({ url: photo.imageUrl, title: photo.caption || activeAlbum.title })}
+                className="relative rounded-2xl overflow-hidden border border-slate-200 shadow-sm group cursor-pointer bg-slate-950 flex flex-col items-center"
               >
                 <img 
-                  src={photo.imageUrl || "https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&q=80&w=600"} 
-                  alt="Campus Event Photo"
-                  className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-300"
+                  src={photo.imageUrl} 
+                  alt={photo.caption || "Campus Event Photo"}
+                  className="w-full h-64 object-contain group-hover:scale-105 transition-transform duration-300"
                 />
+                {photo.caption && (
+                  <div className="w-full p-2.5 bg-navy-900 text-white text-[11px] font-semibold text-center border-t border-navy-800">
+                    {photo.caption}
+                  </div>
+                )}
               </div>
             ))}
           </div>

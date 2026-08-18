@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { GraduationCap, CheckCircle2, AlertCircle, Calendar, Download, Send } from 'lucide-react';
+import { GraduationCap, CheckCircle2, AlertCircle, Calendar, Download, Send, MessageCircle } from 'lucide-react';
 import { INITIAL_STREAMS } from '../constants/collegeData';
 import { ReCaptchaBadge } from '../components/common/ReCaptchaBadge';
 import { useSEO } from '../hooks/useSEO';
@@ -24,11 +24,27 @@ export const AdmissionsPage: React.FC = () => {
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
+  const [submittedSummary, setSubmittedSummary] = useState<{
+    studentName: string;
+    parentName: string;
+    phone: string;
+    streamId: string;
+    class10Marks: string;
+  } | null>(null);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
     setSuccessMessage('');
     setErrorMessage('');
+
+    const summary = {
+      studentName: formData.studentName,
+      parentName: formData.parentName,
+      phone: formData.phone,
+      streamId: formData.streamId,
+      class10Marks: formData.class10Marks
+    };
 
     try {
       if (isSupabaseConfigured()) {
@@ -47,6 +63,7 @@ export const AdmissionsPage: React.FC = () => {
         if (error) throw error;
       }
 
+      setSubmittedSummary(summary);
       setSuccessMessage(`Application submitted successfully for ${formData.studentName}! (reCAPTCHA v3 verified). Admissions office will contact you on ${formData.phone}.`);
       setFormData({
         studentName: '',
@@ -58,10 +75,19 @@ export const AdmissionsPage: React.FC = () => {
       });
     } catch (err: any) {
       console.error(err);
+      setSubmittedSummary(summary);
       setSuccessMessage(`Application recorded! (reCAPTCHA v3 verified). Admissions office will contact you on ${formData.phone}.`);
     } finally {
       setSubmitting(false);
     }
+  };
+
+  const handleSendWhatsAppAlert = () => {
+    if (!submittedSummary) return;
+    const streamName = submittedSummary.streamId.toUpperCase();
+    const msg = `Hello Admissions Office, I have submitted an online application for SRI VIDYA VIKAS JUNIOR COLLEGE:\n\n• Student Name: ${submittedSummary.studentName}\n• Parent Name: ${submittedSummary.parentName}\n• Contact Phone: ${submittedSummary.phone}\n• Preferred Stream: ${streamName}\n• Class 10 Marks: ${submittedSummary.class10Marks}`;
+    const encoded = encodeURIComponent(msg);
+    window.open(`https://wa.me/919876543210?text=${encoded}`, '_blank');
   };
 
   return (
@@ -92,9 +118,22 @@ export const AdmissionsPage: React.FC = () => {
           </div>
 
           {successMessage && (
-            <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-900 text-xs font-semibold flex items-center gap-2">
-              <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
-              <span>{successMessage}</span>
+            <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-900 text-xs font-semibold space-y-3">
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
+                <span>{successMessage}</span>
+              </div>
+
+              {submittedSummary && (
+                <button
+                  type="button"
+                  onClick={handleSendWhatsAppAlert}
+                  className="w-full py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs shadow-md flex items-center justify-center gap-2 transition-transform hover:scale-[1.01]"
+                >
+                  <MessageCircle className="w-4 h-4 fill-white" />
+                  <span>📲 Send Application Summary to College WhatsApp Now</span>
+                </button>
+              )}
             </div>
           )}
 
