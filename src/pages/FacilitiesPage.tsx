@@ -7,7 +7,7 @@ import { useSEO } from '../hooks/useSEO';
 export const FacilitiesPage: React.FC = () => {
   useSEO({
     title: "Facilities & Infrastructure | SRI VIDYA VIKAS JUNIOR COLLEGE",
-    description: "Explore campus science labs, central library, and transport facilities at SRI VIDYA VIKAS JUNIOR COLLEGE in Prasanth Nagar, Madanapalle."
+    description: "Explore campus science labs, sports grounds, and transport facilities at SRI VIDYA VIKAS JUNIOR COLLEGE in Prasanth Nagar, Madanapalle."
   });
 
   const { facilities, updateFacilityPhoto } = useData();

@@ -116,13 +116,6 @@ const DEFAULT_FACILITIES: FacilityItem[] = [
     photoUrl: ""
   },
   {
-    id: "lib-central",
-    title: "Central Library & Digital Reading Room",
-    category: "Library",
-    description: "Quiet study room with reference books for Intermediate Board, EAMCET, NEET, and JEE Main prep, plus digital catalog access.",
-    photoUrl: ""
-  },
-  {
     id: "transport",
     title: "College Bus & Transport Routes",
     category: "Transport",
@@ -257,7 +250,11 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [facilities, setFacilities] = useState<FacilityItem[]>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEYS.FACILITIES);
-      return saved ? JSON.parse(saved) : DEFAULT_FACILITIES;
+      if (saved) {
+        const parsed: FacilityItem[] = JSON.parse(saved);
+        return parsed.filter(item => item.id !== 'lib-central' && !item.title.toLowerCase().includes('central library'));
+      }
+      return DEFAULT_FACILITIES;
     } catch {
       return DEFAULT_FACILITIES;
     }
