@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { ShieldAlert, Bell, Calendar, Users, Trophy, Inbox, Plus, Trash2, Lock, LogOut, Upload, CheckCircle2, KeyRound, Mail, Eye, EyeOff, ArrowRight, AlertCircle, Image as ImageIcon, Building2, X } from 'lucide-react';
+import { ShieldAlert, Bell, Calendar, Users, Trophy, Inbox, Plus, Trash2, Lock, LogOut, Upload, CheckCircle2, KeyRound, Mail, Eye, EyeOff, ArrowRight, AlertCircle, Image as ImageIcon, Building2, X, Edit2, GraduationCap } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useData, DEFAULT_ALBUMS } from '../context/DataContext';
 import { EmptyState } from '../components/common/EmptyState';
 import { useSEO } from '../hooks/useSEO';
+
 export const AdminDashboardPage = () => {
     useSEO({
         title: "Staff Admin Control Panel | SRI VIDYA VIKAS JUNIOR COLLEGE",
@@ -11,7 +12,7 @@ export const AdminDashboardPage = () => {
         noindex: true
     });
     const { user, isAuthenticated, loginDemo, logout } = useAuth();
-    const { notices, addNotice, deleteNotice, events, addEvent, deleteEvent, faculty, addFaculty, deleteFaculty, toppers, addTopper, deleteTopper, leads, updateLeadStatus, facilities, heroSlides, addFacility, deleteFacility, updateFacilityPhoto, updateHeroSlidePhoto, galleryPhotos, addGalleryPhoto, deleteGalleryPhoto } = useData();
+    const { notices, addNotice, deleteNotice, events, addEvent, deleteEvent, faculty, addFaculty, deleteFaculty, toppers, addTopper, updateTopper, deleteTopper, leads, updateLeadStatus, facilities, heroSlides, addFacility, deleteFacility, updateFacilityPhoto, updateHeroSlidePhoto, galleryPhotos, addGalleryPhoto, deleteGalleryPhoto } = useData();
     const [activeTab, setActiveTab] = useState('notices');
     // Login form state
     const [emailInput, setEmailInput] = useState('srividyavikasjuniorcollegempl@gmail.com');
@@ -34,11 +35,18 @@ export const AdminDashboardPage = () => {
     const [newFacultySubject, setNewFacultySubject] = useState('Physics');
     const [newFacultyDesignation, setNewFacultyDesignation] = useState('Lecturer');
     const [facultyPhotoPreview, setFacultyPhotoPreview] = useState('');
-    // Topper form + photo state
+    // Result / Topper form state (1st Year vs 2nd Year)
+    const [newTopperYear, setNewTopperYear] = useState('1st Year');
     const [newTopperName, setNewTopperName] = useState('');
+    const [newTopperRoll, setNewTopperRoll] = useState('');
+    const [newTopperStream, setNewTopperStream] = useState('mpc');
+    const [newTopperMarksObtained, setNewTopperMarksObtained] = useState('');
+    const [newTopperMaxMarks, setNewTopperMaxMarks] = useState('500');
     const [newTopperMarks, setNewTopperMarks] = useState('');
-    const [newTopperRank, setNewTopperRank] = useState('College 1st Rank');
+    const [newTopperGrade, setNewTopperGrade] = useState('Grade A1');
+    const [newTopperRank, setNewTopperRank] = useState('#1 College Topper');
     const [topperPhotoPreview, setTopperPhotoPreview] = useState('');
+    const [editingTopperId, setEditingTopperId] = useState(null);
     // Custom Facility form + photo state
     const [newFacilityTitle, setNewFacilityTitle] = useState('');
     const [newFacilityCategory, setNewFacilityCategory] = useState('Laboratory');
@@ -164,25 +172,85 @@ export const AdminDashboardPage = () => {
         setFacultyPhotoPreview('');
         alert(`Faculty profile for '${newFacultyName}' added live!`);
     };
-    const handleAddTopper = (e) => {
+    const handleSaveTopper = (e) => {
         e.preventDefault();
-        if (!newTopperName)
+        if (!newTopperName.trim()) {
+            alert('Please enter Student Name!');
             return;
-        addTopper({
-            id: `top-${Date.now()}`,
-            academicYear: '2024-2025',
-            studentName: newTopperName,
-            marksPercentage: parseFloat(newTopperMarks) || 95.0,
-            rank: newTopperRank,
-            streamId: 'mpc',
-            photoUrl: topperPhotoPreview || 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=400',
-            isCompetitiveQualifier: true,
-            examName: 'AP EAMCET / NEET Qualified',
-        });
+        }
+        if (!newTopperRoll.trim()) {
+            alert('Please enter Hall Ticket / Roll Number!');
+            return;
+        }
+
+        const calculatedScore = newTopperMarks || (newTopperMarksObtained ? `${newTopperMarksObtained} / ${newTopperMaxMarks}` : '98%');
+        const sessionYear = newTopperYear === '1st Year' ? '2024-2025 BIEAP Junior Inter' : '2024-2025 BIEAP Senior Inter';
+
+        if (editingTopperId) {
+            updateTopper(editingTopperId, {
+                academicYear: newTopperYear,
+                studentName: newTopperName,
+                rollNumber: newTopperRoll,
+                streamId: newTopperStream,
+                marksObtained: newTopperMarksObtained,
+                maxMarks: newTopperMaxMarks,
+                marksPercentage: calculatedScore,
+                grade: newTopperGrade,
+                rank: newTopperRank,
+                photoUrl: topperPhotoPreview || 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=400',
+                yearSession: sessionYear
+            });
+            setEditingTopperId(null);
+            setUploadStatus(`Result record for '${newTopperName}' updated live!`);
+            alert(`Result record for '${newTopperName}' updated successfully!`);
+        } else {
+            addTopper({
+                id: `top-${Date.now()}`,
+                academicYear: newTopperYear,
+                studentName: newTopperName,
+                rollNumber: newTopperRoll,
+                streamId: newTopperStream,
+                marksObtained: newTopperMarksObtained,
+                maxMarks: newTopperMaxMarks,
+                marksPercentage: calculatedScore,
+                grade: newTopperGrade,
+                rank: newTopperRank,
+                photoUrl: topperPhotoPreview || 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=400',
+                yearSession: sessionYear
+            });
+            setUploadStatus(`Result record for '${newTopperName}' posted live!`);
+            alert(`Result record for '${newTopperName}' posted live on Results page!`);
+        }
+
+        // Reset form
         setNewTopperName('');
+        setNewTopperRoll('');
+        setNewTopperMarksObtained('');
         setNewTopperMarks('');
         setTopperPhotoPreview('');
-        alert(`Topper record for '${newTopperName}' with photo posted live on Results & Toppers page!`);
+    };
+
+    const handleStartEditTopper = (item) => {
+        setEditingTopperId(item.id);
+        setNewTopperYear(item.academicYear || '1st Year');
+        setNewTopperName(item.studentName || '');
+        setNewTopperRoll(item.rollNumber || '');
+        setNewTopperStream(item.streamId || 'mpc');
+        setNewTopperMarksObtained(item.marksObtained || '');
+        setNewTopperMaxMarks(item.maxMarks || (item.academicYear === '2nd Year' ? '1000' : '500'));
+        setNewTopperMarks(item.marksPercentage || '');
+        setNewTopperGrade(item.grade || 'Grade A1');
+        setNewTopperRank(item.rank || '#1 College Topper');
+        setTopperPhotoPreview(item.photoUrl || '');
+    };
+
+    const handleCancelEditTopper = () => {
+        setEditingTopperId(null);
+        setNewTopperName('');
+        setNewTopperRoll('');
+        setNewTopperMarksObtained('');
+        setNewTopperMarks('');
+        setTopperPhotoPreview('');
     };
     const handleAddCustomFacility = (e) => {
         e.preventDefault();
@@ -583,34 +651,86 @@ export const AdminDashboardPage = () => {
           </div>
         </section>)}
 
-      {/* TAB CONTENT 4: RESULTS & TOPPERS */}
+      {/* TAB CONTENT 4: RESULTS & TOPPERS MANAGEMENT */}
       {activeTab === 'results' && (<section className="space-y-6">
           <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
-            <h3 className="font-extrabold text-navy-900 text-lg flex items-center gap-2">
-              <Plus className="w-5 h-5 text-maroon-800"/>
-              Post Board Exam Topper Record & Upload Photo
-            </h3>
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <h3 className="font-extrabold text-navy-900 text-lg flex items-center gap-2">
+                <Plus className="w-5 h-5 text-maroon-800"/>
+                <span>{editingTopperId ? 'Edit Student Result Record' : 'Add New Student Result Record (1st Year / 2nd Year)'}</span>
+              </h3>
+              {editingTopperId && (
+                <button onClick={handleCancelEditTopper} className="px-3 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1">
+                  <X className="w-3.5 h-3.5"/>
+                  <span>Cancel Edit</span>
+                </button>
+              )}
+            </div>
 
-            <form onSubmit={handleAddTopper} className="space-y-4">
+            <form onSubmit={handleSaveTopper} className="space-y-4">
+              {/* Row 1: Academic Year, Student Name, Roll Number */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <input type="text" required placeholder="Student Name" value={newTopperName} onChange={(e) => setNewTopperName(e.target.value)} className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs"/>
-                <input type="text" placeholder="Marks % (e.g. 98.2)" value={newTopperMarks} onChange={(e) => setNewTopperMarks(e.target.value)} className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs"/>
-                <input type="text" placeholder="Rank (e.g. College 1st Rank)" value={newTopperRank} onChange={(e) => setNewTopperRank(e.target.value)} className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs"/>
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">Academic Year Class *</label>
+                  <select value={newTopperYear} onChange={(e) => setNewTopperYear(e.target.value)} className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs text-slate-900 font-semibold focus:ring-2 focus:ring-maroon-800 outline-none">
+                    <option value="1st Year">1st Year (Junior Inter)</option>
+                    <option value="2nd Year">2nd Year (Senior Inter)</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">Student Full Name *</label>
+                  <input type="text" required placeholder="e.g. K. Sai Kumar" value={newTopperName} onChange={(e) => setNewTopperName(e.target.value)} className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs text-slate-900 focus:ring-2 focus:ring-maroon-800 outline-none"/>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">Hall Ticket / Roll No *</label>
+                  <input type="text" required placeholder="e.g. 2415234891" value={newTopperRoll} onChange={(e) => setNewTopperRoll(e.target.value)} className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs text-slate-900 focus:ring-2 focus:ring-maroon-800 outline-none"/>
+                </div>
+              </div>
+
+              {/* Row 2: Stream, Marks Obtained, Max Marks, Grade, Rank */}
+              <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">Academic Stream</label>
+                  <select value={newTopperStream} onChange={(e) => setNewTopperStream(e.target.value)} className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs text-slate-900 font-semibold focus:ring-2 focus:ring-maroon-800 outline-none">
+                    <option value="mpc">MPC (Mathematics)</option>
+                    <option value="bipc">BiPC (Biology/NEET)</option>
+                    <option value="cec">CEC (Commerce/Civics)</option>
+                    <option value="mec">MEC (Maths & Commerce)</option>
+                    <option value="hec">HEC (History/Arts)</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">Marks Obtained</label>
+                  <input type="text" placeholder="e.g. 492 or 985" value={newTopperMarksObtained} onChange={(e) => setNewTopperMarksObtained(e.target.value)} className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs text-slate-900 focus:ring-2 focus:ring-maroon-800 outline-none"/>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">Max Total Marks</label>
+                  <input type="text" placeholder="500 (1st Yr) / 1000 (2nd Yr)" value={newTopperMaxMarks} onChange={(e) => setNewTopperMaxMarks(e.target.value)} className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs text-slate-900 focus:ring-2 focus:ring-maroon-800 outline-none"/>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">Rank / Distinction</label>
+                  <input type="text" placeholder="e.g. #1 College Topper" value={newTopperRank} onChange={(e) => setNewTopperRank(e.target.value)} className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs text-slate-900 focus:ring-2 focus:ring-maroon-800 outline-none"/>
+                </div>
               </div>
 
               {/* REAL PHOTO FILE UPLOADER WITH PREVIEW */}
               <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
-                <label className="block text-xs font-bold text-slate-700">Upload Student Topper Photo (JPG / PNG):</label>
+                <label className="block text-xs font-bold text-slate-700">Upload Student Photo / Result Poster (JPG / PNG):</label>
                 <div className="flex flex-wrap items-center gap-4">
                   <label className="px-4 py-2.5 rounded-xl bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 font-bold text-xs flex items-center gap-2 cursor-pointer shadow-sm">
                     <Upload className="w-4 h-4 text-amber-600"/>
-                    <span>Choose Student Photo from PC</span>
+                    <span>Choose Photo from PC</span>
                     <input type="file" accept="image/*" onChange={(e) => handleFileSelect(e, setTopperPhotoPreview, 'topper-photos')} className="hidden"/>
                   </label>
 
                   {topperPhotoPreview && (<div className="flex items-center gap-3 bg-white p-2 rounded-xl border border-slate-200">
                       <img src={topperPhotoPreview} alt="Preview" className="w-12 h-12 object-cover rounded-full border"/>
-                      <span className="text-xs text-emerald-600 font-bold">Topper Photo Attached!</span>
+                      <span className="text-xs text-emerald-600 font-bold">Photo Attached!</span>
                       <button type="button" onClick={() => setTopperPhotoPreview('')} className="text-slate-400 hover:text-red-600 p-1">
                         <X className="w-4 h-4"/>
                       </button>
@@ -618,35 +738,56 @@ export const AdminDashboardPage = () => {
                 </div>
               </div>
 
-              <div className="flex justify-end pt-2">
+              <div className="flex justify-end gap-3 pt-2">
+                {editingTopperId && (
+                  <button type="button" onClick={handleCancelEditTopper} className="px-5 py-2.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold text-xs">
+                    Cancel
+                  </button>
+                )}
                 <button type="submit" className="px-6 py-2.5 rounded-xl bg-maroon-900 hover:bg-maroon-800 text-white font-bold text-xs shadow-md">
-                  Post Topper Record
+                  {editingTopperId ? 'Save & Update Result Record' : 'Add & Post Result Record'}
                 </button>
               </div>
             </form>
           </div>
 
-          {/* Toppers List Data Display */}
+          {/* Results & Toppers List Data Display */}
           <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
-            <h3 className="font-extrabold text-navy-900 text-base">Board Exam Toppers List ({toppers.length})</h3>
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <h3 className="font-extrabold text-navy-900 text-base">Stored Student Board Exam Results ({toppers.length})</h3>
+              <div className="text-xs font-bold text-slate-500 flex gap-3">
+                <span className="px-2.5 py-0.5 rounded bg-blue-100 text-blue-900">1st Year: {toppers.filter(t => t.academicYear === '1st Year' || !t.academicYear).length}</span>
+                <span className="px-2.5 py-0.5 rounded bg-emerald-100 text-emerald-900">2nd Year: {toppers.filter(t => t.academicYear === '2nd Year').length}</span>
+              </div>
+            </div>
             
             {toppers.length > 0 ? (<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {toppers.map((top) => (<div key={top.id} className="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-3">
+                {toppers.map((top) => (<div key={top.id} className="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-3 hover:border-maroon-800 transition-colors">
                     <div className="flex items-center gap-3">
                       {top.photoUrl ? (<img src={top.photoUrl} alt={top.studentName} className="w-12 h-12 rounded-full object-cover border border-slate-300 shrink-0"/>) : (<div className="w-12 h-12 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center font-bold text-xs shrink-0">
                           {top.studentName.charAt(0)}
                         </div>)}
                       <div className="space-y-0.5">
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-100 text-amber-900">{top.rank}</span>
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-[10px] font-extrabold px-2 py-0.5 rounded bg-amber-100 text-amber-900">{top.rank || 'Board Topper'}</span>
+                          <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-navy-900 text-white">{top.academicYear || '1st Year'}</span>
+                        </div>
                         <h4 className="font-bold text-navy-900 text-xs mt-1">{top.studentName}</h4>
-                        <p className="text-[11px] text-emerald-700 font-bold">{top.marksPercentage}% Marks</p>
+                        {top.rollNumber && <p className="text-[10px] text-slate-500 font-mono">Roll: {top.rollNumber}</p>}
+                        <p className="text-[11px] text-emerald-700 font-bold">{top.marksPercentage || `${top.marksObtained}/${top.maxMarks}`}</p>
                       </div>
                     </div>
-                    <button onClick={() => deleteTopper(top.id)} className="p-2 rounded-lg text-slate-400 hover:text-red-600 hover:bg-slate-200 transition-colors shrink-0">
-                      <Trash2 className="w-4 h-4"/>
-                    </button>
+                    
+                    <div className="flex items-center gap-1 shrink-0">
+                      <button onClick={() => handleStartEditTopper(top)} className="p-2 rounded-lg text-slate-500 hover:text-navy-900 hover:bg-slate-200 transition-colors" title="Edit Result Record">
+                        <Edit2 className="w-4 h-4"/>
+                      </button>
+                      <button onClick={() => deleteTopper(top.id)} className="p-2 rounded-lg text-slate-400 hover:text-red-600 hover:bg-slate-200 transition-colors" title="Delete Result Record">
+                        <Trash2 className="w-4 h-4"/>
+                      </button>
+                    </div>
                   </div>))}
-              </div>) : (<EmptyState title="No Topper Records Added Yet" description="Use the form above to add board exam rankers."/>)}
+              </div>) : (<EmptyState title="No Topper / Result Records Added Yet" description="Use the form above to add 1st Year and 2nd Year board exam results."/>)}
           </div>
         </section>)}
 

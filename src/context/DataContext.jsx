@@ -216,6 +216,9 @@ export const DataProvider = ({ children }) => {
     const addFaculty = (fac) => setFaculty(prev => [fac, ...prev]);
     const deleteFaculty = (id) => setFaculty(prev => prev.filter(item => item.id !== id));
     const addTopper = (topper) => setToppers(prev => [topper, ...prev]);
+    const updateTopper = (id, updatedFields) => {
+        setToppers(prev => prev.map(item => item.id === id ? { ...item, ...updatedFields } : item));
+    };
     const deleteTopper = (id) => setToppers(prev => prev.filter(item => item.id !== id));
     const addLead = (lead) => setLeads(prev => [lead, ...prev]);
     const updateLeadStatus = (id, status) => {
@@ -247,6 +250,7 @@ export const DataProvider = ({ children }) => {
             addFaculty,
             deleteFaculty,
             addTopper,
+            updateTopper,
             deleteTopper,
             addLead,
             updateLeadStatus,

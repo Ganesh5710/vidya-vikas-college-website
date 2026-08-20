@@ -81,8 +81,103 @@ export const INITIAL_GALLERY_PHOTOS = [];
 // 5. FACULTY DATA
 export const INITIAL_FACULTY = [];
 // 6. RESULTS & TOPPERS DATA
-export const INITIAL_STREAM_SUMMARY = [];
-export const INITIAL_TOPPERS = [];
+export const INITIAL_STREAM_SUMMARY = [
+  { id: "sum-1", streamId: "mpc", passPercentage: "98.5", academicYear: "2024-2025", totalAppeared: 80, totalPassed: 79 },
+  { id: "sum-2", streamId: "bipc", passPercentage: "97.2", academicYear: "2024-2025", totalAppeared: 70, totalPassed: 68 },
+  { id: "sum-3", streamId: "cec", passPercentage: "96.0", academicYear: "2024-2025", totalAppeared: 50, totalPassed: 48 },
+  { id: "sum-4", streamId: "mec", passPercentage: "97.8", academicYear: "2024-2025", totalAppeared: 45, totalPassed: 44 },
+  { id: "sum-5", streamId: "hec", passPercentage: "95.5", academicYear: "2024-2025", totalAppeared: 40, totalPassed: 38 }
+];
+
+export const INITIAL_TOPPERS = [
+  // --- 1st Year (Junior Inter) ---
+  {
+    id: "res-1st-1",
+    studentName: "K. Sai Kumar",
+    rollNumber: "2415234891",
+    academicYear: "1st Year",
+    yearSession: "2024-2025 BIEAP Junior Inter",
+    streamId: "mpc",
+    marksObtained: "492",
+    maxMarks: "500",
+    marksPercentage: "98.4%",
+    grade: "Grade A1",
+    rank: "#1 College Topper",
+    photoUrl: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=400"
+  },
+  {
+    id: "res-1st-2",
+    studentName: "P. Harini",
+    rollNumber: "2415234892",
+    academicYear: "1st Year",
+    yearSession: "2024-2025 BIEAP Junior Inter",
+    streamId: "bipc",
+    marksObtained: "488",
+    maxMarks: "500",
+    marksPercentage: "97.6%",
+    grade: "Grade A1",
+    rank: "#1 BiPC Stream Topper",
+    photoUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=400"
+  },
+  {
+    id: "res-1st-3",
+    studentName: "C. Reddeppa",
+    rollNumber: "2415234893",
+    academicYear: "1st Year",
+    yearSession: "2024-2025 BIEAP Junior Inter",
+    streamId: "cec",
+    marksObtained: "475",
+    maxMarks: "500",
+    marksPercentage: "95.0%",
+    grade: "Grade A1",
+    rank: "#1 CEC Stream Topper",
+    photoUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400"
+  },
+
+  // --- 2nd Year (Senior Inter) ---
+  {
+    id: "res-2nd-1",
+    studentName: "M. Dinesh Reddy",
+    rollNumber: "2315234101",
+    academicYear: "2nd Year",
+    yearSession: "2024-2025 BIEAP Senior Inter",
+    streamId: "mpc",
+    marksObtained: "985",
+    maxMarks: "1000",
+    marksPercentage: "98.5%",
+    grade: "Grade A1",
+    rank: "#1 Senior Inter College Topper",
+    photoUrl: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=400"
+  },
+  {
+    id: "res-2nd-2",
+    studentName: "S. Anitha",
+    rollNumber: "2315234102",
+    academicYear: "2nd Year",
+    yearSession: "2024-2025 BIEAP Senior Inter",
+    streamId: "bipc",
+    marksObtained: "978",
+    maxMarks: "1000",
+    marksPercentage: "97.8%",
+    grade: "Grade A1",
+    rank: "#1 Senior Inter BiPC Topper",
+    photoUrl: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=400"
+  },
+  {
+    id: "res-2nd-3",
+    studentName: "V. Naveen Kumar",
+    rollNumber: "2315234103",
+    academicYear: "2nd Year",
+    yearSession: "2024-2025 BIEAP Senior Inter",
+    streamId: "mec",
+    marksObtained: "960",
+    maxMarks: "1000",
+    marksPercentage: "96.0%",
+    grade: "Grade A1",
+    rank: "#1 Senior Inter MEC Topper",
+    photoUrl: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=400"
+  }
+];
 // 7. STUDY MATERIALS & MODEL PAPERS
 export const INITIAL_STUDY_MATERIALS = [];
 // 8. FEE STRUCTURE PER STREAM
