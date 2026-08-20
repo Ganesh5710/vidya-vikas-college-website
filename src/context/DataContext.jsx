@@ -115,9 +115,17 @@ export const DataProvider = ({ children }) => {
             const saved = localStorage.getItem(STORAGE_KEYS.TOPPERS);
             if (saved) {
                 const parsed = JSON.parse(saved);
-                const savedRolls = new Set(parsed.map(item => item.rollNumber || item.id));
+                // Purge any legacy items using Unsplash stock photos or old fake IDs
+                const cleanedSaved = parsed.filter(item => {
+                    const isUnsplash = item.photoUrl && item.photoUrl.includes('unsplash.com');
+                    const isFakeId = item.id && item.id.startsWith('res-1st-') && item.id !== 'res-1st-srivalli' && item.id !== 'res-1st-trivikram';
+                    const isFake2ndId = item.id && item.id.startsWith('res-2nd-');
+                    return !isUnsplash && !isFakeId && !isFake2ndId;
+                });
+                
+                const savedRolls = new Set(cleanedSaved.map(item => item.rollNumber || item.id));
                 const missingInitial = INITIAL_TOPPERS.filter(item => !savedRolls.has(item.rollNumber) && !savedRolls.has(item.id));
-                return [...missingInitial, ...parsed];
+                return [...missingInitial, ...cleanedSaved];
             }
             return INITIAL_TOPPERS;
         }

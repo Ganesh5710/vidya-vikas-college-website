@@ -198,7 +198,7 @@ export const AdminDashboardPage = () => {
                 marksPercentage: calculatedScore,
                 grade: newTopperGrade,
                 rank: newTopperRank,
-                photoUrl: topperPhotoPreview || 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=400',
+                photoUrl: topperPhotoPreview || '',
                 yearSession: sessionYear
             });
             setEditingTopperId(null);
@@ -216,7 +216,7 @@ export const AdminDashboardPage = () => {
                 marksPercentage: calculatedScore,
                 grade: newTopperGrade,
                 rank: newTopperRank,
-                photoUrl: topperPhotoPreview || 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=400',
+                photoUrl: topperPhotoPreview || '',
                 yearSession: sessionYear
             });
             setUploadStatus(`Result record for '${newTopperName}' posted live!`);

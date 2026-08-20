@@ -191,24 +191,37 @@ export const ResultsPage = () => {
                                 </div>
 
                                 {/* Poster Container - Perfectly Aligned, Zero Gray Side Bars */}
-                                <div className="relative w-full aspect-[4/5] rounded-xl overflow-hidden bg-slate-900 border border-slate-200 shadow-inner group">
-                                    {/* Crisp Full-Width Student Poster Image */}
-                                    <img
-                                        src={result.photoUrl || "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=400"}
-                                        alt={result.studentName}
-                                        className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
-                                    />
+                                <div className="relative w-full aspect-[4/5] rounded-xl overflow-hidden bg-slate-900 border border-slate-200 shadow-inner group flex items-center justify-center">
+                                    {result.photoUrl ? (
+                                        <>
+                                            {/* Crisp Full-Width Student Poster Image */}
+                                            <img
+                                                src={result.photoUrl}
+                                                alt={result.studentName}
+                                                className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
+                                            />
 
-                                    {/* High-res expand poster button */}
-                                    {result.photoUrl && (
-                                        <button
-                                            onClick={() => setSelectedPhoto({ url: result.photoUrl, title: result.studentName })}
-                                            className="absolute bottom-2.5 right-2.5 z-20 px-3 py-1.5 rounded-lg bg-navy-900/85 hover:bg-navy-900 text-white backdrop-blur shadow-md transition-all flex items-center gap-1.5 text-[11px] font-extrabold border border-white/20"
-                                            title="Click to view full high-res poster"
-                                        >
-                                            <Maximize2 className="w-3.5 h-3.5 text-amber-400"/>
-                                            <span>Full Poster</span>
-                                        </button>
+                                            {/* High-res expand poster button */}
+                                            <button
+                                                onClick={() => setSelectedPhoto({ url: result.photoUrl, title: result.studentName })}
+                                                className="absolute bottom-2.5 right-2.5 z-20 px-3 py-1.5 rounded-lg bg-navy-900/85 hover:bg-navy-900 text-white backdrop-blur shadow-md transition-all flex items-center gap-1.5 text-[11px] font-extrabold border border-white/20"
+                                                title="Click to view full high-res poster"
+                                            >
+                                                <Maximize2 className="w-3.5 h-3.5 text-amber-400"/>
+                                                <span>Full Poster</span>
+                                            </button>
+                                        </>
+                                    ) : (
+                                        <div className="flex flex-col items-center justify-center p-6 text-center text-white space-y-3 bg-gradient-to-b from-navy-900 to-navy-950 w-full h-full">
+                                            <div className="w-16 h-16 rounded-full bg-amber-500 text-navy-950 flex items-center justify-center font-black text-2xl shadow-lg border-2 border-amber-300">
+                                                {result.studentName.charAt(0)}
+                                            </div>
+                                            <div className="space-y-1">
+                                                <p className="font-extrabold text-sm text-amber-400 uppercase">{result.studentName}</p>
+                                                <p className="text-[11px] text-slate-300 font-mono">Roll: {result.rollNumber || 'BIEAP Student'}</p>
+                                            </div>
+                                            <span className="text-[10px] text-slate-400 italic">No image uploaded</span>
+                                        </div>
                                     )}
                                 </div>
 
