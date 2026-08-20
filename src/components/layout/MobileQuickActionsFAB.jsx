@@ -75,11 +75,6 @@ export const MobileQuickActionsFAB = () => {
             <PhoneCall className="w-5 h-5 text-amber-400"/>
           </a>
 
-          {/* Direct Google Maps Directions */}
-          <a href={mapsUrl} target="_blank" rel="noopener noreferrer" className="p-3.5 rounded-full bg-amber-500 hover:bg-amber-400 text-navy-950 shadow-xl flex items-center justify-center transition-transform hover:scale-110 border-2 border-white" title="Get Google Maps Campus Directions">
-            <Navigation className="w-5 h-5"/>
-          </a>
-
           {/* WhatsApp Toggle FAB */}
           <button onClick={() => setIsOpen(!isOpen)} className="p-3.5 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white shadow-2xl flex items-center justify-center transition-transform hover:scale-110 border-2 border-white relative group" title="Chat on WhatsApp">
             {isOpen ? <X className="w-6 h-6"/> : <MessageCircle className="w-6 h-6 fill-white"/>}
@@ -96,11 +91,6 @@ export const MobileQuickActionsFAB = () => {
         <a href={`tel:${phoneNumClean}`} className="flex flex-col items-center gap-0.5 text-[10px] font-bold text-amber-400 hover:text-white">
           <PhoneCall className="w-4 h-4"/>
           <span>Call Now</span>
-        </a>
-
-        <a href={mapsUrl} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center gap-0.5 text-[10px] font-bold text-white hover:text-amber-400">
-          <Navigation className="w-4 h-4 text-amber-400"/>
-          <span>Directions</span>
         </a>
 
         <button onClick={() => setIsOpen(true)} className="flex flex-col items-center gap-0.5 text-[10px] font-bold text-emerald-400 hover:text-white">
