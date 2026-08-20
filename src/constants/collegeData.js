@@ -92,6 +92,34 @@ export const INITIAL_STREAM_SUMMARY = [
 export const INITIAL_TOPPERS = [
   // --- 1st Year (Junior Inter) ---
   {
+    id: "res-1st-srivalli",
+    studentName: "A. SRIVALLI",
+    rollNumber: "2623112099",
+    academicYear: "1st Year",
+    yearSession: "2024-2025 BIEAP Junior Inter",
+    streamId: "mpc",
+    marksObtained: "466",
+    maxMarks: "470",
+    marksPercentage: "466 / 470",
+    grade: "Grade A1",
+    rank: "#1 College Topper",
+    photoUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=400"
+  },
+  {
+    id: "res-1st-trivikram",
+    studentName: "K. TRIVIKRAM",
+    rollNumber: "2623110362",
+    academicYear: "1st Year",
+    yearSession: "2024-2025 BIEAP Junior Inter",
+    streamId: "mpc",
+    marksObtained: "464",
+    maxMarks: "470",
+    marksPercentage: "464 / 470",
+    grade: "Grade A1",
+    rank: "#2 College Topper",
+    photoUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400"
+  },
+  {
     id: "res-1st-1",
     studentName: "K. Sai Kumar",
     rollNumber: "2415234891",

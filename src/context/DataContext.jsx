@@ -113,7 +113,13 @@ export const DataProvider = ({ children }) => {
     const [toppers, setToppers] = useState(() => {
         try {
             const saved = localStorage.getItem(STORAGE_KEYS.TOPPERS);
-            return saved ? JSON.parse(saved) : INITIAL_TOPPERS;
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                const savedRolls = new Set(parsed.map(item => item.rollNumber || item.id));
+                const missingInitial = INITIAL_TOPPERS.filter(item => !savedRolls.has(item.rollNumber) && !savedRolls.has(item.id));
+                return [...missingInitial, ...parsed];
+            }
+            return INITIAL_TOPPERS;
         }
         catch {
             return INITIAL_TOPPERS;
