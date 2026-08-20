@@ -75,42 +75,7 @@ export const EventsPage = () => {
           </div>)}
       </section>
 
-      {/* Album Selector Categories */}
-      <div className="space-y-4">
-        <h3 className="text-xl font-extrabold text-navy-900">Official College Photo Albums</h3>
-
-        <div className="flex items-center gap-3 overflow-x-auto pb-2 border-b border-slate-200">
-          {DEFAULT_ALBUMS.map((alb) => (<button key={alb.id} onClick={() => setActiveAlbumId(alb.id)} className={`px-5 py-3 rounded-2xl font-bold text-xs flex items-center gap-2 transition-all whitespace-nowrap shadow-sm ${activeAlbumId === alb.id
-                ? 'bg-navy-900 text-white shadow-md ring-2 ring-amber-400'
-                : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'}`}>
-              {getAlbumIcon(alb.id)}
-              <span>{alb.title}</span>
-            </button>))}
-        </div>
-      </div>
-
-      {/* Active Album Grid */}
-      <section className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
-        <div>
-          <h3 className="text-2xl font-extrabold text-navy-900 flex items-center gap-2">
-            {getAlbumIcon(activeAlbum.id)}
-            <span>{activeAlbum.title}</span>
-          </h3>
-          <p className="text-xs text-slate-500 mt-1">{activeAlbum.description}</p>
-        </div>
-
-        {albumPhotos.length === 0 ? (<EmptyState title="Official Album Photos Coming Soon" description={`Staff can upload high-resolution photos for '${activeAlbum.title}' via the Staff Control Panel.`}/>) : (<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {albumPhotos.map((photo) => (<div key={photo.id} onClick={() => setSelectedPhoto({ url: photo.imageUrl, title: photo.caption || activeAlbum.title })} className="relative rounded-2xl overflow-hidden border border-slate-200 shadow-sm group cursor-pointer bg-slate-100 flex flex-col items-center justify-center">
-                <img src={photo.imageUrl} alt="" className="absolute inset-0 w-full h-full object-cover filter blur-2xl scale-125 opacity-50 select-none pointer-events-none"/>
-                <img src={photo.imageUrl} alt={photo.caption || "Campus Event Photo"} className="relative z-10 w-full h-64 object-contain group-hover:scale-105 transition-transform duration-300 drop-shadow-md"/>
-                {photo.caption && (<div className="relative z-20 w-full p-2.5 bg-navy-900 text-white text-[11px] font-semibold text-center border-t border-navy-800">
-                    {photo.caption}
-                  </div>)}
-              </div>))}
-          </div>)}
-      </section>
-
-      {/* LIGHTBOX MODAL */}
+      {/* LIGHTBOX MODAL FOR EVENT POSTERS */}
       {selectedPhoto && (<div className="fixed inset-0 z-50 bg-navy-950/90 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in">
           <div className="relative max-w-4xl w-full max-h-[90vh] flex flex-col items-center">
             <button onClick={() => setSelectedPhoto(null)} className="absolute -top-12 right-0 p-2 text-white hover:text-amber-400 font-bold flex items-center gap-1 text-xs">
