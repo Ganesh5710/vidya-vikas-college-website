@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { GraduationCap, Award, Star, ChevronRight, Calendar, Bell, ChevronLeft, CheckCircle, ArrowRight, BookOpen, Sparkles, Calculator, Compass, Download } from 'lucide-react';
+import { GraduationCap, Award, Star, ChevronRight, Calendar, Bell, ChevronLeft, CheckCircle, ArrowRight, BookOpen, Sparkles, Calculator, Download } from 'lucide-react';
 import { INITIAL_STREAMS } from '../constants/collegeData';
 import { useData } from '../context/DataContext';
 import { StreamPredictorModal } from '../components/common/StreamPredictorModal';
-import { VirtualCampusTourModal } from '../components/common/VirtualCampusTourModal';
 import { useSEO } from '../hooks/useSEO';
 export const HomePage = ({ setActiveTab }) => {
     useSEO({
@@ -14,7 +13,6 @@ export const HomePage = ({ setActiveTab }) => {
     const [currentSlide, setCurrentSlide] = useState(0);
     // Modal triggers
     const [isPredictorOpen, setIsPredictorOpen] = useState(false);
-    const [isTourOpen, setIsTourOpen] = useState(false);
     const nextSlide = () => {
         setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
     };
@@ -62,11 +60,6 @@ export const HomePage = ({ setActiveTab }) => {
             <button onClick={() => setIsPredictorOpen(true)} className="px-5 py-3.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-navy-950 font-extrabold text-xs tracking-wider uppercase shadow-lg transition-transform hover:scale-105 flex items-center gap-2">
               <Calculator className="w-4 h-4"/>
               <span>Class 10 Stream Predictor</span>
-            </button>
-
-            <button onClick={() => setIsTourOpen(true)} className="px-5 py-3.5 rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/20 font-bold text-xs tracking-wider uppercase backdrop-blur transition-transform hover:scale-105 flex items-center gap-2">
-              <Compass className="w-4 h-4 text-amber-400"/>
-              <span>360° Virtual Tour</span>
             </button>
           </div>
 
@@ -284,8 +277,6 @@ export const HomePage = ({ setActiveTab }) => {
 
       {/* Modals */}
       <StreamPredictorModal isOpen={isPredictorOpen} onClose={() => setIsPredictorOpen(false)} onSelectStream={setActiveTab}/>
-
-      <VirtualCampusTourModal isOpen={isTourOpen} onClose={() => setIsTourOpen(false)}/>
 
     </div>);
 };
