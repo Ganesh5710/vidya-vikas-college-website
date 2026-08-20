@@ -145,6 +145,7 @@ export const ContactPage = () => {
             <div className="space-y-3 text-xs text-slate-700">
               <div>
                 <strong className="text-navy-900 block text-sm">{COLLEGE_DETAILS.name}</strong>
+                <p className="text-xs font-bold text-maroon-900 mt-0.5">Principal & Correspondent: {INITIAL_CONTACT_INFO.principalName}</p>
                 <p className="text-slate-600 mt-1">{COLLEGE_DETAILS.address}</p>
               </div>
 
@@ -155,11 +156,11 @@ export const ContactPage = () => {
                 </p>
                 <p className="flex items-center gap-2">
                   <Phone className="w-4 h-4 text-slate-400 shrink-0"/>
-                  <span>{INITIAL_CONTACT_INFO.phoneReception}</span>
+                  <span>Reception: {INITIAL_CONTACT_INFO.phoneReception}</span>
                 </p>
                 <p className="flex items-center gap-2">
                   <Phone className="w-4 h-4 text-slate-400 shrink-0"/>
-                  <span>{INITIAL_CONTACT_INFO.phoneAdmissions}</span>
+                  <span>Admissions: {INITIAL_CONTACT_INFO.phoneAdmissions}</span>
                 </p>
               </div>
             </div>

@@ -3,7 +3,7 @@ import { MessageCircle, X } from 'lucide-react';
 import { COLLEGE_DETAILS, INITIAL_CONTACT_INFO } from '../../constants/collegeData';
 export const WhatsAppFAB = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const phoneNum = INITIAL_CONTACT_INFO.phoneAdmissions.replace(/[^0-9]/g, '') || "919876543210";
+    const phoneNum = INITIAL_CONTACT_INFO.phoneAdmissions.replace(/[^0-9]/g, '') || "919059313830";
     const quickTemplates = [
         "Hi, I want to inquire about MPC (Engineering) 2025 Admissions.",
         "Hi, I want to know BiPC (NEET/Medicine) stream availability and fees.",

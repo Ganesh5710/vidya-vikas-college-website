@@ -98,14 +98,18 @@ export const AboutPage = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs">
+          <div className="bg-white p-4 rounded-xl border border-slate-200 space-y-1">
+            <p className="font-bold text-navy-900">Principal & Correspondent</p>
+            <p className="text-maroon-900 font-extrabold">{COLLEGE_DETAILS.principalName}</p>
+          </div>
           <div className="bg-white p-4 rounded-xl border border-slate-200 space-y-1">
             <p className="font-bold text-navy-900">Board Recognition</p>
             <p className="text-slate-600">{COLLEGE_DETAILS.boardAffiliation}</p>
           </div>
           <div className="bg-white p-4 rounded-xl border border-slate-200 space-y-1">
             <p className="font-bold text-navy-900">Institution Location</p>
-            <p className="text-slate-600">Prasanth Nagar, Madanapalle</p>
+            <p className="text-slate-600">Prasanth Nagar Extension, Madanapalle</p>
           </div>
           <div className="bg-white p-4 rounded-xl border border-slate-200 space-y-1">
             <p className="font-bold text-navy-900">Public Rating</p>

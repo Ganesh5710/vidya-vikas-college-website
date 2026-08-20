@@ -174,9 +174,9 @@ export const HomePage = ({ setActiveTab }) => {
           </div>
 
           <div className="space-y-0.5">
-            <h4 className="font-extrabold text-navy-900 text-base">Principal's Office Desk</h4>
-            <p className="text-xs text-maroon-900 font-bold">SRI VIDYA VIKAS JUNIOR COLLEGE</p>
-            <p className="text-[11px] text-slate-500">Prasanth Nagar, Madanapalle</p>
+            <h4 className="font-extrabold text-navy-900 text-base">E. SIVA SANKAR, M.Sc.</h4>
+            <p className="text-xs text-maroon-900 font-bold">Principal & Correspondent</p>
+            <p className="text-[11px] text-slate-500">SRI VIDYA VIKAS JUNIOR COLLEGE</p>
           </div>
         </div>
       </section>

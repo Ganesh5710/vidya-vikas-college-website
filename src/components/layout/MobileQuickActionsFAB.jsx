@@ -3,10 +3,10 @@ import { PhoneCall, Navigation, MessageCircle, X, MapPin, Sparkles } from 'lucid
 import { COLLEGE_DETAILS, INITIAL_CONTACT_INFO } from '../../constants/collegeData';
 export const MobileQuickActionsFAB = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const phoneNumRaw = INITIAL_CONTACT_INFO.phoneAdmissions || "+91 9876543210";
+    const phoneNumRaw = INITIAL_CONTACT_INFO.phoneAdmissions || "+91 9059313830";
     const phoneNumClean = phoneNumRaw.replace(/[^0-9+]/g, '');
-    const waNumClean = phoneNumRaw.replace(/[^0-9]/g, '') || "919876543210";
-    const mapsUrl = "https://maps.google.com/?q=Sri+Vidya+Vikas+Junior+College+Prasanth+Nagar+Madanapalle";
+    const waNumClean = phoneNumRaw.replace(/[^0-9]/g, '') || "919059313830";
+    const mapsUrl = COLLEGE_DETAILS.googleMapsUrl || "https://maps.google.com/?q=Sri+Vidya+Vikas+Junior+College+Prasanth+Nagar+Extension+Madanapalle";
     const quickTemplates = [
         "Hi, I want to inquire about MPC (Engineering) 2025 Admissions.",
         "Hi, I want to know BiPC (NEET/Medicine) stream availability and fees.",

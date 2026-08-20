@@ -6,14 +6,17 @@ export const COLLEGE_DETAILS = {
     boardAffiliation: "Recognized by Govt. of A.P. & Affiliated to BIEAP",
     collegeCode: "23154",
     rcNumber: "RC No. 23154/C753/2010",
-    address: "# 3-145-C-9-6-4D-B, Donthi Street, Prasanth Nagar Extension, Madanapalle",
-    landmark: "Prasanth Nagar, Madanapalle (Near Krishna Reddy Junior College)",
-    district: "Annamayya / Chittoor Dist, Andhra Pradesh",
+    principalName: "E. SIVA SANKAR, M.Sc.",
+    principalTitle: "Principal & Correspondent",
+    address: "Prasanth Nagar Extension, Madanapalle - 517325, Annamayya Dist, Andhra Pradesh",
+    pincode: "517325",
+    landmark: "Prasanth Nagar Extension, Madanapalle (Near Krishna Reddy Junior College)",
+    district: "Annamayya Dist, Andhra Pradesh",
     workingHours: "Monday to Saturday: 8:30 AM - 5:30 PM",
     logoUrl: "/logo.jpg",
     rating: 4.8,
     reviewCount: "250+",
-    googleMapsUrl: "https://maps.google.com/?q=Sri+Vidya+Vikas+Junior+College+Prasanth+Nagar+Madanapalle"
+    googleMapsUrl: "https://maps.google.com/?q=Sri+Vidya+Vikas+Junior+College+Prasanth+Nagar+Extension+Madanapalle"
 };
 // 1. ACADEMIC STREAMS OFFERED
 export const INITIAL_STREAMS = [
@@ -87,9 +90,10 @@ export const INITIAL_FEE_STRUCTURE = [
 ];
 // 9. CONTACT & PRINCIPAL DETAILS
 export const INITIAL_CONTACT_INFO = {
-    principalName: "Principal's Office Desk",
-    principalMessageText: "Welcome to SRI VIDYA VIKAS JUNIOR COLLEGE. Established in November 2024, our institution is founded on the principles of academic discipline, conceptual clarity, and dedicated student mentoring. We provide top-quality BIEAP intermediate education along with integrated competitive exam preparation for EAMCET, NEET, and JEE Main in Prasanth Nagar, Madanapalle.",
-    phoneReception: "+91 9876543210",
-    phoneAdmissions: "+91 9876543211",
+    principalName: "E. SIVA SANKAR, M.Sc.",
+    principalTitle: "Principal & Correspondent",
+    principalMessageText: "Welcome to SRI VIDYA VIKAS JUNIOR COLLEGE. Established in November 2024, our institution is founded on the principles of academic discipline, conceptual clarity, and dedicated student mentoring. We provide top-quality BIEAP intermediate education along with integrated competitive exam preparation for EAMCET, NEET, and JEE Main in Prasanth Nagar Extension, Madanapalle.",
+    phoneReception: "+91 9441820067",
+    phoneAdmissions: "+91 9059313830",
     emailOfficial: "admissions@svvjc.edu.in"
 };

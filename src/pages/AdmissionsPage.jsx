@@ -75,7 +75,7 @@ export const AdmissionsPage = () => {
         const streamName = submittedSummary.streamId.toUpperCase();
         const msg = `Hello Admissions Office, I have submitted an online application for SRI VIDYA VIKAS JUNIOR COLLEGE:\n\n• Student Name: ${submittedSummary.studentName}\n• Parent Name: ${submittedSummary.parentName}\n• Contact Phone: ${submittedSummary.phone}\n• Preferred Stream: ${streamName}\n• Class 10 Marks: ${submittedSummary.class10Marks}`;
         const encoded = encodeURIComponent(msg);
-        window.open(`https://wa.me/919876543210?text=${encoded}`, '_blank');
+        window.open(`https://wa.me/919059313830?text=${encoded}`, '_blank');
     };
     return (<div className="space-y-10">
       
