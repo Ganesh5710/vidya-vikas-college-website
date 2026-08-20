@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MapPin, Phone, Mail, Clock, Send, ExternalLink, CheckCircle2, Building2 } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Send, ExternalLink, CheckCircle2, Building2, Globe } from 'lucide-react';
 import { COLLEGE_DETAILS, INITIAL_CONTACT_INFO } from '../constants/collegeData';
 import { ReCaptchaBadge } from '../components/common/ReCaptchaBadge';
 import { useSEO } from '../hooks/useSEO';
@@ -155,6 +155,10 @@ export const ContactPage = () => {
                   <span>{INITIAL_CONTACT_INFO.emailOfficial}</span>
                 </p>
                 <p className="flex items-center gap-2">
+                  <Globe className="w-4 h-4 text-slate-400 shrink-0"/>
+                  <a href="https://www.srividyavikasjrcollege.com" target="_blank" rel="noopener noreferrer" className="text-maroon-800 font-bold hover:underline">www.srividyavikasjrcollege.com</a>
+                </p>
+                <p className="flex items-center gap-2">
                   <Phone className="w-4 h-4 text-slate-400 shrink-0"/>
                   <span>Reception: {INITIAL_CONTACT_INFO.phoneReception}</span>
                 </p>
@@ -175,11 +179,11 @@ export const ContactPage = () => {
             <div className="space-y-2 text-xs text-slate-600">
               <div className="flex justify-between py-1 border-b border-slate-100">
                 <span className="font-medium">Monday - Saturday</span>
-                <span className="font-bold text-navy-900">8:30 AM - 5:00 PM</span>
+                <span className="font-bold text-navy-900">8:00 AM - 8:00 PM</span>
               </div>
               <div className="flex justify-between py-1">
                 <span className="font-medium">Sunday / Public Holidays</span>
-                <span className="font-semibold text-slate-400">Closed (Office Desk)</span>
+                <span className="font-semibold text-rose-600 font-bold">Closed</span>
               </div>
             </div>
           </div>

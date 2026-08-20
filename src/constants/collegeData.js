@@ -12,7 +12,9 @@ export const COLLEGE_DETAILS = {
     pincode: "517325",
     landmark: "Prasanth Nagar Extension, Madanapalle (Near Krishna Reddy Junior College)",
     district: "Annamayya Dist, Andhra Pradesh",
-    workingHours: "Monday to Saturday: 8:30 AM - 5:30 PM",
+    workingHours: "Monday to Saturday: 8:00 AM - 8:00 PM (Sunday Closed)",
+    emailOfficial: "srividyavikasjuniorcollegempl@gmail.com",
+    website: "www.srividyavikasjrcollege.com",
     logoUrl: "/logo.jpg",
     rating: 4.8,
     reviewCount: "250+",
@@ -95,5 +97,7 @@ export const INITIAL_CONTACT_INFO = {
     principalMessageText: "Welcome to SRI VIDYA VIKAS JUNIOR COLLEGE. Established in November 2024, our institution is founded on the principles of academic discipline, conceptual clarity, and dedicated student mentoring. We provide top-quality BIEAP intermediate education along with integrated competitive exam preparation for EAMCET, NEET, and JEE Main in Prasanth Nagar Extension, Madanapalle.",
     phoneReception: "+91 9441820067",
     phoneAdmissions: "+91 9059313830",
-    emailOfficial: "admissions@svvjc.edu.in"
+    emailOfficial: "srividyavikasjuniorcollegempl@gmail.com",
+    website: "www.srividyavikasjrcollege.com",
+    workingHours: "Monday to Saturday: 8:00 AM - 8:00 PM (Sunday Closed)"
 };

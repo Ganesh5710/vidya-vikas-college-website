@@ -66,10 +66,11 @@ export const Footer = ({ setActiveTab }) => {
         <div className="space-y-3">
           <h4 className="text-white font-bold text-sm border-b border-navy-800 pb-2">Campus Address</h4>
           <div className="space-y-2 text-xs text-slate-400">
-            <p className="font-semibold text-slate-200">SRI VIDYA VIKAS JUNIOR COLLEGE</p>
+            <p className="font-semibold text-slate-200">{COLLEGE_DETAILS.name}</p>
             <p>{COLLEGE_DETAILS.address}</p>
-            <p className="pt-2"><strong className="text-amber-400">Email:</strong> office@svvjc.edu.in</p>
-            <p><strong className="text-amber-400">Location:</strong> Prasanth Nagar, Madanapalle</p>
+            <p className="pt-2"><strong className="text-amber-400">Email:</strong> srividyavikasjuniorcollegempl@gmail.com</p>
+            <p><strong className="text-amber-400">Website:</strong> www.srividyavikasjrcollege.com</p>
+            <p><strong className="text-amber-400">Timings:</strong> 8:00 AM - 8:00 PM (Sunday Closed)</p>
           </div>
         </div>
 
