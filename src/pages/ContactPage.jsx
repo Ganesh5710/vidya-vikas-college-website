@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { MapPin, Phone, Mail, Clock, Send, ExternalLink, CheckCircle2, Building2, Globe } from 'lucide-react';
 import { COLLEGE_DETAILS, INITIAL_CONTACT_INFO } from '../constants/collegeData';
-import { ReCaptchaBadge } from '../components/common/ReCaptchaBadge';
 import { useSEO } from '../hooks/useSEO';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
 export const ContactPage = () => {
@@ -102,8 +101,6 @@ export const ContactPage = () => {
                 <label className="block text-xs font-bold text-slate-700 mb-1">Message / Enquiry *</label>
                 <textarea rows={4} required placeholder="Type your query regarding admissions, stream choices, fees, or campus visits..." value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs text-slate-900 focus:ring-2 focus:ring-maroon-800 outline-none"/>
               </div>
-
-              <ReCaptchaBadge />
 
               <button type="submit" disabled={submitting} className="w-full py-3 px-6 rounded-xl bg-maroon-900 hover:bg-maroon-800 text-white font-bold text-sm shadow-md flex items-center justify-center gap-2 transition-transform hover:scale-[1.01]">
                 <Send className="w-4 h-4 text-amber-400"/>

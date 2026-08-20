@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { GraduationCap, CheckCircle2, AlertCircle, Calendar, Download, Send, MessageCircle, Mail } from 'lucide-react';
 import { INITIAL_STREAMS, COLLEGE_DETAILS } from '../constants/collegeData';
-import { ReCaptchaBadge } from '../components/common/ReCaptchaBadge';
 import { useSEO } from '../hooks/useSEO';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
 
@@ -224,9 +223,7 @@ export const AdmissionsPage = () => {
                             </div>
                         </div>
 
-                        <div className="pt-2 flex items-center justify-between flex-wrap gap-3">
-                            <ReCaptchaBadge />
-
+                        <div className="pt-2 flex justify-end">
                             <button type="submit" disabled={submitting} className="px-6 py-3 rounded-xl bg-maroon-900 hover:bg-maroon-800 disabled:opacity-50 text-white font-extrabold text-xs uppercase tracking-wider shadow-md flex items-center gap-2 transition-transform hover:scale-105">
                                 <Send className="w-4 h-4 text-amber-400"/>
                                 <span>{submitting ? 'Dispatching to College Mailbox...' : 'Submit Application Form'}</span>
