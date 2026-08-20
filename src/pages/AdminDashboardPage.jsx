@@ -14,7 +14,7 @@ export const AdminDashboardPage = () => {
     const { notices, addNotice, deleteNotice, events, addEvent, deleteEvent, faculty, addFaculty, deleteFaculty, toppers, addTopper, deleteTopper, leads, updateLeadStatus, facilities, heroSlides, addFacility, deleteFacility, updateFacilityPhoto, updateHeroSlidePhoto, galleryPhotos, addGalleryPhoto, deleteGalleryPhoto } = useData();
     const [activeTab, setActiveTab] = useState('notices');
     // Login form state
-    const [emailInput, setEmailInput] = useState('principal@svvjc.edu.in');
+    const [emailInput, setEmailInput] = useState('srividyavikasjuniorcollegempl@gmail.com');
     const [passwordInput, setPasswordInput] = useState('principal@svvjc');
     const [showPassword, setShowPassword] = useState(false);
     const [loginError, setLoginError] = useState('');
@@ -67,7 +67,7 @@ export const AdminDashboardPage = () => {
         {
             roleName: "Principal / Super Admin",
             roleKey: "super_admin",
-            email: "principal@svvjc.edu.in",
+            email: "srividyavikasjuniorcollegempl@gmail.com",
             password: "principal@svvjc",
             description: "Full system control, manage staff roles & site configuration",
             badgeColor: "bg-amber-100 text-amber-900 border-amber-300"
@@ -75,7 +75,7 @@ export const AdminDashboardPage = () => {
         {
             roleName: "Office Administrator",
             roleKey: "office_admin",
-            email: "office@svvjc.edu.in",
+            email: "office.svvjc@gmail.com",
             password: "office@svvjc",
             description: "Manage circulars, news ticker, campus events & enquiry leads",
             badgeColor: "bg-blue-100 text-blue-900 border-blue-300"
@@ -83,7 +83,7 @@ export const AdminDashboardPage = () => {
         {
             roleName: "Exam Cell Coordinator",
             roleKey: "exam_cell",
-            email: "examcell@svvjc.edu.in",
+            email: "examcell.svvjc@gmail.com",
             password: "examcell@svvjc",
             description: "Manage BIEAP board exam results, toppers & seating timetables",
             badgeColor: "bg-maroon-100 text-maroon-900 border-maroon-300"
@@ -91,7 +91,7 @@ export const AdminDashboardPage = () => {
         {
             roleName: "Stream Coordinator (MPC/BiPC)",
             roleKey: "stream_coordinator",
-            email: "faculty.mpc@svvjc.edu.in",
+            email: "faculty.svvjc@gmail.com",
             password: "faculty@svvjc",
             description: "Manage faculty directory and subject syllabus guides",
             badgeColor: "bg-emerald-100 text-emerald-900 border-emerald-300"
@@ -157,7 +157,7 @@ export const AdminDashboardPage = () => {
             streamId: newFacultySubject.toLowerCase().includes('math') ? 'mpc' : 'bipc',
             qualification: 'M.Sc, B.Ed',
             experienceYears: 10,
-            email: `${newFacultyName.toLowerCase().replace(/\s+/g, '.')}@svvjc.edu.in`,
+            email: `${newFacultyName.toLowerCase().replace(/\s+/g, '.')}@gmail.com`,
             photoUrl: facultyPhotoPreview || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=400',
         });
         setNewFacultyName('');
@@ -254,7 +254,7 @@ export const AdminDashboardPage = () => {
               <label className="block text-xs font-bold text-slate-700 mb-1">Official Email Address</label>
               <div className="relative">
                 <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-3"/>
-                <input type="email" required value={emailInput} onChange={(e) => setEmailInput(e.target.value)} placeholder="staff@svvjc.edu.in" className="w-full pl-9 pr-4 py-2.5 rounded-lg border border-slate-300 text-xs text-slate-900 focus:ring-2 focus:ring-maroon-800 outline-none"/>
+                <input type="email" required value={emailInput} onChange={(e) => setEmailInput(e.target.value)} placeholder="srividyavikasjuniorcollegempl@gmail.com" className="w-full pl-9 pr-4 py-2.5 rounded-lg border border-slate-300 text-xs text-slate-900 focus:ring-2 focus:ring-maroon-800 outline-none"/>
               </div>
             </div>
 

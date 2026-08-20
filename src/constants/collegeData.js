@@ -14,6 +14,8 @@ export const COLLEGE_DETAILS = {
     district: "Annamayya Dist, Andhra Pradesh",
     workingHours: "Monday to Saturday: 8:00 AM - 8:00 PM (Sunday Closed)",
     emailOfficial: "srividyavikasjuniorcollegempl@gmail.com",
+    phoneReception: "+91 9441820067",
+    phoneAdmissions: "+91 9059313830",
     websiteDisplay: "www.srividyavikasjrcollege.com",
     websiteUrl: "https://vidya-vikas-college.vercel.app/",
     logoUrl: "/logo.jpg",
@@ -30,7 +32,7 @@ export const INITIAL_STREAMS = [
         subjects: ["Mathematics I-A & I-B", "Physics", "Chemistry", "English", "Telugu / Sanskrit"],
         eligibility: "Class 10 SSC / CBSE / ICSE Pass with Mathematics background",
         careerPaths: "Engineering (IIT-JEE, AP EAMCET, BITSAT), B.Sc, Architecture, IT & Data Science",
-        timetable: "Mon-Sat: 8:30 AM - 4:30 PM | Special EAMCET/JEE coaching 4:30 PM - 5:30 PM"
+        timetable: "Mon-Sat: 8:00 AM - 5:00 PM | Special EAMCET/JEE coaching 5:00 PM - 8:00 PM"
     },
     {
         id: "bipc",
@@ -39,7 +41,7 @@ export const INITIAL_STREAMS = [
         subjects: ["Botany", "Zoology", "Physics", "Chemistry", "English", "Telugu / Sanskrit"],
         eligibility: "Class 10 SSC / CBSE / ICSE Pass with Science background",
         careerPaths: "Medicine (NEET-UG, MBBS, BDS), Pharmacy (B.Pharm), Agriculture (B.Sc Ag), Biotechnology",
-        timetable: "Mon-Sat: 8:30 AM - 4:30 PM | Special NEET coaching 4:30 PM - 5:30 PM"
+        timetable: "Mon-Sat: 8:00 AM - 5:00 PM | Special NEET coaching 5:00 PM - 8:00 PM"
     },
     {
         id: "cec",
@@ -48,7 +50,7 @@ export const INITIAL_STREAMS = [
         subjects: ["Civics", "Economics", "Commerce & Accountancy", "English", "Telugu / Sanskrit"],
         eligibility: "Class 10 SSC / CBSE / ICSE Pass",
         careerPaths: "Chartered Accountancy (CA Foundation), Business Administration (BBA), Law (CLAT), Civil Services (UPSC)",
-        timetable: "Mon-Sat: 8:30 AM - 4:00 PM | Special CA Foundation Orientation"
+        timetable: "Mon-Sat: 8:00 AM - 5:00 PM | Special CA Foundation Orientation"
     },
     {
         id: "mec",
@@ -57,7 +59,7 @@ export const INITIAL_STREAMS = [
         subjects: ["Mathematics", "Economics", "Commerce & Accountancy", "English", "Telugu / Sanskrit"],
         eligibility: "Class 10 SSC / CBSE / ICSE Pass with Mathematics background",
         careerPaths: "Data Analytics, Actuarial Science, CA, B.Com (Hons), Corporate Finance",
-        timetable: "Mon-Sat: 8:30 AM - 4:00 PM"
+        timetable: "Mon-Sat: 8:00 AM - 5:00 PM"
     },
     {
         id: "hec",
@@ -66,7 +68,7 @@ export const INITIAL_STREAMS = [
         subjects: ["History", "Economics", "Civics", "English", "Telugu / Sanskrit"],
         eligibility: "Class 10 SSC / CBSE / ICSE Pass",
         careerPaths: "Civil Services (IAS / IPS / APPSC Group 1), Journalism, Law, Public Administration, B.A",
-        timetable: "Mon-Sat: 8:30 AM - 4:00 PM | Special Civil Services Orientation"
+        timetable: "Mon-Sat: 8:00 AM - 5:00 PM | Special Civil Services Orientation"
     }
 ];
 // 2. NOTICES DATA

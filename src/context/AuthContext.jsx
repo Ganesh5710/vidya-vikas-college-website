@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }) => {
             }
         }
     }, []);
-    const loginDemo = (role, email = 'admin@svvjc.edu.in') => {
+    const loginDemo = (role, email = 'srividyavikasjuniorcollegempl@gmail.com') => {
         const roleNames = {
             super_admin: 'Principal / Super Admin',
             office_admin: 'Office Administrator',
