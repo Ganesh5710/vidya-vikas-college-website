@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { GraduationCap, Award, Star, ChevronRight, Calendar, Bell, ChevronLeft, CheckCircle, ArrowRight, BookOpen, Sparkles, Calculator, Download } from 'lucide-react';
+import { GraduationCap, Award, Star, ChevronRight, Calendar, Bell, ChevronLeft, CheckCircle, ArrowRight, BookOpen, Sparkles, Download } from 'lucide-react';
 import { INITIAL_STREAMS } from '../constants/collegeData';
 import { useData } from '../context/DataContext';
-import { StreamPredictorModal } from '../components/common/StreamPredictorModal';
 import { useSEO } from '../hooks/useSEO';
 export const HomePage = ({ setActiveTab }) => {
     useSEO({
@@ -11,8 +10,6 @@ export const HomePage = ({ setActiveTab }) => {
     });
     const { notices, events, heroSlides } = useData();
     const [currentSlide, setCurrentSlide] = useState(0);
-    // Modal triggers
-    const [isPredictorOpen, setIsPredictorOpen] = useState(false);
     const nextSlide = () => {
         setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
     };
@@ -55,11 +52,6 @@ export const HomePage = ({ setActiveTab }) => {
             <button onClick={() => setActiveTab(heroSlides[currentSlide].ctaTab)} className="px-6 py-3.5 rounded-xl bg-maroon-900 hover:bg-maroon-800 text-white font-extrabold text-xs tracking-wider uppercase shadow-lg transition-transform hover:scale-105 flex items-center gap-2">
               <span>{heroSlides[currentSlide].ctaText}</span>
               <ArrowRight className="w-4 h-4 text-amber-400"/>
-            </button>
-
-            <button onClick={() => setIsPredictorOpen(true)} className="px-5 py-3.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-navy-950 font-extrabold text-xs tracking-wider uppercase shadow-lg transition-transform hover:scale-105 flex items-center gap-2">
-              <Calculator className="w-4 h-4"/>
-              <span>Class 10 Stream Predictor</span>
             </button>
           </div>
 
@@ -274,9 +266,6 @@ export const HomePage = ({ setActiveTab }) => {
         </div>
 
       </section>
-
-      {/* Modals */}
-      <StreamPredictorModal isOpen={isPredictorOpen} onClose={() => setIsPredictorOpen(false)} onSelectStream={setActiveTab}/>
 
     </div>);
 };
