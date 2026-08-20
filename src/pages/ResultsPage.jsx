@@ -1,6 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Award, Trophy, Maximize2, X, Search, Filter, LayoutGrid, Table, GraduationCap, Sparkles, CheckCircle2 } from 'lucide-react';
-import { INITIAL_STREAM_SUMMARY } from '../constants/collegeData';
+import { Trophy, Maximize2, X, Search, Filter, GraduationCap } from 'lucide-react';
 import { useData } from '../context/DataContext';
 import { EmptyState } from '../components/common/EmptyState';
 import { useSEO } from '../hooks/useSEO';
@@ -19,9 +18,6 @@ export const ResultsPage = () => {
     // Search and Stream Filter
     const [searchQuery, setSearchQuery] = useState('');
     const [streamFilter, setStreamFilter] = useState('all');
-
-    // Display Layout Mode: 'cards' (mobile-friendly default) or 'table'
-    const [viewMode, setViewMode] = useState('cards');
 
     // Fullscreen Poster Modal
     const [selectedPhoto, setSelectedPhoto] = useState(null);
@@ -64,54 +60,12 @@ export const ResultsPage = () => {
         });
     }, [toppers, activeYearTab, streamFilter, searchQuery]);
 
-    // Dynamically calculate stream summary based on active year tab and result records
-    const dynamicStreamSummary = useMemo(() => {
-        const streams = [
-            { id: 'sum-1', streamId: 'mpc', baseAppeared: 80, basePassed: 79 },
-            { id: 'sum-2', streamId: 'bipc', baseAppeared: 70, basePassed: 68 },
-            { id: 'sum-3', streamId: 'cec', baseAppeared: 50, basePassed: 48 },
-            { id: 'sum-4', streamId: 'mec', baseAppeared: 45, basePassed: 44 },
-            { id: 'sum-5', streamId: 'hec', baseAppeared: 40, basePassed: 38 },
-        ];
-
-        return streams.map(st => {
-            // Find all results matching this stream
-            const streamResults = toppers.filter(t => {
-                const matchesStream = t.streamId?.toLowerCase() === st.streamId;
-                const matchesYear = activeYearTab === 'all' || t.academicYear === activeYearTab || (!t.academicYear && activeYearTab === '1st Year');
-                return matchesStream && matchesYear;
-            });
-
-            // Calculate dynamic counts
-            const extraAppeared = streamResults.length;
-            const extraPassed = streamResults.filter(t => {
-                const scoreStr = String(t.marksPercentage || t.marksObtained || '100');
-                const score = parseFloat(scoreStr);
-                return isNaN(score) || score > 35;
-            }).length;
-
-            const multiplier = activeYearTab === 'all' ? 1.0 : 0.5;
-            const totalAppeared = Math.round(st.baseAppeared * multiplier) + extraAppeared;
-            const totalPassed = Math.round(st.basePassed * multiplier) + extraPassed;
-            const passPercentage = totalAppeared > 0 ? ((totalPassed / totalAppeared) * 100).toFixed(1) : '100.0';
-
-            return {
-                id: st.id,
-                streamId: st.streamId,
-                passPercentage,
-                academicYear: activeYearTab === 'all' ? '2024-2025 Combined' : `2024-2025 ${activeYearTab}`,
-                totalAppeared,
-                totalPassed
-            };
-        });
-    }, [toppers, activeYearTab]);
-
     // Count records for year badges
     const count1stYear = toppers.filter(t => t.academicYear === '1st Year' || !t.academicYear).length;
     const count2ndYear = toppers.filter(t => t.academicYear === '2nd Year').length;
 
     return (
-        <div className="space-y-10">
+        <div className="space-y-8">
       
             {/* Header Banner */}
             <section className="bg-navy-900 text-white rounded-2xl p-8 shadow-md space-y-3">
@@ -127,10 +81,10 @@ export const ResultsPage = () => {
                 </p>
             </section>
 
-            {/* Main Interactive Results & Toppers Section */}
+            {/* Main Interactive Results Section */}
             <section className="space-y-6">
                 
-                {/* 1. SEPARATE 1ST YEAR & 2ND YEAR TABS */}
+                {/* 1st Year vs 2nd Year Tabs */}
                 <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 pb-4">
                     <div className="flex items-center gap-2 bg-slate-100 p-1.5 rounded-2xl border border-slate-200 overflow-x-auto max-w-full">
                         <button
@@ -174,33 +128,9 @@ export const ResultsPage = () => {
                             <span>All Records</span>
                         </button>
                     </div>
-
-                    {/* Desktop View Mode Switcher (Cards vs Table) */}
-                    <div className="hidden sm:flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200">
-                        <button
-                            onClick={() => setViewMode('cards')}
-                            className={`p-2 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-colors ${
-                                viewMode === 'cards' ? 'bg-white text-navy-900 shadow-sm' : 'text-slate-600 hover:text-slate-900'
-                            }`}
-                            title="Mobile-Friendly Card View"
-                        >
-                            <LayoutGrid className="w-4 h-4 text-maroon-800"/>
-                            <span>Card View</span>
-                        </button>
-                        <button
-                            onClick={() => setViewMode('table')}
-                            className={`p-2 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-colors ${
-                                viewMode === 'table' ? 'bg-white text-navy-900 shadow-sm' : 'text-slate-600 hover:text-slate-900'
-                            }`}
-                            title="Structured Table View"
-                        >
-                            <Table className="w-4 h-4 text-maroon-800"/>
-                            <span>Table View</span>
-                        </button>
-                    </div>
                 </div>
 
-                {/* 2. SEARCH & FILTER BAR */}
+                {/* SEARCH & STREAM FILTER BAR */}
                 <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-wrap items-center justify-between gap-4">
                     {/* Search Input */}
                     <div className="relative flex-1 min-w-[240px]">
@@ -237,14 +167,13 @@ export const ResultsPage = () => {
                     </div>
                 </div>
 
-                {/* RESULTS RESULTS LISTING */}
+                {/* RESULTS CARD GRID - PERFECTLY ALIGNED PICTURES (ZERO PADDING SPACING) */}
                 {filteredResults.length === 0 ? (
                     <EmptyState
                         title="No Matching Results Found"
                         description={`No ${activeYearTab === 'all' ? '' : activeYearTab} student results matched your search query or stream filter.`}
                     />
-                ) : viewMode === 'cards' ? (
-                    /* 3. MOBILE-FRIENDLY CARD VIEW (Zero Squeezing) */
+                ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                         {filteredResults.map((result) => (
                             <div key={result.id} className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm space-y-4 hover:shadow-md transition-shadow flex flex-col justify-between group relative overflow-hidden">
@@ -261,26 +190,21 @@ export const ResultsPage = () => {
                                     </span>
                                 </div>
 
-                                {/* Poster Container / Student Photo */}
-                                <div className="relative w-full h-72 rounded-xl overflow-hidden bg-slate-100 flex items-center justify-center p-1 border border-slate-200 shadow-inner group">
-                                    {/* Ambient Blurred Backdrop */}
-                                    {result.photoUrl && (
-                                        <img src={result.photoUrl} alt="" className="absolute inset-0 w-full h-full object-cover filter blur-2xl scale-125 opacity-50 select-none pointer-events-none" />
-                                    )}
-
-                                    {/* Crisp Main Student Photo */}
+                                {/* Poster Container - Perfectly Aligned, Zero Gray Side Bars */}
+                                <div className="relative w-full aspect-[4/5] rounded-xl overflow-hidden bg-slate-900 border border-slate-200 shadow-inner group">
+                                    {/* Crisp Full-Width Student Poster Image */}
                                     <img
                                         src={result.photoUrl || "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=400"}
                                         alt={result.studentName}
-                                        className="relative z-10 w-full h-full object-contain rounded-lg group-hover:scale-[1.02] transition-transform duration-300 drop-shadow-md"
+                                        className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
                                     />
 
-                                    {/* High-res expand button */}
+                                    {/* High-res expand poster button */}
                                     {result.photoUrl && (
                                         <button
                                             onClick={() => setSelectedPhoto({ url: result.photoUrl, title: result.studentName })}
-                                            className="absolute bottom-2 right-2 z-20 p-2 rounded-lg bg-navy-900/80 hover:bg-navy-900 text-white backdrop-blur shadow transition-all flex items-center gap-1 text-[11px] font-bold"
-                                            title="View Full Poster"
+                                            className="absolute bottom-2.5 right-2.5 z-20 px-3 py-1.5 rounded-lg bg-navy-900/85 hover:bg-navy-900 text-white backdrop-blur shadow-md transition-all flex items-center gap-1.5 text-[11px] font-extrabold border border-white/20"
+                                            title="Click to view full high-res poster"
                                         >
                                             <Maximize2 className="w-3.5 h-3.5 text-amber-400"/>
                                             <span>Full Poster</span>
@@ -319,53 +243,6 @@ export const ResultsPage = () => {
 
                             </div>
                         ))}
-                    </div>
-                ) : (
-                    /* 4. RESPONSIVE TABLE VIEW */
-                    <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-                        <div className="overflow-x-auto">
-                            <table className="w-full text-left text-xs">
-                                <thead className="bg-navy-900 text-white uppercase text-[11px] font-extrabold">
-                                    <tr>
-                                        <th className="py-3.5 px-4">Student Name</th>
-                                        <th className="py-3.5 px-4">Roll / Hall Ticket</th>
-                                        <th className="py-3.5 px-4">Year</th>
-                                        <th className="py-3.5 px-4">Stream</th>
-                                        <th className="py-3.5 px-4">Marks Obtained</th>
-                                        <th className="py-3.5 px-4">Percentage / Grade</th>
-                                        <th className="py-3.5 px-4">Rank / Position</th>
-                                    </tr>
-                                </thead>
-                                <tbody className="divide-y divide-slate-100 text-slate-800 font-medium">
-                                    {filteredResults.map((res) => (
-                                        <tr key={res.id} className="hover:bg-slate-50 transition-colors">
-                                            <td className="py-3 px-4 font-extrabold text-navy-900 flex items-center gap-3">
-                                                <img
-                                                    src={res.photoUrl || "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=400"}
-                                                    alt={res.studentName}
-                                                    className="w-9 h-9 rounded-full object-cover border border-slate-300 shrink-0"
-                                                />
-                                                <span>{res.studentName}</span>
-                                            </td>
-                                            <td className="py-3 px-4 font-mono font-bold text-slate-700">{res.rollNumber || 'N/A'}</td>
-                                            <td className="py-3 px-4 font-bold text-maroon-900">{res.academicYear || '1st Year'}</td>
-                                            <td className="py-3 px-4">
-                                                <span className="px-2.5 py-0.5 rounded bg-navy-900 text-white font-bold uppercase text-[10px]">
-                                                    {res.streamId ? res.streamId.toUpperCase() : 'MPC'}
-                                                </span>
-                                            </td>
-                                            <td className="py-3 px-4 font-bold text-slate-900">{res.marksObtained ? `${res.marksObtained} / ${res.maxMarks || 500}` : 'N/A'}</td>
-                                            <td className="py-3 px-4 font-black text-emerald-600 text-sm">{formatTopperScore(res.marksPercentage || res.marksObtained)}</td>
-                                            <td className="py-3 px-4">
-                                                <span className="px-2.5 py-1 rounded-full bg-amber-100 text-amber-900 font-extrabold text-[11px] border border-amber-300">
-                                                    {res.rank || 'Board Topper'}
-                                                </span>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
                     </div>
                 )}
 
