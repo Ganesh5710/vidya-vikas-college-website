@@ -3,27 +3,22 @@ import { Users, Mail, Briefcase, GraduationCap, Filter } from 'lucide-react';
 import { useData } from '../context/DataContext';
 import { EmptyState } from '../components/common/EmptyState';
 import { useSEO } from '../hooks/useSEO';
-
-export const FacultyPage: React.FC = () => {
-  useSEO({
-    title: "Faculty Directory | SRI VIDYA VIKAS JUNIOR COLLEGE Madanapalle",
-    description: "Meet the experienced educators, lecturers, and competitive exam mentors at SRI VIDYA VIKAS JUNIOR COLLEGE in Prasanth Nagar, Madanapalle."
-  });
-
-  const { faculty } = useData();
-  const [selectedSubject, setSelectedSubject] = useState<string>('all');
-
-  const filteredFaculty = selectedSubject === 'all'
-    ? faculty
-    : faculty.filter(f => f.subject.toLowerCase().includes(selectedSubject.toLowerCase()));
-
-  return (
-    <div className="space-y-10">
+export const FacultyPage = () => {
+    useSEO({
+        title: "Faculty Directory | SRI VIDYA VIKAS JUNIOR COLLEGE Madanapalle",
+        description: "Meet the experienced educators, lecturers, and competitive exam mentors at SRI VIDYA VIKAS JUNIOR COLLEGE in Prasanth Nagar, Madanapalle."
+    });
+    const { faculty } = useData();
+    const [selectedSubject, setSelectedSubject] = useState('all');
+    const filteredFaculty = selectedSubject === 'all'
+        ? faculty
+        : faculty.filter(f => f.subject.toLowerCase().includes(selectedSubject.toLowerCase()));
+    return (<div className="space-y-10">
       
       {/* Header Banner */}
       <section className="bg-navy-900 text-white rounded-2xl p-8 shadow-md space-y-3">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-maroon-900 text-xs font-bold text-amber-400">
-          <Users className="w-4 h-4" />
+          <Users className="w-4 h-4"/>
           <span>EXPERIENCED EDUCATORS & SUBJECT MENTORS</span>
         </div>
         <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
@@ -37,44 +32,22 @@ export const FacultyPage: React.FC = () => {
       {/* Filter Options */}
       <div className="flex items-center gap-3 flex-wrap">
         <span className="text-xs font-bold text-slate-700 flex items-center gap-1">
-          <Filter className="w-3.5 h-3.5 text-slate-500" />
+          <Filter className="w-3.5 h-3.5 text-slate-500"/>
           Filter by Subject:
         </span>
-        {['all', 'physics', 'mathematics', 'chemistry', 'biology', 'commerce'].map((subj) => (
-          <button
-            key={subj}
-            onClick={() => setSelectedSubject(subj)}
-            className={`px-3 py-1.5 rounded-lg text-xs font-bold capitalize transition-colors ${
-              selectedSubject === subj
+        {['all', 'physics', 'mathematics', 'chemistry', 'biology', 'commerce'].map((subj) => (<button key={subj} onClick={() => setSelectedSubject(subj)} className={`px-3 py-1.5 rounded-lg text-xs font-bold capitalize transition-colors ${selectedSubject === subj
                 ? 'bg-maroon-900 text-white'
-                : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
-            }`}
-          >
+                : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'}`}>
             {subj}
-          </button>
-        ))}
+          </button>))}
       </div>
 
       {/* Faculty Cards Grid or Empty State */}
-      {filteredFaculty.length === 0 ? (
-        <EmptyState 
-          title="No Faculty Records Added Yet"
-          description="Faculty profiles posted via the Staff Control Panel will instantly appear here."
-        />
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredFaculty.map((member) => (
-            <div 
-              key={member.id}
-              className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition-all space-y-4 flex flex-col justify-between"
-            >
+      {filteredFaculty.length === 0 ? (<EmptyState title="No Faculty Records Added Yet" description="Faculty profiles posted via the Staff Control Panel will instantly appear here."/>) : (<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredFaculty.map((member) => (<div key={member.id} className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition-all space-y-4 flex flex-col justify-between">
               <div className="space-y-4">
                 <div className="flex items-center gap-4">
-                  <img 
-                    src={member.photoUrl || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=400"} 
-                    alt={member.name}
-                    className="w-16 h-16 rounded-full object-cover border-2 border-slate-200 shadow"
-                  />
+                  <img src={member.photoUrl || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=400"} alt={member.name} className="w-16 h-16 rounded-full object-cover border-2 border-slate-200 shadow"/>
                   <div>
                     <span className="text-xs font-bold px-2 py-0.5 rounded bg-blue-100 text-blue-900 capitalize">
                       {member.subject}
@@ -86,24 +59,21 @@ export const FacultyPage: React.FC = () => {
 
                 <div className="space-y-2 text-xs text-slate-600 border-t border-slate-100 pt-3">
                   <p className="flex items-center gap-2">
-                    <GraduationCap className="w-4 h-4 text-slate-400 shrink-0" />
+                    <GraduationCap className="w-4 h-4 text-slate-400 shrink-0"/>
                     <span>{member.qualification}</span>
                   </p>
                   <p className="flex items-center gap-2">
-                    <Briefcase className="w-4 h-4 text-slate-400 shrink-0" />
+                    <Briefcase className="w-4 h-4 text-slate-400 shrink-0"/>
                     <span>{member.experienceYears}+ Years Teaching Experience</span>
                   </p>
                   <p className="flex items-center gap-2">
-                    <Mail className="w-4 h-4 text-slate-400 shrink-0" />
+                    <Mail className="w-4 h-4 text-slate-400 shrink-0"/>
                     <span>{member.email}</span>
                   </p>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
-      )}
+            </div>))}
+        </div>)}
 
-    </div>
-  );
+    </div>);
 };

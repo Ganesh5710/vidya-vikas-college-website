@@ -4,60 +4,54 @@ import { COLLEGE_DETAILS, INITIAL_CONTACT_INFO } from '../constants/collegeData'
 import { ReCaptchaBadge } from '../components/common/ReCaptchaBadge';
 import { useSEO } from '../hooks/useSEO';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
-
-export const ContactPage: React.FC = () => {
-  useSEO({
-    title: "Contact Us & Campus Location | SRI VIDYA VIKAS JUNIOR COLLEGE",
-    description: "Find campus location map, address, and contact details for SRI VIDYA VIKAS JUNIOR COLLEGE in Prasanth Nagar, Madanapalle (Near Krishna Reddy Junior College)."
-  });
-
-  const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
-    email: '',
-    message: ''
-  });
-
-  const [submitting, setSubmitting] = useState(false);
-  const [successMessage, setSuccessMessage] = useState('');
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitting(true);
-    setSuccessMessage('');
-
-    try {
-      if (isSupabaseConfigured()) {
-        const { error } = await supabase.from('contact_enquiries').insert([
-          {
-            name: formData.name,
-            phone: formData.phone,
-            email: formData.email || null,
-            message: formData.message,
-            status: 'pending'
-          }
-        ]);
-
-        if (error) throw error;
-      }
-
-      setSuccessMessage(`Thank you ${formData.name}! Your enquiry has been received (reCAPTCHA v3 verified). Our administration will contact you shortly on ${formData.phone}.`);
-      setFormData({ name: '', phone: '', email: '', message: '' });
-    } catch (err) {
-      setSuccessMessage(`Thank you ${formData.name}! Enquiry recorded in demo mode (reCAPTCHA v3 verified). Our staff will contact you on ${formData.phone}.`);
-      setFormData({ name: '', phone: '', email: '', message: '' });
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  return (
-    <div className="space-y-10">
+export const ContactPage = () => {
+    useSEO({
+        title: "Contact Us & Campus Location | SRI VIDYA VIKAS JUNIOR COLLEGE",
+        description: "Find campus location map, address, and contact details for SRI VIDYA VIKAS JUNIOR COLLEGE in Prasanth Nagar, Madanapalle (Near Krishna Reddy Junior College)."
+    });
+    const [formData, setFormData] = useState({
+        name: '',
+        phone: '',
+        email: '',
+        message: ''
+    });
+    const [submitting, setSubmitting] = useState(false);
+    const [successMessage, setSuccessMessage] = useState('');
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setSubmitting(true);
+        setSuccessMessage('');
+        try {
+            if (isSupabaseConfigured()) {
+                const { error } = await supabase.from('contact_enquiries').insert([
+                    {
+                        name: formData.name,
+                        phone: formData.phone,
+                        email: formData.email || null,
+                        message: formData.message,
+                        status: 'pending'
+                    }
+                ]);
+                if (error)
+                    throw error;
+            }
+            setSuccessMessage(`Thank you ${formData.name}! Your enquiry has been received (reCAPTCHA v3 verified). Our administration will contact you shortly on ${formData.phone}.`);
+            setFormData({ name: '', phone: '', email: '', message: '' });
+        }
+        catch (err) {
+            setSuccessMessage(`Thank you ${formData.name}! Enquiry recorded in demo mode (reCAPTCHA v3 verified). Our staff will contact you on ${formData.phone}.`);
+            setFormData({ name: '', phone: '', email: '', message: '' });
+        }
+        finally {
+            setSubmitting(false);
+        }
+    };
+    return (<div className="space-y-10">
       
       {/* Header Banner */}
       <section className="bg-navy-900 text-white rounded-2xl p-8 shadow-md space-y-3">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-maroon-900 text-xs font-bold text-amber-400">
-          <MapPin className="w-4 h-4" />
+          <MapPin className="w-4 h-4"/>
           <span>VISIT OUR MADANAPALLE CAMPUS</span>
         </div>
         <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
@@ -81,71 +75,38 @@ export const ContactPage: React.FC = () => {
               <p className="text-xs text-slate-500">Fill in your contact details for admissions or general information</p>
             </div>
 
-            {successMessage && (
-              <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-900 text-xs font-semibold flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
+            {successMessage && (<div className="p-4 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-900 text-xs font-semibold flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0"/>
                 <span>{successMessage}</span>
-              </div>
-            )}
+              </div>)}
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-bold text-slate-700 mb-1">Your Full Name *</label>
-                  <input 
-                    type="text"
-                    required
-                    placeholder="Enter your name"
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs text-slate-900 focus:ring-2 focus:ring-maroon-800 outline-none"
-                  />
+                  <input type="text" required placeholder="Enter your name" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs text-slate-900 focus:ring-2 focus:ring-maroon-800 outline-none"/>
                 </div>
 
                 <div>
                   <label className="block text-xs font-bold text-slate-700 mb-1">Phone Number *</label>
-                  <input 
-                    type="tel"
-                    required
-                    placeholder="10-digit mobile number"
-                    value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs text-slate-900 focus:ring-2 focus:ring-maroon-800 outline-none"
-                  />
+                  <input type="tel" required placeholder="10-digit mobile number" value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs text-slate-900 focus:ring-2 focus:ring-maroon-800 outline-none"/>
                 </div>
               </div>
 
               <div>
                 <label className="block text-xs font-bold text-slate-700 mb-1">Email Address (Optional)</label>
-                <input 
-                  type="email"
-                  placeholder="your.email@example.com"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs text-slate-900 focus:ring-2 focus:ring-maroon-800 outline-none"
-                />
+                <input type="email" placeholder="your.email@example.com" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs text-slate-900 focus:ring-2 focus:ring-maroon-800 outline-none"/>
               </div>
 
               <div>
                 <label className="block text-xs font-bold text-slate-700 mb-1">Message / Enquiry *</label>
-                <textarea 
-                  rows={4}
-                  required
-                  placeholder="Type your query regarding admissions, stream choices, fees, or campus visits..."
-                  value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs text-slate-900 focus:ring-2 focus:ring-maroon-800 outline-none"
-                />
+                <textarea rows={4} required placeholder="Type your query regarding admissions, stream choices, fees, or campus visits..." value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-xs text-slate-900 focus:ring-2 focus:ring-maroon-800 outline-none"/>
               </div>
 
               <ReCaptchaBadge />
 
-              <button
-                type="submit"
-                disabled={submitting}
-                className="w-full py-3 px-6 rounded-xl bg-maroon-900 hover:bg-maroon-800 text-white font-bold text-sm shadow-md flex items-center justify-center gap-2 transition-transform hover:scale-[1.01]"
-              >
-                <Send className="w-4 h-4 text-amber-400" />
+              <button type="submit" disabled={submitting} className="w-full py-3 px-6 rounded-xl bg-maroon-900 hover:bg-maroon-800 text-white font-bold text-sm shadow-md flex items-center justify-center gap-2 transition-transform hover:scale-[1.01]">
+                <Send className="w-4 h-4 text-amber-400"/>
                 <span>{submitting ? 'Verifying & Sending...' : 'Send Enquiry Message'}</span>
               </button>
             </form>
@@ -159,25 +120,14 @@ export const ContactPage: React.FC = () => {
                 <p className="text-xs text-slate-500">{COLLEGE_DETAILS.address}</p>
               </div>
 
-              <a 
-                href={COLLEGE_DETAILS.googleMapsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-4 py-2 rounded-lg bg-navy-900 text-white text-xs font-bold flex items-center gap-1.5 hover:bg-navy-950 transition-colors"
-              >
+              <a href={COLLEGE_DETAILS.googleMapsUrl} target="_blank" rel="noopener noreferrer" className="px-4 py-2 rounded-lg bg-navy-900 text-white text-xs font-bold flex items-center gap-1.5 hover:bg-navy-950 transition-colors">
                 <span>Open Google Maps Pin</span>
-                <ExternalLink className="w-3.5 h-3.5 text-amber-400" />
+                <ExternalLink className="w-3.5 h-3.5 text-amber-400"/>
               </a>
             </div>
 
             <div className="relative h-72 rounded-xl overflow-hidden border border-slate-300 bg-slate-100 shadow-inner">
-              <iframe 
-                title="SRI VIDYA VIKAS JUNIOR COLLEGE Location Map"
-                src="https://maps.google.com/maps?q=SRI+VIDYA+VIKAS+JUNIOR+COLLEGE+Prasanth+Nagar+Madanapalle&t=&z=16&ie=UTF8&iwloc=&output=embed"
-                className="w-full h-full border-0"
-                loading="lazy"
-                allowFullScreen
-              />
+              <iframe title="SRI VIDYA VIKAS JUNIOR COLLEGE Location Map" src="https://maps.google.com/maps?q=SRI+VIDYA+VIKAS+JUNIOR+COLLEGE+Prasanth+Nagar+Madanapalle&t=&z=16&ie=UTF8&iwloc=&output=embed" className="w-full h-full border-0" loading="lazy" allowFullScreen/>
             </div>
           </div>
 
@@ -188,7 +138,7 @@ export const ContactPage: React.FC = () => {
           
           <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
             <h4 className="font-bold text-navy-900 text-base flex items-center gap-2 border-b border-slate-100 pb-3">
-              <Building2 className="w-5 h-5 text-maroon-800" />
+              <Building2 className="w-5 h-5 text-maroon-800"/>
               Official Campus Address
             </h4>
 
@@ -200,15 +150,15 @@ export const ContactPage: React.FC = () => {
 
               <div className="pt-2 border-t border-slate-100 space-y-2">
                 <p className="flex items-center gap-2">
-                  <Mail className="w-4 h-4 text-slate-400 shrink-0" />
+                  <Mail className="w-4 h-4 text-slate-400 shrink-0"/>
                   <span>{INITIAL_CONTACT_INFO.emailOfficial}</span>
                 </p>
                 <p className="flex items-center gap-2">
-                  <Phone className="w-4 h-4 text-slate-400 shrink-0" />
+                  <Phone className="w-4 h-4 text-slate-400 shrink-0"/>
                   <span>{INITIAL_CONTACT_INFO.phoneReception}</span>
                 </p>
                 <p className="flex items-center gap-2">
-                  <Phone className="w-4 h-4 text-slate-400 shrink-0" />
+                  <Phone className="w-4 h-4 text-slate-400 shrink-0"/>
                   <span>{INITIAL_CONTACT_INFO.phoneAdmissions}</span>
                 </p>
               </div>
@@ -217,7 +167,7 @@ export const ContactPage: React.FC = () => {
 
           <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-3">
             <h4 className="font-bold text-navy-900 text-base flex items-center gap-2">
-              <Clock className="w-5 h-5 text-amber-600" />
+              <Clock className="w-5 h-5 text-amber-600"/>
               Office & Visiting Hours
             </h4>
 
@@ -237,6 +187,5 @@ export const ContactPage: React.FC = () => {
 
       </section>
 
-    </div>
-  );
+    </div>);
 };

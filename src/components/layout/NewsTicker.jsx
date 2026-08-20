@@ -1,16 +1,9 @@
 import React from 'react';
 import { useData } from '../../context/DataContext';
-
-interface NewsTickerProps {
-  setActiveTab: (tab: string) => void;
-}
-
-export const NewsTicker: React.FC<NewsTickerProps> = ({ setActiveTab }) => {
-  const { notices } = useData();
-  const tickerNotices = notices.filter(n => n.isTicker);
-
-  return (
-    <div className="bg-navy-900 text-white text-xs border-b border-navy-800">
+export const NewsTicker = ({ setActiveTab }) => {
+    const { notices } = useData();
+    const tickerNotices = notices.filter(n => n.isTicker);
+    return (<div className="bg-navy-900 text-white text-xs border-b border-navy-800">
       <div className="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between gap-4">
         
         {/* Left Announcements Strip */}
@@ -21,41 +14,31 @@ export const NewsTicker: React.FC<NewsTickerProps> = ({ setActiveTab }) => {
 
           <div className="overflow-hidden whitespace-nowrap min-w-0">
             <div className="inline-block animate-marquee space-x-8 font-medium text-slate-200">
-              {tickerNotices.length > 0 ? (
-                tickerNotices.map((notice) => (
-                  <span key={notice.id} className="inline-flex items-center gap-2">
+              {tickerNotices.length > 0 ? (tickerNotices.map((notice) => (<span key={notice.id} className="inline-flex items-center gap-2">
                     <span className="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
                     <span>{notice.title}</span>
                     <span className="text-[10px] font-bold text-amber-300 bg-maroon-900 px-1.5 py-0.5 rounded ml-1">
                       {notice.category}
                     </span>
-                  </span>
-                ))
-              ) : (
-                <span className="inline-flex items-center gap-2">
+                  </span>))) : (<span className="inline-flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
                   <span>Admissions Open for Academic Year 2025-2026 (MPC, BiPC, CEC, MEC, HEC) • SRI VIDYA VIKAS JUNIOR COLLEGE, Prasanth Nagar, Madanapalle</span>
                   <span className="text-[10px] font-bold text-amber-300 bg-maroon-900 px-1.5 py-0.5 rounded ml-1">
                     Admissions
                   </span>
-                </span>
-              )}
+                </span>)}
             </div>
           </div>
         </div>
 
         {/* Right Action Button */}
-        <button
-          onClick={() => {
+        <button onClick={() => {
             setActiveTab('contact');
             window.scrollTo({ top: 0, behavior: 'smooth' });
-          }}
-          className="shrink-0 px-4 py-1 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs shadow-sm transition-transform hover:scale-105"
-        >
+        }} className="shrink-0 px-4 py-1 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs shadow-sm transition-transform hover:scale-105">
           Contact Us
         </button>
 
       </div>
-    </div>
-  );
+    </div>);
 };

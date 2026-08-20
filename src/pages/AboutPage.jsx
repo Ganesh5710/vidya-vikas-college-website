@@ -2,21 +2,18 @@ import React from 'react';
 import { Building2, Target, History, ShieldCheck, Users } from 'lucide-react';
 import { COLLEGE_DETAILS } from '../constants/collegeData';
 import { useSEO } from '../hooks/useSEO';
-
-export const AboutPage: React.FC = () => {
-  useSEO({
-    title: "About Us | SRI VIDYA VIKAS JUNIOR COLLEGE Madanapalle",
-    description: "Learn about the history, vision, mission, and BIEAP board recognition of SRI VIDYA VIKAS JUNIOR COLLEGE, Prasanth Nagar, Madanapalle."
-  });
-
-  return (
-    <div className="space-y-10">
+export const AboutPage = () => {
+    useSEO({
+        title: "About Us | SRI VIDYA VIKAS JUNIOR COLLEGE Madanapalle",
+        description: "Learn about the history, vision, mission, and BIEAP board recognition of SRI VIDYA VIKAS JUNIOR COLLEGE, Prasanth Nagar, Madanapalle."
+    });
+    return (<div className="space-y-10">
       
       {/* Header Banner */}
       <section className="bg-navy-900 text-white rounded-2xl p-8 shadow-md relative overflow-hidden">
         <div className="relative z-10 max-w-3xl space-y-3">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-maroon-900 text-xs font-bold text-amber-400">
-            <Building2 className="w-4 h-4" />
+            <Building2 className="w-4 h-4"/>
             <span>ESTABLISHED NOVEMBER 2024</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
@@ -32,7 +29,7 @@ export const AboutPage: React.FC = () => {
       <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-3">
           <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold">
-            <Target className="w-6 h-6" />
+            <Target className="w-6 h-6"/>
           </div>
           <h3 className="text-xl font-bold text-navy-900">Our Vision</h3>
           <p className="text-slate-600 text-sm leading-relaxed">
@@ -42,7 +39,7 @@ export const AboutPage: React.FC = () => {
 
         <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-3">
           <div className="w-10 h-10 rounded-xl bg-maroon-50 text-maroon-800 flex items-center justify-center font-bold">
-            <ShieldCheck className="w-6 h-6" />
+            <ShieldCheck className="w-6 h-6"/>
           </div>
           <h3 className="text-xl font-bold text-navy-900">Our Mission</h3>
           <ul className="text-slate-600 text-sm space-y-2 list-disc list-inside leading-relaxed">
@@ -57,7 +54,7 @@ export const AboutPage: React.FC = () => {
       {/* History Timeline */}
       <section className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
         <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
-          <History className="w-6 h-6 text-maroon-800" />
+          <History className="w-6 h-6 text-maroon-800"/>
           <div>
             <h3 className="text-xl font-bold text-navy-900">College History & Growth</h3>
             <p className="text-xs text-slate-500">Milestones of SRI VIDYA VIKAS JUNIOR COLLEGE</p>
@@ -93,7 +90,7 @@ export const AboutPage: React.FC = () => {
       <section className="bg-slate-50 rounded-2xl p-6 border border-slate-200 space-y-6">
         <div className="flex items-center justify-between flex-wrap gap-2">
           <div className="flex items-center gap-3">
-            <Users className="w-6 h-6 text-navy-900" />
+            <Users className="w-6 h-6 text-navy-900"/>
             <div>
               <h3 className="text-xl font-bold text-navy-900">Board Affiliation & Management</h3>
               <p className="text-xs text-slate-500">Board of Intermediate Education, Andhra Pradesh (BIEAP)</p>
@@ -117,6 +114,5 @@ export const AboutPage: React.FC = () => {
         </div>
       </section>
 
-    </div>
-  );
+    </div>);
 };

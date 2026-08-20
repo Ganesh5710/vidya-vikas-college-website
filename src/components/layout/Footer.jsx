@@ -1,25 +1,14 @@
 import React from 'react';
 import { Star } from 'lucide-react';
 import { COLLEGE_DETAILS } from '../../constants/collegeData';
-
-interface FooterProps {
-  setActiveTab: (tab: string) => void;
-}
-
-export const Footer: React.FC<FooterProps> = ({ setActiveTab }) => {
-  return (
-    <footer className="bg-navy-950 text-slate-300 border-t border-navy-800">
+export const Footer = ({ setActiveTab }) => {
+    return (<footer className="bg-navy-950 text-slate-300 border-t border-navy-800">
       <div className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         
         {/* Col 1: Official Logo Branding & Info */}
         <div className="space-y-4">
           <div className="flex items-center gap-3">
-            <img 
-              src={COLLEGE_DETAILS.logoUrl || '/logo.jpg'} 
-              alt={`${COLLEGE_DETAILS.name} Official Logo`}
-              onError={(e) => { (e.target as HTMLImageElement).src = '/logo.jpg'; }}
-              className="w-12 h-12 object-contain bg-white rounded-full p-0.5 border border-slate-300 shadow"
-            />
+            <img src={COLLEGE_DETAILS.logoUrl || '/logo.jpg'} alt={`${COLLEGE_DETAILS.name} Official Logo`} onError={(e) => { e.target.src = '/logo.jpg'; }} className="w-12 h-12 object-contain bg-white rounded-full p-0.5 border border-slate-300 shadow"/>
             <div>
               <h3 className="font-extrabold text-white text-base leading-tight">{COLLEGE_DETAILS.name}</h3>
               <p className="text-xs text-amber-400 font-semibold italic">"{COLLEGE_DETAILS.tagline}"</p>
@@ -31,7 +20,7 @@ export const Footer: React.FC<FooterProps> = ({ setActiveTab }) => {
           </p>
 
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded bg-amber-950/60 border border-amber-500/30 text-amber-400 text-xs font-bold">
-            <Star className="w-4 h-4 fill-amber-400" />
+            <Star className="w-4 h-4 fill-amber-400"/>
             <span>5.0 Star Rating (45 Reviews)</span>
           </div>
         </div>
@@ -80,6 +69,5 @@ export const Footer: React.FC<FooterProps> = ({ setActiveTab }) => {
           <p className="text-[11px] text-slate-500">Recognized by BIEAP • College Code: SVVJC</p>
         </div>
       </div>
-    </footer>
-  );
+    </footer>);
 };
