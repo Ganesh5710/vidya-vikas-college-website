@@ -111,7 +111,7 @@ export const AdmissionsPage = () => {
 
               {submittedSummary && (<button type="button" onClick={handleSendWhatsAppAlert} className="w-full py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs shadow-md flex items-center justify-center gap-2 transition-transform hover:scale-[1.01]">
                   <MessageCircle className="w-4 h-4 fill-white"/>
-                  <span>📲 Send Application Summary to College WhatsApp Now</span>
+                  <span>Send Application Summary to College WhatsApp Now</span>
                 </button>)}
             </div>)}
 

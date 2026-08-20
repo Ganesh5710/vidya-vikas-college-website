@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BookOpen, Calendar, Download, ExternalLink, FileText, Search, ShieldAlert, Sparkles, CheckCircle2, XCircle, Clock, Award } from 'lucide-react';
+import { BookOpen, Calendar, Download, ExternalLink, FileText, Search, ShieldAlert, CheckCircle2, XCircle, Clock, Award } from 'lucide-react';
 import { INITIAL_STUDY_MATERIALS } from '../constants/collegeData';
 import { useSEO } from '../hooks/useSEO';
 export const StudentCornerPage = () => {
@@ -141,7 +141,7 @@ export const StudentCornerPage = () => {
         <div className="flex items-center justify-between flex-wrap gap-2 border-b border-slate-100 pb-4">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-maroon-900 text-amber-400 flex items-center justify-center font-bold">
-              <Sparkles className="w-6 h-6"/>
+              <BookOpen className="w-6 h-6"/>
             </div>
             <div>
               <h3 className="text-2xl font-extrabold text-navy-900">Daily EAMCET, NEET & JEE Practice Quiz</h3>
@@ -183,7 +183,7 @@ export const StudentCornerPage = () => {
             </div>
 
             {selectedAnswer !== null && (<div className="p-4 rounded-xl bg-white border border-slate-200 text-xs space-y-2 animate-in fade-in">
-                <p className="font-bold text-navy-900">💡 Explanation:</p>
+                <p className="font-bold text-navy-900">Explanation:</p>
                 <p className="text-slate-600 leading-relaxed">{quizQuestions[currentQuizIdx].explanation}</p>
                 
                 <div className="pt-2 flex justify-end">

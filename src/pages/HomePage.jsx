@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { GraduationCap, Award, Star, ChevronRight, Calendar, Bell, ChevronLeft, CheckCircle, ArrowRight, BookOpen, Sparkles, Download } from 'lucide-react';
+import { GraduationCap, Award, Star, ChevronRight, Calendar, Bell, ChevronLeft, CheckCircle, ArrowRight, BookOpen, Download } from 'lucide-react';
 import { INITIAL_STREAMS } from '../constants/collegeData';
 import { useData } from '../context/DataContext';
 import { useSEO } from '../hooks/useSEO';
@@ -36,7 +36,6 @@ export const HomePage = ({ setActiveTab }) => {
         <div className="relative z-10 max-w-3xl p-6 sm:p-12 space-y-5 text-white">
           
           <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-maroon-900 text-amber-400 text-xs font-black tracking-wider uppercase shadow">
-            <Sparkles className="w-3.5 h-3.5"/>
             <span>{heroSlides[currentSlide].tag}</span>
           </span>
 

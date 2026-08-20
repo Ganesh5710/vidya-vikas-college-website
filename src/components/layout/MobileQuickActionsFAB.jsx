@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { PhoneCall, Navigation, MessageCircle, X, MapPin, Sparkles } from 'lucide-react';
+import { PhoneCall, Navigation, MessageCircle, X, MapPin, FileText } from 'lucide-react';
 import { COLLEGE_DETAILS, INITIAL_CONTACT_INFO } from '../../constants/collegeData';
 export const MobileQuickActionsFAB = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -99,7 +99,7 @@ export const MobileQuickActionsFAB = () => {
         </button>
 
         <a href="/SVVJC_Application_Form.pdf" download="SVVJC_Application_Form.pdf" className="px-3 py-1.5 rounded-lg bg-maroon-900 text-amber-400 text-[10px] font-extrabold flex items-center gap-1 shadow">
-          <Sparkles className="w-3 h-3"/>
+          <FileText className="w-3 h-3"/>
           <span>App Form</span>
         </a>
       </div>
