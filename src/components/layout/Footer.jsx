@@ -69,7 +69,7 @@ export const Footer = ({ setActiveTab }) => {
             <p className="font-semibold text-slate-200">{COLLEGE_DETAILS.name}</p>
             <p>{COLLEGE_DETAILS.address}</p>
             <p className="pt-2"><strong className="text-amber-400">Email:</strong> srividyavikasjuniorcollegempl@gmail.com</p>
-            <p><strong className="text-amber-400">Website:</strong> www.srividyavikasjrcollege.com</p>
+            <p><strong className="text-amber-400">Website:</strong> <a href="https://vidya-vikas-college.vercel.app/" target="_blank" rel="noopener noreferrer" className="hover:underline text-amber-300 font-medium">www.srividyavikasjrcollege.com</a></p>
             <p><strong className="text-amber-400">Timings:</strong> 8:00 AM - 8:00 PM (Sunday Closed)</p>
           </div>
         </div>

@@ -14,7 +14,8 @@ export const COLLEGE_DETAILS = {
     district: "Annamayya Dist, Andhra Pradesh",
     workingHours: "Monday to Saturday: 8:00 AM - 8:00 PM (Sunday Closed)",
     emailOfficial: "srividyavikasjuniorcollegempl@gmail.com",
-    website: "www.srividyavikasjrcollege.com",
+    websiteDisplay: "www.srividyavikasjrcollege.com",
+    websiteUrl: "https://vidya-vikas-college.vercel.app/",
     logoUrl: "/logo.jpg",
     rating: 4.8,
     reviewCount: "250+",
@@ -98,6 +99,7 @@ export const INITIAL_CONTACT_INFO = {
     phoneReception: "+91 9441820067",
     phoneAdmissions: "+91 9059313830",
     emailOfficial: "srividyavikasjuniorcollegempl@gmail.com",
-    website: "www.srividyavikasjrcollege.com",
+    websiteDisplay: "www.srividyavikasjrcollege.com",
+    websiteUrl: "https://vidya-vikas-college.vercel.app/",
     workingHours: "Monday to Saturday: 8:00 AM - 8:00 PM (Sunday Closed)"
 };

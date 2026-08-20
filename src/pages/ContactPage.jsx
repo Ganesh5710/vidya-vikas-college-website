@@ -156,7 +156,7 @@ export const ContactPage = () => {
                 </p>
                 <p className="flex items-center gap-2">
                   <Globe className="w-4 h-4 text-slate-400 shrink-0"/>
-                  <a href="https://www.srividyavikasjrcollege.com" target="_blank" rel="noopener noreferrer" className="text-maroon-800 font-bold hover:underline">www.srividyavikasjrcollege.com</a>
+                  <a href="https://vidya-vikas-college.vercel.app/" target="_blank" rel="noopener noreferrer" className="text-maroon-800 font-bold hover:underline">www.srividyavikasjrcollege.com</a>
                 </p>
                 <p className="flex items-center gap-2">
                   <Phone className="w-4 h-4 text-slate-400 shrink-0"/>
