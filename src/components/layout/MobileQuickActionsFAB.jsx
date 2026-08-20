@@ -19,7 +19,7 @@ export const MobileQuickActionsFAB = () => {
     };
     return (<>
       {/* 1. DESKTOP & MOBILE FLOATING BUTTONS STACK (Fixed Bottom Right) */}
-      <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end space-y-3 print:hidden">
+      <div className="fixed bottom-16 sm:bottom-6 right-4 sm:right-6 z-50 flex flex-col items-end space-y-3 print:hidden">
 
         {/* WhatsApp Quick Chat Window Popup */}
         {isOpen && (<div className="bg-white rounded-2xl p-5 shadow-2xl border border-slate-200 w-80 sm:w-96 space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-300">

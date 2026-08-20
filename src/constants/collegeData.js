@@ -103,7 +103,7 @@ export const INITIAL_TOPPERS = [
     marksPercentage: "466 / 470",
     grade: "Grade A1",
     rank: "#1 College Topper",
-    photoUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=400"
+    photoUrl: "/posters/a_srivalli.png"
   },
   {
     id: "res-1st-trivikram",
@@ -117,7 +117,7 @@ export const INITIAL_TOPPERS = [
     marksPercentage: "464 / 470",
     grade: "Grade A1",
     rank: "#2 College Topper",
-    photoUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400"
+    photoUrl: "/posters/k_trivikram.png"
   },
   {
     id: "res-1st-1",

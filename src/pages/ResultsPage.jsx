@@ -65,7 +65,7 @@ export const ResultsPage = () => {
     const count2ndYear = toppers.filter(t => t.academicYear === '2nd Year').length;
 
     return (
-        <div className="space-y-8">
+        <div className="space-y-8 pb-16 sm:pb-8">
       
             {/* Header Banner */}
             <section className="bg-navy-900 text-white rounded-2xl p-8 shadow-md space-y-3">
