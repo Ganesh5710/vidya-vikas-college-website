@@ -4,6 +4,47 @@ import { useData } from '../context/DataContext';
 import { EmptyState } from '../components/common/EmptyState';
 import { useSEO } from '../hooks/useSEO';
 
+// Subcomponent with Image Error handling & Fallback to prevent broken layouts
+const TopperPosterCard = ({ photoUrl, studentName, onExpand }) => {
+    const [imgError, setImgError] = useState(false);
+
+    if (!photoUrl || imgError) {
+        return (
+            <div className="flex flex-col items-center justify-center p-6 text-center text-white space-y-3 bg-gradient-to-b from-navy-900 to-navy-950 w-full h-full">
+                <div className="w-16 h-16 rounded-full bg-amber-500 text-navy-950 flex items-center justify-center font-black text-2xl shadow-lg border-2 border-amber-300">
+                    {studentName ? studentName.charAt(0) : 'S'}
+                </div>
+                <div className="space-y-1">
+                    <p className="font-extrabold text-sm text-amber-400 uppercase">{studentName}</p>
+                </div>
+                <span className="text-[10px] text-slate-400 italic">
+                    {imgError ? 'Poster photo unavailable' : 'No poster uploaded'}
+                </span>
+            </div>
+        );
+    }
+
+    return (
+        <>
+            <img
+                src={photoUrl}
+                alt={studentName}
+                loading="lazy"
+                onError={() => setImgError(true)}
+                className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
+            />
+            <button
+                onClick={onExpand}
+                className="absolute bottom-2.5 right-2.5 z-20 px-3 py-1.5 rounded-lg bg-navy-900/85 hover:bg-navy-900 text-white backdrop-blur shadow-md transition-all flex items-center gap-1.5 text-[11px] font-extrabold border border-white/20"
+                title="Click to view full high-res poster"
+            >
+                <Maximize2 className="w-3.5 h-3.5 text-amber-400"/>
+                <span>Full Poster</span>
+            </button>
+        </>
+    );
+};
+
 export const ResultsPage = () => {
     useSEO({
         title: "Board Exam Results & Top Rankers | SVVJC Madanapalle",
@@ -190,39 +231,13 @@ export const ResultsPage = () => {
                                     </span>
                                 </div>
 
-                                {/* Poster Container - Perfectly Aligned, Zero Gray Side Bars */}
+                                {/* Poster Container - Safe Image Fallback Handling */}
                                 <div className="relative w-full aspect-[4/5] rounded-xl overflow-hidden bg-slate-900 border border-slate-200 shadow-inner group flex items-center justify-center">
-                                    {result.photoUrl ? (
-                                        <>
-                                            {/* Crisp Full-Width Student Poster Image */}
-                                            <img
-                                                src={result.photoUrl}
-                                                alt={result.studentName}
-                                                className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
-                                            />
-
-                                            {/* High-res expand poster button */}
-                                            <button
-                                                onClick={() => setSelectedPhoto({ url: result.photoUrl, title: result.studentName })}
-                                                className="absolute bottom-2.5 right-2.5 z-20 px-3 py-1.5 rounded-lg bg-navy-900/85 hover:bg-navy-900 text-white backdrop-blur shadow-md transition-all flex items-center gap-1.5 text-[11px] font-extrabold border border-white/20"
-                                                title="Click to view full high-res poster"
-                                            >
-                                                <Maximize2 className="w-3.5 h-3.5 text-amber-400"/>
-                                                <span>Full Poster</span>
-                                            </button>
-                                        </>
-                                    ) : (
-                                        <div className="flex flex-col items-center justify-center p-6 text-center text-white space-y-3 bg-gradient-to-b from-navy-900 to-navy-950 w-full h-full">
-                                            <div className="w-16 h-16 rounded-full bg-amber-500 text-navy-950 flex items-center justify-center font-black text-2xl shadow-lg border-2 border-amber-300">
-                                                {result.studentName.charAt(0)}
-                                            </div>
-                                            <div className="space-y-1">
-                                                <p className="font-extrabold text-sm text-amber-400 uppercase">{result.studentName}</p>
-                                                <p className="text-[11px] text-slate-300 font-mono">Roll: {result.rollNumber || 'BIEAP Student'}</p>
-                                            </div>
-                                            <span className="text-[10px] text-slate-400 italic">No image uploaded</span>
-                                        </div>
-                                    )}
+                                    <TopperPosterCard
+                                        photoUrl={result.photoUrl}
+                                        studentName={result.studentName}
+                                        onExpand={() => setSelectedPhoto({ url: result.photoUrl, title: result.studentName })}
+                                    />
                                 </div>
 
                                 {/* Student Details */}
